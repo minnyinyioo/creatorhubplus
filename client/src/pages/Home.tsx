@@ -31,6 +31,7 @@ const services = [
     icon: CircleDollarSign,
     title: "Platform earnings",
     subtitle: "Monetisation readiness",
+    state: "CHECK",
     description: "Clarify earning requirements, account status, required information and the next useful action.",
     accent: "blue",
   },
@@ -39,6 +40,7 @@ const services = [
     icon: WalletCards,
     title: "Payout & receiving",
     subtitle: "Payout paths & withdrawals",
+    state: "MAP",
     description: "Map the information, route and open questions involved in receiving money across platforms.",
     accent: "orange",
   },
@@ -47,6 +49,7 @@ const services = [
     icon: FileCheck2,
     title: "Account setup",
     subtitle: "Setup & issue checks",
+    state: "VERIFY",
     description: "Use a focused checklist for new account setup and legitimate account issue investigation.",
     accent: "green",
   },
@@ -55,6 +58,7 @@ const services = [
     icon: MapPinned,
     title: "Address support",
     subtitle: "Verified address preparation",
+    state: "PREPARE",
     description: "Understand address requirements and prepare a legitimate, truthful, verifiable path.",
     accent: "blue",
   },
@@ -154,7 +158,7 @@ export default function Home() {
             <div className="payment-banner-note"><span>01 / 03</span><p>Local wallets and banks, arranged in one practical case path.</p></div>
           </div>
         <section className="payment-methods-rail" aria-label="Accepted wallet and bank methods">
-          <div className="payment-rail-intro"><p>ACCEPTED PAYMENT METHODS</p><span>Wallets & banks used in case planning</span></div>
+          <div className="payment-rail-intro"><p>VERIFIED ROUTE MARKS</p><span>Wallets & banks used as route-identification evidence</span></div>
           <div className="payment-rail-window">
             <div className="payment-rail-track">
               {[0, 1].map((repeat) => <div className="payment-rail-set" key={repeat} aria-hidden={repeat === 1}>
@@ -171,8 +175,8 @@ export default function Home() {
         <section className="service-section" id="services">
           <div className="section-top-payout"><div><p className="payout-eyebrow">WHAT WE HELP WITH</p><h2>Four real problems.<br /><em>One clear place to start.</em></h2></div><p>Designed around the questions that delay online income—not around generic “digital services.”</p></div>
           <div className="service-grid-payout">
-            {services.map(({ id, icon: Icon, title, subtitle, description, accent }) => <article className={`payout-service-card ${accent}`} key={title}>
-              <div className="service-card-head"><span>{id}</span><Icon size={22} strokeWidth={1.6} /></div><i className="service-route" /><p className="service-subtitle">{subtitle}</p><h3>{title}</h3><p className="service-description">{description}</p><button onClick={() => chooseService(title)}>Start with this <ArrowUpRight size={16} /></button>
+            {services.map(({ id, icon: Icon, title, subtitle, state, description, accent }) => <article className={`payout-service-card ${accent}`} key={title}>
+              <div className="service-card-head"><span>{id}</span><p>ROUTE / {state}</p><Icon size={22} strokeWidth={1.6} /></div><i className="service-route" /><p className="service-subtitle">{subtitle}</p><h3>{title}</h3><p className="service-description">{description}</p><div className="service-file-end"><span>CASE READY</span><button onClick={() => chooseService(title)}>Start with this <ArrowUpRight size={16} /></button></div>
             </article>)}
           </div>
         </section>
