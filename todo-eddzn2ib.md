@@ -40,7 +40,7 @@
 - [x] Implement user-facing order progress and next-step visibility after submission.
 - [x] Extend staff review with payment verification, review notes, and clear status transitions.
 - [x] Add tests, security validation, and responsive verification for the revised payment flow.
-- [ ] Save a checkpoint for the completed payment-flow revision.
+- [x] Save a checkpoint for the completed payment-flow revision.
 - [x] Verify a selected service reveals payment method, recipient, amount, and receipt steps on desktop and mobile.
 - [x] Add a direct “pay for this service” entry from each English and Burmese service card, preserving the selected service in the payment route.
 - [x] Show the staff review note directly in the user's payment-history progress card, especially when clarification is requested.
