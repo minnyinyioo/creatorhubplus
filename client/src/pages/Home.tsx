@@ -162,7 +162,7 @@ export default function Home() {
             <div className="payment-banner-note"><span>01 / 03</span><p>Local wallets and banks, arranged in one practical case path.</p></div>
           </div>
         <section className="payment-methods-rail" aria-label="Accepted wallet and bank methods">
-          <div className="payment-rail-intro"><p>VERIFIED ROUTE MARKS</p><span>Wallets & banks used as route-identification evidence</span></div>
+          <div className="payment-rail-intro"><p>CHOOSE YOUR PAYOUT METHOD</p><span>Find the wallet or bank you plan to use, then start a case so we can map the required details and the next legitimate step.</span></div>
           <div className="payment-rail-window">
             <div className="payment-rail-track">
               {[0, 1].map((repeat) => <div className="payment-rail-set" key={repeat} aria-hidden={repeat === 1}>
