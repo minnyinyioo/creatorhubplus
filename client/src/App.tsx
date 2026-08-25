@@ -8,15 +8,17 @@ import Home from "./pages/Home";
 import BurmeseHome from "./pages/BurmeseHome";
 import Privacy from "./pages/Privacy";
 import BurmesePrivacy from "./pages/BurmesePrivacy";
-
+import PaymentRequest from "./pages/PaymentRequest";
 
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/my"} component={BurmeseHome} />
       <Route path={"/privacy"} component={Privacy} />
       <Route path={"/my/privacy"} component={BurmesePrivacy} />
+      <Route path={"/payment"} component={PaymentRequest} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

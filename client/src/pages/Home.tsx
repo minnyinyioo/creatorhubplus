@@ -130,6 +130,7 @@ export default function Home() {
         </nav>
         <div className="payout-actions">
           <Link href="/my" className="language-link">မြန်မာ</Link>
+          <Link href="/payment" className="payment-nav-link">Payment request</Link>
           <button className="header-cta" onClick={() => scrollTo("#start")}>Start a case <ArrowUpRight size={15} /></button>
           <button className="payout-menu" aria-label="Open navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={19} /> : <Menu size={20} />}</button>
         </div>
