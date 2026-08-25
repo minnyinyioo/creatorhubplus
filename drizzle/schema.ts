@@ -2,16 +2,10 @@ import { index, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "dri
 
 /**
  * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
  * Columns use camelCase to match both database fields and generated types.
  */
 export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
@@ -26,9 +20,8 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /**
- * Payment requests are not payment processor records. They store a user-submitted
- * request and a private receipt reference that remains pending review until an
- * authorised administrator verifies the payment through an approved channel.
+ * Payment requests are user-submitted records. Receipt bytes are kept in object
+ * storage; this table stores only the private storage reference and review audit data.
  */
 export const paymentRequests = mysqlTable("payment_requests", {
   id: int("id").autoincrement().primaryKey(),
@@ -43,11 +36,37 @@ export const paymentRequests = mysqlTable("payment_requests", {
   receiptUrl: text("receiptUrl").notNull(),
   receiptName: varchar("receiptName", { length: 255 }).notNull(),
   receiptContentType: varchar("receiptContentType", { length: 80 }).notNull(),
-  status: mysqlEnum("status", ["pending_review", "verified", "rejected"]).notNull().default("pending_review"),
+  status: mysqlEnum("status", ["pending_review", "clarification_requested", "verified", "rejected"]).notNull().default("pending_review"),
   reviewNote: text("reviewNote"),
+  reviewedByUserId: int("reviewedByUserId").references(() => users.id, { onDelete: "set null" }),
   reviewedAt: timestamp("reviewedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-}, (table) => [index("payment_requests_user_created_idx").on(table.userId, table.createdAt)]);
+}, (table) => [
+  index("payment_requests_user_created_idx").on(table.userId, table.createdAt),
+  index("payment_requests_status_created_idx").on(table.status, table.createdAt),
+]);
 
 export type PaymentRequest = typeof paymentRequests.$inferSelect;
 export type InsertPaymentRequest = typeof paymentRequests.$inferInsert;
+
+/**
+ * Staff-managed verified merchant destinations. Empty or inactive rows are not
+ * shown to applicants, so onboarding can happen without publishing placeholders.
+ */
+export const merchantRecipients = mysqlTable("merchant_recipients", {
+  id: int("id").autoincrement().primaryKey(),
+  paymentMethod: varchar("paymentMethod", { length: 40 }).notNull().unique(),
+  providerLabel: varchar("providerLabel", { length: 80 }).notNull(),
+  kind: varchar("kind", { length: 20 }).notNull(),
+  accountName: varchar("accountName", { length: 160 }).notNull(),
+  accountIdentifier: varchar("accountIdentifier", { length: 160 }).notNull(),
+  instructions: text("instructions").notNull(),
+  qrUrl: text("qrUrl"),
+  qrStorageKey: text("qrStorageKey"),
+  isActive: int("isActive").notNull().default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type MerchantRecipient = typeof merchantRecipients.$inferSelect;
+export type InsertMerchantRecipient = typeof merchantRecipients.$inferInsert;

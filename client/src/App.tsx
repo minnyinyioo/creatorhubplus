@@ -8,7 +8,9 @@ import Home from "./pages/Home";
 import BurmeseHome from "./pages/BurmeseHome";
 import Privacy from "./pages/Privacy";
 import BurmesePrivacy from "./pages/BurmesePrivacy";
-import PaymentRequest from "./pages/PaymentRequest";
+import PaymentRequest from "@/pages/PaymentRequest";
+import StaffRecipients from "@/pages/StaffRecipients";
+import StaffReview from "@/pages/StaffReview";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -19,6 +21,8 @@ function Router() {
       <Route path={"/privacy"} component={Privacy} />
       <Route path={"/my/privacy"} component={BurmesePrivacy} />
       <Route path={"/payment"} component={PaymentRequest} />
+      <Route path={"/staff/review"} component={StaffReview} />
+      <Route path={"/staff/recipients"} component={StaffRecipients} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
