@@ -16,7 +16,7 @@ const methods = [
   { id: "ayapay", label: "AYA Pay", kind: "Wallet", logo: "/manus-storage/ayapay_385dc148.png" },
   { id: "kbzbank", label: "KBZ Bank", kind: "Bank", logo: "/manus-storage/kbzbank_ccd3a1fa.png" },
   { id: "ayabank", label: "AYA Bank", kind: "Bank", logo: "/manus-storage/ayabank_d9d29f1d.png" },
-  { id: "bangkok", label: "Bangkok Bank", kind: "Bank", logo: "/manus-storage/bangkokbank-official_ebc198ff.svg" },
+  { id: "bangkok", label: "Bangkok Bank", kind: "Bank", logo: "/manus-storage/bangkok-bank-blue-wide_277247ab.png" },
   { id: "kasikorn", label: "KASIKORNBANK", kind: "Bank", logo: "/manus-storage/kasikornbank-official_5108252c.png" },
 ] as const;
 

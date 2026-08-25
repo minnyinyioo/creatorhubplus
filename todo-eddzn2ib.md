@@ -29,3 +29,9 @@
 - [x] Add Vitest coverage for completed-session timer persistence and resume-after-reload behavior.
 - [x] Add a safe periodic timer save while a focus session is running; keep lifecycle saves as a best-effort fallback.
 - [x] Test the timer persistence helpers for completion, page-hide/unmount payloads, and resume values.
+- [x] Locate every Bangkok Bank logo usage and confirm the intended payment-route presentation.
+- [x] Replace the unreadable Bangkok Bank mark with a clear blue logo asset and responsive sizing.
+- [x] Run visual, type, test, and production-build verification for the logo change.
+- [x] Save a checkpoint for the verified Bangkok Bank logo update.
+- [x] Interactively verify Bangkok Bank in the homepage payment rail and the /payment selected-method state on desktop and mobile.
+- [x] Record deterministic visual verification evidence for the selected Bangkok Bank state before the final checkpoint.

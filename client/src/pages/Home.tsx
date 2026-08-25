@@ -81,7 +81,7 @@ const paymentMethods = [
   { label: "AYA Pay", logo: "/manus-storage/ayapay_385dc148.png", kind: "wallet" },
   { label: "KBZ Bank", logo: "/manus-storage/kbzbank_ccd3a1fa.png", kind: "bank" },
   { label: "AYA Bank", logo: "/manus-storage/ayabank_d9d29f1d.png", kind: "bank" },
-  { label: "Bangkok Bank", logo: "/manus-storage/bangkokbank-official_ebc198ff.svg", kind: "bank" },
+  { label: "Bangkok Bank", logo: "/manus-storage/bangkok-bank-blue-wide_277247ab.png", kind: "bank" },
   { label: "KASIKORNBANK", logo: "/manus-storage/kasikornbank-official_5108252c.png", kind: "bank" },
 ];
 
