@@ -24,7 +24,7 @@
 - [x] Implement Workspace task create, edit, delete, completion toggle, and timer-state persistence.
 - [x] Implement Archive, Library, and Project settings instead of leaving navigation as placeholder toasts.
 - [x] Add database migrations, tRPC procedures, Vitest coverage, and responsive UI verification for the new features.
-- [ ] Save a new checkpoint after all newly requested features are verified.
+- [x] Save a new checkpoint after all newly requested features are verified.
 - [x] Persist Workspace timer progress when a session completes and when the user leaves or reloads the page.
 - [x] Add Vitest coverage for completed-session timer persistence and resume-after-reload behavior.
 - [x] Add a safe periodic timer save while a focus session is running; keep lifecycle saves as a best-effort fallback.
