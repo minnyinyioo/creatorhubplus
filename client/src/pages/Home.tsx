@@ -25,6 +25,7 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
+import { siFacebook, siPaypal, siTiktok, siYoutube, type SimpleIcon } from "simple-icons";
 
 const logo = "/favicon.svg";
 
@@ -63,7 +64,26 @@ const services = [
   },
 ];
 
-const platformItems = ["Facebook", "YouTube", "TikTok", "PayPal", "More platforms"];
+const platformItems = [
+  { label: "Facebook", icon: siFacebook },
+  { label: "YouTube", icon: siYoutube },
+  { label: "TikTok", icon: siTiktok },
+  { label: "PayPal", icon: siPaypal },
+];
+
+const paymentMethods = [
+  { label: "KBZ Pay", logo: "/manus-storage/kbzpay_b6275ce0.webp", kind: "wallet" },
+  { label: "Wave Pay", logo: "https://www.wavemoney.com.mm/wp-content/uploads/2024/11/wave-logo-small.svg", kind: "wallet" },
+  { label: "AYA Pay", logo: "/manus-storage/ayapay_385dc148.png", kind: "wallet" },
+  { label: "KBZ Bank", logo: "/manus-storage/kbzbank_ccd3a1fa.png", kind: "bank" },
+  { label: "AYA Bank", logo: "/manus-storage/ayabank_d9d29f1d.png", kind: "bank" },
+  { label: "Bangkok Bank", logo: "https://www.bangkokbank.com/-/media/feature/identity/bbl-corporate/site-logos/logo.svg?h=38&iar=0&w=163&sc_lang=en&hash=DBA6886195F94137EC5FA78EDE3C7B1F", kind: "bank" },
+  { label: "KASIKORNBANK", logo: "https://www.kasikornbank.com/SiteCollectionDocuments/about/img/logo/master-brand.png", kind: "bank" },
+];
+
+function BrandGlyph({ icon, className }: { icon: SimpleIcon; className?: string }) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d={icon.path} fill="currentColor" /></svg>;
+}
 
 const steps = [
   ["01", "Tell us the real issue", "选择平台与问题类型，说明你现在卡在哪一步。"],
@@ -126,10 +146,10 @@ export default function Home() {
           </div>
           <div className="payout-map" aria-label="平台到收款路径示意">
             <div className="map-topline"><span>YOUR PLATFORM PATH</span><i /><span>01 / 04</span></div>
-            <div className="platform-badge platform-one"><span>f</span> Facebook</div>
-            <div className="platform-badge platform-two"><span>▶</span> YouTube</div>
-            <div className="platform-badge platform-three"><span>♪</span> TikTok</div>
-            <div className="platform-badge platform-four"><span>P</span> PayPal</div>
+            <div className="platform-badge platform-one"><span><BrandGlyph icon={siFacebook} /></span> Facebook</div>
+            <div className="platform-badge platform-two"><span><BrandGlyph icon={siYoutube} /></span> YouTube</div>
+            <div className="platform-badge platform-three"><span><BrandGlyph icon={siTiktok} /></span> TikTok</div>
+            <div className="platform-badge platform-four"><span><BrandGlyph icon={siPaypal} /></span> PayPal</div>
             <div className="route-line route-one" /><div className="route-line route-two" /><div className="route-line route-three" /><div className="route-line route-four" />
             <div className="route-hub"><img src={logo} alt="" /><strong>Case path</strong><span>check → prepare → move</span></div>
             <div className="route-status"><BadgeCheck size={16} /><span>Start with the<br /><b>real requirement</b></span></div>
@@ -138,7 +158,19 @@ export default function Home() {
         </section>
 
         <section className="platform-strip" aria-label="支持的常见平台">
-          <span>COMMON STARTING POINTS</span>{platformItems.map((item) => <b key={item}>{item}</b>)}<i>Not affiliated with listed platforms.</i>
+          <span>COMMON STARTING POINTS</span>{platformItems.map(({ label, icon }) => <b key={label}><BrandGlyph icon={icon} />{label}</b>)}<i>Not affiliated with listed platforms.</i>
+        </section>
+
+        <section className="payment-methods-rail" aria-label="可接受的本地钱包和银行方式">
+          <div className="payment-rail-intro"><p>ACCEPTED PAYMENT METHODS</p><span>Wallets & banks used in case planning</span></div>
+          <div className="payment-rail-window">
+            <div className="payment-rail-track">
+              {[...paymentMethods, ...paymentMethods].map((method, index) => <div className={`payment-method ${method.kind}`} key={`${method.label}-${index}`}>
+                <img src={method.logo} alt={`${method.label} official logo`} /><span>{method.label}</span>
+              </div>)}
+            </div>
+          </div>
+          <p className="payment-rail-disclaimer">Brand names and logos belong to their respective owners. Displayed for payment-path identification only; no affiliation is implied.</p>
         </section>
 
         <section className="service-section" id="services">
