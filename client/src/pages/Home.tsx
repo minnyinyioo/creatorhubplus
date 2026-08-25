@@ -165,7 +165,7 @@ export default function Home() {
           <div className="payment-rail-intro"><p>ACCEPTED PAYMENT METHODS</p><span>Wallets & banks used in case planning</span></div>
           <div className="payment-rail-window">
             <div className="payment-rail-track">
-              {[...paymentMethods, ...paymentMethods].map((method, index) => <div className={`payment-method ${method.kind}`} key={`${method.label}-${index}`}>
+              {paymentMethods.map((method) => <div className={`payment-method ${method.kind}`} key={method.label}>
                 <img src={method.logo} alt={`${method.label} official logo`} />
               </div>)}
             </div>
