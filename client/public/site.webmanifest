@@ -1,0 +1,13 @@
+{
+  "name": "CreatorHubPlus",
+  "short_name": "CH+",
+  "description": "Creator operations, designed for clearer independent work.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4FAF7",
+  "theme_color": "#075F5A",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

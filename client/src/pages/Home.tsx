@@ -27,7 +27,7 @@ const heroImage = "/manus-storage/creatorhubplus-hero_2268abf4.png";
 const growthImage = "/manus-storage/creatorhubplus-focus-growth_0e5e08a8.png";
 const systemsImage = "/manus-storage/creatorhubplus-focus-systems_a6161c93.png";
 const productsImage = "/manus-storage/creatorhubplus-focus-products_6035c521.png";
-const logoImage = "/manus-storage/creatorhubplus-logo_7f1457fc.png";
+const logoImage = "/favicon.svg";
 
 const navItems = [
   ["Home", "#top"],
@@ -35,7 +35,7 @@ const navItems = [
   ["Library", "#library"],
   ["Notes", "#notes"],
   ["Workflows", "#workflows"],
-  ["Hub", "#hub"],
+  ["App", "/app"],
   ["Contact", "#contact"],
 ] as const;
 
@@ -128,6 +128,10 @@ const studioLinks = [
 ] as const;
 
 function scrollToSection(target: string) {
+  if (target.startsWith("/")) {
+    window.location.assign(target);
+    return;
+  }
   document.querySelector(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
