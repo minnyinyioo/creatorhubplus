@@ -3,6 +3,7 @@
  * Brand direction: English-first platform support, warm editorial clarity, visible service pathways.
  */
 import { useState } from "react";
+import { Link } from "wouter";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -22,6 +23,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { siFacebook, siPaypal, siTiktok, siYoutube, type SimpleIcon } from "simple-icons";
+import { useSiteLocale } from "@/lib/useSiteLocale";
 
 const logo = "/favicon.svg";
 
@@ -104,6 +106,7 @@ function openCookiePreferences() {
 }
 
 export default function Home() {
+  useSiteLocale("en", "CreatorHubPlus — Creator earnings and payout support");
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("Platform earnings");
 
@@ -126,6 +129,7 @@ export default function Home() {
           <a href="#faq" onClick={() => scrollTo("#faq")}>Help</a>
         </nav>
         <div className="payout-actions">
+          <Link href="/my" className="language-link">မြန်မာ</Link>
           <button className="header-cta" onClick={() => scrollTo("#start")}>Start a case <ArrowUpRight size={15} /></button>
           <button className="payout-menu" aria-label="Open navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={19} /> : <Menu size={20} />}</button>
         </div>

@@ -4,6 +4,7 @@
  */
 import { ArrowLeft, ArrowUpRight, ShieldCheck } from "lucide-react";
 import { Link } from "wouter";
+import { useSiteLocale } from "@/lib/useSiteLocale";
 
 const sections = [
   {
@@ -34,11 +35,12 @@ const sections = [
 ];
 
 export default function Privacy() {
+  useSiteLocale("en", "CreatorHubPlus — Privacy Policy");
   return (
     <main className="privacy-page">
       <header className="privacy-header">
         <Link href="/" className="privacy-brand"><img src="/favicon.svg" alt="CreatorHubPlus logo" /><span>creatorhub<span>plus</span></span></Link>
-        <Link href="/" className="privacy-return"><ArrowLeft size={15} /> Return to site</Link>
+        <div className="locale-links"><Link href="/my/privacy">မြန်မာ</Link><Link href="/" className="privacy-return"><ArrowLeft size={15} /> Return to site</Link></div>
       </header>
 
       <section className="privacy-hero">
