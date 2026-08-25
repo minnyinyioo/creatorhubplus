@@ -91,6 +91,10 @@ function scrollTo(target: string) {
   document.querySelector(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function openCookiePreferences() {
+  (window as Window & { CookieConsent?: { showPreferences?: () => void } }).CookieConsent?.showPreferences?.();
+}
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("Platform earnings");
@@ -193,7 +197,7 @@ export default function Home() {
         <section className="contact-panel"><div><p className="payout-eyebrow light">READY WHEN THE ISSUE IS REAL</p><h2>Bring the platform.<br />We’ll map the <em>next move.</em></h2></div><div><p>Start with one situation, not a long form. We will help make the route clearer.</p><button onClick={() => scrollTo("#start")}>Start a support case <ArrowUpRight size={18} /></button></div></section>
       </main>
 
-      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><img src={logo} alt="CreatorHubPlus Payout Bridge logo" /><span>creatorhub<span>plus</span></span></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><button onClick={() => toast("Privacy policy can be added before public launch.")}>Privacy</button></div><div className="footer-note"><Sparkles size={17} /><p>Clear work is more valuable than fast promises.</p></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
+      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><img src={logo} alt="CreatorHubPlus Payout Bridge logo" /><span>creatorhub<span>plus</span></span></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><a href="/privacy">Privacy Policy</a><button onClick={openCookiePreferences}>Manage Cookie Settings</button></div><div className="footer-note"><Sparkles size={17} /><p>Clear work is more valuable than fast promises.</p></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
     </div>
   );
 }

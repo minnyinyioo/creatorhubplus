@@ -27,3 +27,7 @@
 - [x] 核对 Cookie Consent 组件来源与现有页面注入位置
 - [x] 接入 Cookie Consent 并定制 CreatorHubPlus 英文文案和视觉
 - [x] 验证 Cookie 弹窗在桌面与移动端的选择交互
+- [ ] 梳理 Cookie 配置、页脚与隐私政策页面的链接关系
+- [x] 创建独立 Privacy Policy 页面并建立弹窗/页脚链接
+- [x] 增加 Cookie 按钮悬停反馈和页脚偏好管理入口
+- [x] 验证隐私流程在桌面与移动端的可用性
