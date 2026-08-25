@@ -1,6 +1,6 @@
 /**
  * CreatorHubPlus — Payout Bridge
- * Brand direction: trusted Myanmar-first platform support, warm editorial clarity, visible service pathways.
+ * Brand direction: English-first platform support, warm editorial clarity, visible service pathways.
  */
 import { useState } from "react";
 import {
@@ -12,13 +12,9 @@ import {
   CircleDollarSign,
   CircleHelp,
   FileCheck2,
-  Landmark,
-  Languages,
   MapPinned,
   Menu,
   MessageCircleMore,
-  MousePointerClick,
-  Play,
   ShieldCheck,
   Sparkles,
   WalletCards,
@@ -34,41 +30,34 @@ const services = [
     id: "01",
     icon: CircleDollarSign,
     title: "Platform earnings",
-    subtitle: "创收准备与问题梳理",
-    description: "为内容创作者与线上商家整理变现条件、账户状态、资料清单与下一步处理路径。",
+    subtitle: "Monetisation readiness",
+    description: "Clarify earning requirements, account status, required information and the next useful action.",
     accent: "blue",
   },
   {
     id: "02",
     icon: WalletCards,
     title: "Payout & receiving",
-    subtitle: "收款路径与提现协助",
-    description: "厘清跨平台收款所需的信息、可用路径和待处理事项，让每一步都有记录。",
+    subtitle: "Payout paths & withdrawals",
+    description: "Map the information, route and open questions involved in receiving money across platforms.",
     accent: "orange",
   },
   {
     id: "03",
     icon: FileCheck2,
     title: "Account setup",
-    subtitle: "账户设置与异常排查",
-    description: "从新账户设置到已有问题的排查，提供符合平台规则的检查清单与操作指引。",
+    subtitle: "Setup & issue checks",
+    description: "Use a focused checklist for new account setup and legitimate account issue investigation.",
     accent: "green",
   },
   {
     id: "04",
     icon: MapPinned,
     title: "Address support",
-    subtitle: "认证地址准备支持",
-    description: "帮助理解平台对认证地址的要求，并准备合规、真实、可核验的资料路径。",
+    subtitle: "Verified address preparation",
+    description: "Understand address requirements and prepare a legitimate, truthful, verifiable path.",
     accent: "blue",
   },
-];
-
-const platformItems = [
-  { label: "Facebook", icon: siFacebook },
-  { label: "YouTube", icon: siYoutube },
-  { label: "TikTok", icon: siTiktok },
-  { label: "PayPal", icon: siPaypal },
 ];
 
 const paymentMethods = [
@@ -86,16 +75,16 @@ function BrandGlyph({ icon, className }: { icon: SimpleIcon; className?: string 
 }
 
 const steps = [
-  ["01", "Tell us the real issue", "选择平台与问题类型，说明你现在卡在哪一步。"],
-  ["02", "Get a clean path", "得到清晰的资料清单、注意事项和推荐的下一行动。"],
-  ["03", "Keep the case visible", "将处理进度留在同一条路径里，方便回看与继续推进。"],
+  ["01", "Tell us the real issue", "Choose the platform and issue type, then describe where progress has stopped."],
+  ["02", "Get a clean path", "Receive a focused checklist, practical notes and a recommended next action."],
+  ["03", "Keep the case visible", "Keep the progress in one clear path so it is easier to return to and move forward."],
 ];
 
 const faqs = [
-  ["Can you guarantee platform approval?", "不能。任何平台的审批都由平台自行决定。我们做的是帮助你理解要求、准备真实资料，并减少可避免的设置错误。"],
-  ["Do you provide fake documents or verification bypasses?", "不提供。CreatorHubPlus 只支持合法、真实和可核验的资料准备，不制作虚假身份或地址资料，也不协助绕过平台规则。"],
-  ["Which platforms can a case start with?", "可以从常见的内容与收款平台开始。先提交实际问题；若不在当前服务范围，我们会明确说明，而不是给出含糊承诺。"],
-  ["What should I prepare before asking for help?", "准备平台名称、目前页面状态、报错截图（注意遮住敏感信息）以及已尝试过的步骤即可。"],
+  ["Can you guarantee platform approval?", "No. Each platform makes its own approval decisions. We help you understand requirements, prepare genuine information and avoid preventable setup mistakes."],
+  ["Do you provide fake documents or verification bypasses?", "No. CreatorHubPlus supports lawful, truthful and verifiable preparation only. We do not create false identity or address documents, and we do not help bypass platform rules."],
+  ["Which platforms can a case start with?", "Start with a common creator or payout platform and describe the actual issue. If it is outside the current service scope, we will say so clearly rather than make vague promises."],
+  ["What should I prepare before asking for help?", "Bring the platform name, the current page state, any error screenshots with sensitive data hidden, and the steps you have already tried."],
 ];
 
 function scrollTo(target: string) {
@@ -115,19 +104,18 @@ export default function Home() {
     <div className="payout-site" id="top">
       <header className="payout-header">
         <a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}>
-          <img src={logo} alt="CreatorHubPlus Payout Bridge 标志" />
+          <img src={logo} alt="CreatorHubPlus Payout Bridge logo" />
           <span>creatorhub<span>plus</span></span>
         </a>
-        <nav className="payout-nav" aria-label="主导航">
+        <nav className="payout-nav" aria-label="Main navigation">
           <a href="#services" onClick={() => scrollTo("#services")}>Services</a>
           <a href="#how" onClick={() => scrollTo("#how")}>How it works</a>
           <a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a>
           <a href="#faq" onClick={() => scrollTo("#faq")}>Help</a>
         </nav>
         <div className="payout-actions">
-          <button className="language-switch" onClick={() => toast("မြန်မာဘာသာ版本正在整理中。")}> <Languages size={15} /> မြန်မာ</button>
           <button className="header-cta" onClick={() => scrollTo("#start")}>Start a case <ArrowUpRight size={15} /></button>
-          <button className="payout-menu" aria-label="打开导航" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={19} /> : <Menu size={20} />}</button>
+          <button className="payout-menu" aria-label="Open navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={19} /> : <Menu size={20} />}</button>
         </div>
         {menuOpen && <div className="payout-mobile-menu">
           {[["Services", "#services"], ["How it works", "#how"], ["Trust & rules", "#trust"], ["Help", "#faq"]].map(([label, target]) => <button key={label} onClick={() => { setMenuOpen(false); scrollTo(target); }}>{label}<ArrowUpRight size={17} /></button>)}
@@ -138,13 +126,12 @@ export default function Home() {
         <section className="payout-hero">
           <div className="hero-copy-payout">
             <p className="payout-eyebrow"><span /> MYANMAR CREATOR & BUSINESS SUPPORT</p>
-            <p className="burmese-kicker">မြန်မာ Creator များအတွက်</p>
             <h1>Earn online.<br /><em>Get paid.</em><br />Stay set up.</h1>
             <p className="hero-detail">CreatorHubPlus helps Myanmar creators and online businesses navigate earnings, payouts, account setup, and verified address requirements—one clear case at a time.</p>
             <div className="hero-ctas"><button className="coral-button" onClick={() => scrollTo("#start")}>Tell us your issue <ArrowUpRight size={17} /></button><button className="quiet-button" onClick={() => scrollTo("#services")}>See services <ArrowDownRight size={17} /></button></div>
             <p className="hero-rule"><ShieldCheck size={15} /> Clear support for legitimate platform use. No false documents. No shortcuts.</p>
           </div>
-          <div className="payout-map" aria-label="平台到收款路径示意">
+          <div className="payout-map" aria-label="Platform-to-payout route illustration">
             <div className="map-topline"><span>YOUR PLATFORM PATH</span><i /><span>01 / 04</span></div>
             <div className="platform-badge platform-one"><span><BrandGlyph icon={siFacebook} /></span> Facebook</div>
             <div className="platform-badge platform-two"><span><BrandGlyph icon={siYoutube} /></span> YouTube</div>
@@ -157,11 +144,12 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="platform-strip" aria-label="支持的常见平台">
-          <span>COMMON STARTING POINTS</span>{platformItems.map(({ label, icon }) => <b key={label}><BrandGlyph icon={icon} />{label}</b>)}<i>Not affiliated with listed platforms.</i>
-        </section>
-
-        <section className="payment-methods-rail" aria-label="可接受的本地钱包和银行方式">
+        <section className="payment-section" aria-label="Payment route overview">
+          <div className="payment-section-banner">
+            <div><p className="payout-eyebrow light"><span /> PAYMENT ROUTES</p><h2>Keep the method.<br /><em>Make the path clear.</em></h2></div>
+            <div className="payment-banner-note"><span>01 / 03</span><p>Local wallets and banks, arranged in one practical case path.</p></div>
+          </div>
+        <section className="payment-methods-rail" aria-label="Accepted wallet and bank methods">
           <div className="payment-rail-intro"><p>ACCEPTED PAYMENT METHODS</p><span>Wallets & banks used in case planning</span></div>
           <div className="payment-rail-window">
             <div className="payment-rail-track">
@@ -173,6 +161,7 @@ export default function Home() {
             </div>
           </div>
           <p className="payment-rail-disclaimer">Brand names and logos belong to their respective owners. Displayed for payment-path identification only; no affiliation is implied.</p>
+        </section>
         </section>
 
         <section className="service-section" id="services">
@@ -204,7 +193,7 @@ export default function Home() {
         <section className="contact-panel"><div><p className="payout-eyebrow light">READY WHEN THE ISSUE IS REAL</p><h2>Bring the platform.<br />We’ll map the <em>next move.</em></h2></div><div><p>Start with one situation, not a long form. We will help make the route clearer.</p><button onClick={() => scrollTo("#start")}>Start a support case <ArrowUpRight size={18} /></button></div></section>
       </main>
 
-      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><img src={logo} alt="CreatorHubPlus Payout Bridge 标志" /><span>creatorhub<span>plus</span></span></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><button onClick={() => toast("Privacy policy can be added before public launch.")}>Privacy</button></div><div className="footer-note"><Sparkles size={17} /><p>Clear work is more valuable than fast promises.</p></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
+      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><img src={logo} alt="CreatorHubPlus Payout Bridge logo" /><span>creatorhub<span>plus</span></span></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><button onClick={() => toast("Privacy policy can be added before public launch.")}>Privacy</button></div><div className="footer-note"><Sparkles size={17} /><p>Clear work is more valuable than fast promises.</p></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
     </div>
   );
 }
