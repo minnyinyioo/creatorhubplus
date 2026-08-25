@@ -42,7 +42,7 @@ export default function PaymentRequest() {
   const [step, setStep] = useState<"details" | "proof">("details");
   const selected = methods.find((method) => method.id === selectedMethod) ?? methods[0];
   const utils = trpc.useUtils();
-  const myRequests = trpc.paymentRequest.listMine.useQuery(undefined, { enabled: isAuthenticated });
+  const myRequests = trpc.paymentRequest.listMine.useQuery(undefined, { enabled: !loading && isAuthenticated });
   const createRequest = trpc.paymentRequest.create.useMutation({
     onSuccess: async (result) => {
       await utils.paymentRequest.listMine.invalidate();
@@ -55,11 +55,6 @@ export default function PaymentRequest() {
   });
 
   const beginProofStep = () => {
-    if (!isAuthenticated) {
-      toast("Please sign in before saving a payment request.");
-      startLogin();
-      return;
-    }
     if (!payerName.trim() || !amount || Number(amount) <= 0) {
       toast("Add your name and a valid amount before continuing.");
       return;
@@ -68,6 +63,11 @@ export default function PaymentRequest() {
   };
 
   const submitProof = async () => {
+    if (!isAuthenticated) {
+      toast("Sign in before submitting your payment proof.");
+      startLogin();
+      return;
+    }
     if (!proof) {
       toast("Choose a receipt image or PDF before submitting.");
       return;
