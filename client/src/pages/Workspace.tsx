@@ -2,13 +2,14 @@
  * CreatorHubPlus — Working Surface
  * Product direction: editorial operating canvas, one dominant task, quiet context rails, no SaaS card wall.
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowUpRight,
   Bell,
   BookOpen,
   ChevronDown,
+  Check,
   CirclePlus,
   Clock3,
   Command,
@@ -36,6 +37,15 @@ const views: Array<{ label: ViewKey; icon: typeof LayoutList }> = [
   { label: "Rhythm", icon: Play },
   { label: "Offers", icon: LibraryBig },
 ];
+
+export function formatFocusTime(totalSeconds: number) {
+  const safeSeconds = Math.max(0, totalSeconds);
+  return `${String(Math.floor(safeSeconds / 60)).padStart(2, "0")}:${String(safeSeconds % 60).padStart(2, "0")}`;
+}
+
+export function toggleMoveState(moves: string[], item: string) {
+  return moves.includes(item) ? moves.filter((move) => move !== item) : [...moves, item];
+}
 
 const viewContent: Record<ViewKey, { kicker: string; title: string; focus: string; progress: string; items: string[] }> = {
   Today: {
@@ -72,7 +82,46 @@ export default function Workspace() {
   const [activeView, setActiveView] = useState<ViewKey>("Today");
   const [focusMode, setFocusMode] = useState(false);
   const [railOpen, setRailOpen] = useState(false);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerSeconds, setTimerSeconds] = useState(50 * 60);
+  const [completedMoves, setCompletedMoves] = useState<string[]>([]);
   const content = useMemo(() => viewContent[activeView], [activeView]);
+  const timerLabel = formatFocusTime(timerSeconds);
+  const progressLabel = `${String(completedMoves.length).padStart(2, "0")} / ${String(content.items.length).padStart(2, "0")} MOVES COMPLETE`;
+
+  useEffect(() => {
+    setTimerRunning(false);
+    setTimerSeconds(50 * 60);
+    setCompletedMoves([]);
+  }, [activeView]);
+
+  useEffect(() => {
+    if (!timerRunning) return;
+    const interval = window.setInterval(() => {
+      setTimerSeconds((seconds) => {
+        if (seconds <= 1) {
+          setTimerRunning(false);
+          toast("Focused session complete. Take a short reset before the next move.");
+          return 0;
+        }
+        return seconds - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(interval);
+  }, [timerRunning]);
+
+  const toggleMove = (item: string) => {
+    setCompletedMoves((moves) => {
+      const isComplete = moves.includes(item);
+      toast(isComplete ? `已将「${item}」移回进行中。` : `已完成「${item}」。`);
+      return toggleMoveState(moves, item);
+    });
+  };
+
+  const toggleTimer = () => {
+    if (timerSeconds === 0) setTimerSeconds(50 * 60);
+    setTimerRunning((running) => !running);
+  };
 
   const chooseView = (view: ViewKey) => {
     setActiveView(view);
@@ -120,20 +169,21 @@ export default function Workspace() {
             <div className="focus-field-core">
               <div className="focus-index"><span>01</span><i /><span>NOW</span></div>
               <h2>{content.focus}</h2>
-              <div className="focus-tags"><span><FolderKanban size={14} />The small offer</span><span><Clock3 size={14} />50 min</span></div>
-              <div className="focus-field-actions"><button className="start-focus" onClick={() => toast("Focus timer will start when tasks are connected.")}><Play size={15} fill="currentColor" /> Begin a focused session</button><button className="more-focus" onClick={() => toast("下一步可以拆成更小的动作。")}>More <MoreHorizontal size={18} /></button></div>
+              <div className="focus-tags"><span><FolderKanban size={14} />The small offer</span><span className="focus-timer"><Clock3 size={14} />{timerLabel}</span></div>
+              <div className="focus-field-actions"><button className={`start-focus${timerRunning ? " is-running" : ""}`} onClick={toggleTimer}><Play size={15} fill="currentColor" />{timerRunning ? "Pause focused session" : timerSeconds === 0 ? "Restart focused session" : "Begin a focused session"}</button><button className="more-focus" onClick={() => toast("下一步可以拆成更小的动作。")}>More <MoreHorizontal size={18} /></button></div>
             </div>
             <img className="field-atmosphere" src={atmosphereImage} alt="" />
           </section>
 
           <section className="movement-list" aria-labelledby="movement-heading">
-            <div className="movement-list-head"><div><p className="app-kicker">IN THE SAME ORBIT</p><h2 id="movement-heading">Small moves keep<br />the work in motion.</h2></div><span>{content.progress}</span></div>
+            <div className="movement-list-head"><div><p className="app-kicker">IN THE SAME ORBIT</p><h2 id="movement-heading">Small moves keep<br />the work in motion.</h2></div><span>{progressLabel}</span></div>
             <div className="movement-rows">
-              {content.items.map((item, index) => (
-                <button className="movement-row" key={item} onClick={() => toast(`已将「${item}」放入焦点队列。`)}>
-                  <span className="row-number">0{index + 2}</span><GripVertical size={15} className="row-grip" /><span className="row-title">{item}</span><span className="row-time">{["12 min", "25 min", "18 min"][index]}</span><CirclePlus size={18} />
-                </button>
-              ))}
+              {content.items.map((item, index) => {
+                const isComplete = completedMoves.includes(item);
+                return <button className={`movement-row${isComplete ? " completed" : ""}`} key={item} aria-pressed={isComplete} onClick={() => toggleMove(item)}>
+                  <span className="row-number">0{index + 2}</span><GripVertical size={15} className="row-grip" /><span className="row-title">{item}</span><span className="row-time">{["12 min", "25 min", "18 min"][index]}</span>{isComplete ? <Check size={18} className="row-check" /> : <CirclePlus size={18} />}
+                </button>;
+              })}
             </div>
             <button className="add-move" onClick={() => toast("新的下一步将出现在这条工作轨道中。")}><CirclePlus size={17} /> Add a small move</button>
           </section>

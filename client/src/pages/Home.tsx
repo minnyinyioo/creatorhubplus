@@ -134,6 +134,7 @@ export default function Home() {
           <a href="#how" onClick={() => scrollTo("#how")}>How it works</a>
           <a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a>
           <a href="#faq" onClick={() => scrollTo("#faq")}>Help</a>
+          <Link href="/workspace" className="workspace-nav-link">Workspace</Link>
         </nav>
         <div className="payout-actions">
           <Link href="/my" className="language-link">မြန်မာ</Link>
@@ -143,6 +144,7 @@ export default function Home() {
         </div>
         {menuOpen && <div className="payout-mobile-menu">
           {[["Services", "#services"], ["How it works", "#how"], ["Trust & rules", "#trust"], ["Help", "#faq"]].map(([label, target]) => <button key={label} onClick={() => { setMenuOpen(false); scrollTo(target); }}>{label}<ArrowUpRight size={17} /></button>)}
+          <Link href="/workspace" onClick={() => setMenuOpen(false)}>Workspace<ArrowUpRight size={17} /></Link>
         </div>}
       </header>
 
