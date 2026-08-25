@@ -13,6 +13,9 @@ import StaffRecipients from "@/pages/StaffRecipients";
 import StaffReview from "@/pages/StaffReview";
 import StaffCases from "@/pages/StaffCases";
 import Workspace from "@/pages/Workspace";
+import Archive from "@/pages/Archive";
+import Library from "@/pages/Library";
+import ProjectSettings from "@/pages/ProjectSettings";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -26,6 +29,9 @@ function Router() {
       <Route path={"/staff/review"} component={StaffReview} />
       <Route path={"/staff/cases"} component={StaffCases} />
       <Route path={"/workspace"} component={Workspace} />
+      <Route path={"/archive"} component={Archive} />
+      <Route path={"/library"} component={Library} />
+      <Route path={"/settings"} component={ProjectSettings} />
       <Route path={"/staff/recipients"} component={StaffRecipients} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

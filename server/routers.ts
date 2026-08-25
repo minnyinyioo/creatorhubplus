@@ -7,6 +7,9 @@ import { listMerchantRecipients, getActiveMerchantRecipient, merchantRecipientIn
 import { listPaymentRequestsForReview, reviewPaymentRequest, REVIEW_STATUSES } from "./paymentReview";
 import { listPaymentRequestsForUser, paymentMethodSchema } from "./paymentRequests";
 import { CASE_STATUSES, caseServiceKeySchema, createSupportCase, listSupportCasesForReview, listSupportCasesForUser, reviewSupportCase } from "./supportCases";
+import { archiveWorkspaceTask, createWorkspaceTask, deleteWorkspaceTask, listArchivedWorkspaceTasks, listWorkspaceTasks, updateWorkspaceTask, workspaceTaskArchiveSchema, workspaceTaskCreateSchema, workspaceTaskDeleteSchema, workspaceTaskUpdateSchema, workspaceViewKeySchema } from "./workspaceTasks";
+import { createLibraryItem, deleteLibraryItem, libraryItemCreateSchema, libraryItemDeleteSchema, libraryItemUpdateSchema, listLibraryItems, updateLibraryItem } from "./workspaceLibrary";
+import { getWorkspaceSettings, updateWorkspaceSettings, workspaceSettingsUpdateSchema } from "./workspaceSettings";
 
 const reviewStatusSchema = z.enum(REVIEW_STATUSES);
 const caseStatusSchema = z.enum(CASE_STATUSES);
@@ -46,6 +49,24 @@ export const appRouter = router({
     listMine: protectedProcedure.query(({ ctx }) => listSupportCasesForUser(ctx.user.id)),
     listForReview: adminProcedure.input(z.object({ status: caseStatusSchema.optional() }).optional()).query(({ input }) => listSupportCasesForReview(input?.status)),
     review: adminProcedure.input(caseReviewActionSchema).mutation(({ ctx, input }) => reviewSupportCase(input, ctx.user.id)),
+  }),
+  workspaceTask: router({
+    list: protectedProcedure.input(z.object({ viewKey: workspaceViewKeySchema.optional() }).optional()).query(({ ctx, input }) => listWorkspaceTasks(ctx.user.id, input?.viewKey)),
+    listArchived: protectedProcedure.query(({ ctx }) => listArchivedWorkspaceTasks(ctx.user.id)),
+    create: protectedProcedure.input(workspaceTaskCreateSchema).mutation(({ ctx, input }) => createWorkspaceTask(ctx.user.id, input)),
+    update: protectedProcedure.input(workspaceTaskUpdateSchema).mutation(({ ctx, input }) => updateWorkspaceTask(ctx.user.id, input)),
+    archive: protectedProcedure.input(workspaceTaskArchiveSchema).mutation(({ ctx, input }) => archiveWorkspaceTask(ctx.user.id, input)),
+    delete: protectedProcedure.input(workspaceTaskDeleteSchema).mutation(({ ctx, input }) => deleteWorkspaceTask(ctx.user.id, input.id)),
+  }),
+  workspaceLibrary: router({
+    list: protectedProcedure.query(({ ctx }) => listLibraryItems(ctx.user.id)),
+    create: protectedProcedure.input(libraryItemCreateSchema).mutation(({ ctx, input }) => createLibraryItem(ctx.user.id, input)),
+    update: protectedProcedure.input(libraryItemUpdateSchema).mutation(({ ctx, input }) => updateLibraryItem(ctx.user.id, input)),
+    delete: protectedProcedure.input(libraryItemDeleteSchema).mutation(({ ctx, input }) => deleteLibraryItem(ctx.user.id, input.id)),
+  }),
+  workspaceSettings: router({
+    get: protectedProcedure.query(({ ctx }) => getWorkspaceSettings(ctx.user.id)),
+    update: protectedProcedure.input(workspaceSettingsUpdateSchema).mutation(({ ctx, input }) => updateWorkspaceSettings(ctx.user.id, input)),
   }),
   paymentReview: router({
     list: adminProcedure.input(z.object({ status: reviewStatusSchema.optional() }).optional()).query(({ input }) => listPaymentRequestsForReview(input?.status)),

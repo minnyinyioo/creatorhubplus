@@ -20,3 +20,12 @@
 - [x] Register the existing Workspace working-surface page at /workspace and add a reachable entry from the public site.
 - [x] Replace the Workspace focus-session placeholder with a functional local timer and visible task progress interaction.
 - [x] Add test coverage and visual verification for the Workspace continuation, then save a new checkpoint.
+- [x] Add Workspace task persistence scoped to the authenticated user.
+- [x] Implement Workspace task create, edit, delete, completion toggle, and timer-state persistence.
+- [x] Implement Archive, Library, and Project settings instead of leaving navigation as placeholder toasts.
+- [x] Add database migrations, tRPC procedures, Vitest coverage, and responsive UI verification for the new features.
+- [ ] Save a new checkpoint after all newly requested features are verified.
+- [x] Persist Workspace timer progress when a session completes and when the user leaves or reloads the page.
+- [x] Add Vitest coverage for completed-session timer persistence and resume-after-reload behavior.
+- [x] Add a safe periodic timer save while a focus session is running; keep lifecycle saves as a best-effort fallback.
+- [x] Test the timer persistence helpers for completion, page-hide/unmount payloads, and resume values.

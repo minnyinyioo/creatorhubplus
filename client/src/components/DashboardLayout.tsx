@@ -21,13 +21,17 @@ import {
 } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { FileCheck2, Landmark, LayoutDashboard, LogOut, PanelLeft, ShieldCheck } from "lucide-react";
+import { Archive, BookOpen, FileCheck2, Landmark, LayoutDashboard, LogOut, PanelLeft, Settings2, ShieldCheck, Target } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
 const menuItems = [
+  { icon: Target, label: "Workspace", path: "/workspace" },
+  { icon: Archive, label: "Archive", path: "/archive" },
+  { icon: BookOpen, label: "Library", path: "/library" },
+  { icon: Settings2, label: "Project settings", path: "/settings" },
   { icon: ShieldCheck, label: "Review queue", path: "/staff/review" },
   { icon: FileCheck2, label: "Support cases", path: "/staff/cases" },
   { icon: Landmark, label: "Merchant accounts", path: "/staff/recipients" },

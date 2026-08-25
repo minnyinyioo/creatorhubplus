@@ -22,6 +22,20 @@
       "when": 1787665450609,
       "tag": "0002_fine_loki",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1787675836500,
+      "tag": "0003_left_pride",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1787676180251,
+      "tag": "0004_stormy_secret_warriors",
+      "breakpoints": true
     }
   ]
 }

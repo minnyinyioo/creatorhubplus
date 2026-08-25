@@ -97,3 +97,55 @@ export const supportCases = mysqlTable("support_cases", {
 
 export type SupportCase = typeof supportCases.$inferSelect;
 export type InsertSupportCase = typeof supportCases.$inferInsert;
+
+/**
+ * Personal Workspace tasks. The task text and focus-session seconds are scoped to
+ * the authenticated owner and kept independent from public case records.
+ */
+export const workspaceTasks = mysqlTable("workspace_tasks", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  viewKey: mysqlEnum("viewKey", ["Today", "Orbit", "Rhythm", "Offers"]).notNull().default("Today"),
+  title: varchar("title", { length: 180 }).notNull(),
+  durationMinutes: int("durationMinutes").notNull().default(25),
+  completed: int("completed").notNull().default(0),
+  archived: int("archived").notNull().default(0),
+  timerSeconds: int("timerSeconds").notNull().default(0),
+  sortOrder: int("sortOrder").notNull().default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => [
+  index("workspace_tasks_user_view_order_idx").on(table.userId, table.viewKey, table.sortOrder),
+]);
+
+export type WorkspaceTask = typeof workspaceTasks.$inferSelect;
+export type InsertWorkspaceTask = typeof workspaceTasks.$inferInsert;
+
+/** Reusable personal templates and notes kept in the user's library. */
+export const workspaceLibraryItems = mysqlTable("workspace_library_items", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  title: varchar("title", { length: 180 }).notNull(),
+  kind: mysqlEnum("kind", ["template", "guide", "prompt"]).notNull().default("template"),
+  description: text("description").notNull(),
+  pinned: int("pinned").notNull().default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => [
+  index("workspace_library_user_pinned_idx").on(table.userId, table.pinned, table.updatedAt),
+]);
+
+export type WorkspaceLibraryItem = typeof workspaceLibraryItems.$inferSelect;
+export type InsertWorkspaceLibraryItem = typeof workspaceLibraryItems.$inferInsert;
+
+/** Personal studio preferences used by Workspace and its companion pages. */
+export const workspaceSettings = mysqlTable("workspace_settings", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique().references(() => users.id, { onDelete: "cascade" }),
+  studioName: varchar("studioName", { length: 120 }).notNull().default("My studio"),
+  focusLengthMinutes: int("focusLengthMinutes").notNull().default(50),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type WorkspaceSetting = typeof workspaceSettings.$inferSelect;
+export type InsertWorkspaceSetting = typeof workspaceSettings.$inferInsert;
