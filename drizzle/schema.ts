@@ -28,6 +28,8 @@ export const paymentRequests = mysqlTable("payment_requests", {
   userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
   requestCode: varchar("requestCode", { length: 32 }).notNull().unique(),
   paymentMethod: varchar("paymentMethod", { length: 40 }).notNull(),
+  serviceKey: varchar("serviceKey", { length: 40 }),
+  serviceLabel: varchar("serviceLabel", { length: 160 }),
   payerName: varchar("payerName", { length: 120 }).notNull(),
   accountHint: varchar("accountHint", { length: 8 }),
   amountMmk: int("amountMmk").notNull(),
@@ -44,6 +46,7 @@ export const paymentRequests = mysqlTable("payment_requests", {
 }, (table) => [
   index("payment_requests_user_created_idx").on(table.userId, table.createdAt),
   index("payment_requests_status_created_idx").on(table.status, table.createdAt),
+  index("payment_requests_service_created_idx").on(table.serviceKey, table.createdAt),
 ]);
 
 export type PaymentRequest = typeof paymentRequests.$inferSelect;

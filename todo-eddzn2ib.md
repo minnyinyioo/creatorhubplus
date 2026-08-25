@@ -35,3 +35,14 @@
 - [x] Save a checkpoint for the verified Bangkok Bank logo update.
 - [x] Interactively verify Bangkok Bank in the homepage payment rail and the /payment selected-method state on desktop and mobile.
 - [x] Record deterministic visual verification evidence for the selected Bangkok Bank state before the final checkpoint.
+- [x] Audit the current product/service selection, payment request, review queue, and user follow-up states.
+- [x] Add an explicit service-order relationship so payment details appear only after a service/product is selected.
+- [x] Implement user-facing order progress and next-step visibility after submission.
+- [x] Extend staff review with payment verification, review notes, and clear status transitions.
+- [x] Add tests, security validation, and responsive verification for the revised payment flow.
+- [ ] Save a checkpoint for the completed payment-flow revision.
+- [x] Verify a selected service reveals payment method, recipient, amount, and receipt steps on desktop and mobile.
+- [x] Add a direct “pay for this service” entry from each English and Burmese service card, preserving the selected service in the payment route.
+- [x] Show the staff review note directly in the user's payment-history progress card, especially when clarification is requested.
+- [x] Capture directly inspectable desktop and mobile evidence for the selected-service method, recipient, and amount/details states.
+- [x] Verify the proof/upload step renders correctly on desktop and mobile after advancing the selected-service flow.

@@ -193,8 +193,8 @@ export default function Home() {
         <section className="service-section" id="services">
           <div className="section-top-payout"><div><p className="payout-eyebrow">WHAT WE HELP WITH</p><h2>Four real problems.<br /><em>One clear place to start.</em></h2></div><p>Designed around the questions that delay online income—not around generic “digital services.”</p></div>
           <div className="service-grid-payout">
-            {services.map(({ id, icon: Icon, title, subtitle, state, next, description, accent }) => <article className={`payout-service-card ${accent}`} key={title}>
-              <div className="service-card-head"><span>{id}</span><p>ROUTE / {state}</p><Icon size={20} strokeWidth={1.65} /></div><i className="service-route" /><p className="service-subtitle">{subtitle}</p><h3>{title}</h3><p className="service-description">{description}</p><p className="service-next"><span>Next check</span>{next}</p><div className="service-file-end"><span>CASE READY</span><button onClick={() => chooseService(title)}>Open route <ArrowUpRight size={16} /></button></div>
+            {services.map(({ id, icon: Icon, title, subtitle, state, next, description, accent, caseKey }) => <article className={`payout-service-card ${accent}`} key={title}>
+              <div className="service-card-head"><span>{id}</span><p>ROUTE / {state}</p><Icon size={20} strokeWidth={1.65} /></div><i className="service-route" /><p className="service-subtitle">{subtitle}</p><h3>{title}</h3><p className="service-description">{description}</p><p className="service-next"><span>Next check</span>{next}</p><div className="service-file-end"><span>CASE READY</span><div className="service-card-actions"><button onClick={() => chooseService(title)}>Open route <ArrowUpRight size={16} /></button><Link className="service-payment-link" href={`/payment?service=${caseKey}`}>Pay for this service <ArrowUpRight size={15} /></Link></div></div>
             </article>)}
           </div>
         </section>

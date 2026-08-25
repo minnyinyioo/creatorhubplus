@@ -14,10 +14,25 @@ export const paymentMethodSchema = z.enum([
   "kasikorn",
 ]);
 
+export const paymentServiceSchema = z.enum([
+  "platform_earnings",
+  "payout_receiving",
+  "account_setup",
+  "address_support",
+]);
+
+export const paymentServiceLabels: Record<z.infer<typeof paymentServiceSchema>, string> = {
+  platform_earnings: "Platform earnings",
+  payout_receiving: "Payout & receiving",
+  account_setup: "Account setup",
+  address_support: "Address support",
+};
+
 export const allowedReceiptTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"] as const;
 export const MAX_RECEIPT_BYTES = 10 * 1024 * 1024;
 
 export const paymentRequestFieldsSchema = z.object({
+  serviceKey: paymentServiceSchema,
   paymentMethod: paymentMethodSchema,
   payerName: z.string().trim().min(2).max(120),
   accountHint: z.string().trim().regex(/^[0-9A-Za-z]{0,8}$/).optional(),
@@ -72,6 +87,8 @@ export async function createPaymentRequest(userId: number, input: PaymentRequest
     userId,
     requestCode,
     paymentMethod: input.paymentMethod,
+    serviceKey: input.serviceKey,
+    serviceLabel: paymentServiceLabels[input.serviceKey],
     payerName: input.payerName,
     accountHint: input.accountHint || null,
     amountMmk: input.amountMmk,
@@ -91,6 +108,8 @@ export async function listPaymentRequestsForUser(userId: number) {
 
   return db.select({
     requestCode: paymentRequests.requestCode,
+    serviceKey: paymentRequests.serviceKey,
+    serviceLabel: paymentRequests.serviceLabel,
     paymentMethod: paymentRequests.paymentMethod,
     amountMmk: paymentRequests.amountMmk,
     status: paymentRequests.status,

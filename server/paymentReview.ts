@@ -32,6 +32,8 @@ export async function listPaymentRequestsForReview(status?: ReviewStatus) {
   return db.select({
     id: paymentRequests.id,
     requestCode: paymentRequests.requestCode,
+    serviceKey: paymentRequests.serviceKey,
+    serviceLabel: paymentRequests.serviceLabel,
     paymentMethod: paymentRequests.paymentMethod,
     payerName: paymentRequests.payerName,
     accountHint: paymentRequests.accountHint,

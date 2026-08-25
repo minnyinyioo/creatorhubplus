@@ -3,7 +3,7 @@ import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 import { canTransitionReviewStatus, validateReviewAction } from "./paymentReview";
 import { merchantRecipientInputSchema } from "./merchantRecipients";
-import { validateReceiptUpload } from "./paymentRequests";
+import { paymentRequestFieldsSchema, paymentServiceLabels, validateReceiptUpload } from "./paymentRequests";
 import { canTransitionCaseStatus, supportCaseInputSchema, validateCaseReviewAction } from "./supportCases";
 
 const pngHeader = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
@@ -43,6 +43,25 @@ describe("receipt upload validation", () => {
       originalname: "receipt.png",
       size: 9,
     })).toThrow("does not match");
+  });
+});
+
+describe("service-first payment request fields", () => {
+  it("requires a supported service before payment details can be submitted", () => {
+    const parsed = paymentRequestFieldsSchema.parse({
+      serviceKey: "payout_receiving",
+      paymentMethod: "bangkok",
+      payerName: "Applicant Name",
+      amountMmk: "100000",
+      accountHint: "4821",
+    });
+    expect(parsed.serviceKey).toBe("payout_receiving");
+    expect(paymentServiceLabels[parsed.serviceKey]).toBe("Payout & receiving");
+    expect(() => paymentRequestFieldsSchema.parse({
+      paymentMethod: "bangkok",
+      payerName: "Applicant Name",
+      amountMmk: "100000",
+    })).toThrow();
   });
 });
 
