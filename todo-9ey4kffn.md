@@ -10,7 +10,7 @@
 - [x] Update the applicant upload UI to use multipart upload instead of base64 JSON.
 - [x] Add Vitest coverage for authorization, review state transitions, and multipart validation helpers.
 - [x] Run typecheck, tests, and visual verification for desktop and mobile layouts.
-- [ ] Save a checkpoint containing all completed changes.
+- [x] Save a checkpoint containing all completed changes.
 
 ## Change history
 
