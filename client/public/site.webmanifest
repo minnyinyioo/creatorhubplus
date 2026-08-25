@@ -1,11 +1,11 @@
 {
   "name": "CreatorHubPlus",
-  "short_name": "CH+",
-  "description": "Creator operations, designed for clearer independent work.",
+  "short_name": "CreatorHub+",
+  "description": "Earnings, payouts and account support for Myanmar creators.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F4FAF7",
-  "theme_color": "#075F5A",
+  "background_color": "#F7F3EB",
+  "theme_color": "#064F4A",
   "icons": [
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
     { "src": "/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }

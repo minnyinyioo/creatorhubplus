@@ -1,342 +1,176 @@
 /**
- * CreatorHubPlus — Soft Studio Ledger
- * Reference fidelity: airy editorial hierarchy, fine rules, restrained cards, CreatorHub Teal branding.
+ * CreatorHubPlus — Payout Bridge
+ * Brand direction: trusted Myanmar-first platform support, warm editorial clarity, visible service pathways.
  */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  BriefcaseBusiness,
-  ChevronRight,
+  BadgeCheck,
+  Check,
+  ChevronDown,
   CircleDollarSign,
-  Code2,
-  FilePenLine,
-  Lightbulb,
+  CircleHelp,
+  FileCheck2,
+  Landmark,
+  Languages,
+  MapPinned,
   Menu,
-  Moon,
-  PanelsTopLeft,
+  MessageCircleMore,
+  MousePointerClick,
   Play,
-  Rocket,
+  ShieldCheck,
   Sparkles,
-  Sun,
+  WalletCards,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
 
-const heroImage = "/manus-storage/creatorhubplus-hero_2268abf4.png";
-const growthImage = "/manus-storage/creatorhubplus-focus-growth_0e5e08a8.png";
-const systemsImage = "/manus-storage/creatorhubplus-focus-systems_a6161c93.png";
-const productsImage = "/manus-storage/creatorhubplus-focus-products_6035c521.png";
-const logoImage = "/favicon.svg";
-
-const navItems = [
-  ["Home", "#top"],
-  ["Services", "#services"],
-  ["Library", "#library"],
-  ["Notes", "#notes"],
-  ["Workflows", "#workflows"],
-  ["App", "/app"],
-  ["Contact", "#contact"],
-] as const;
-
-const skills = [
-  {
-    number: "01",
-    icon: Rocket,
-    title: "Audience growth",
-    description: "Publishing rhythms and channel signals that make good work easier to find.",
-  },
-  {
-    number: "02",
-    icon: CircleDollarSign,
-    title: "Revenue systems",
-    description: "Clear offers, product paths, and pricing that feel right for your audience.",
-  },
-  {
-    number: "03",
-    icon: FilePenLine,
-    title: "Content planning",
-    description: "A useful point of view, a realistic cadence, and fewer blank-page moments.",
-  },
-  {
-    number: "04",
-    icon: PanelsTopLeft,
-    title: "Digital products",
-    description: "Small, practical assets that turn expertise into a helpful next step.",
-  },
-  {
-    number: "05",
-    icon: BriefcaseBusiness,
-    title: "Creator operations",
-    description: "Behind-the-scenes structures that keep a growing creative practice calm.",
-  },
-  {
-    number: "06",
-    icon: Code2,
-    title: "Tool selection",
-    description: "A lean stack, sensible handoffs, and less time wrestling with software.",
-  },
-];
-
-const workflows = [
-  {
-    eyebrow: "GROWTH",
-    title: "The publishing signal",
-    description: "Turn a loose collection of ideas into a useful, repeatable editorial rhythm.",
-    image: growthImage,
-  },
-  {
-    eyebrow: "SYSTEMS",
-    title: "The creator playbook",
-    description: "Put the decisions, templates, and handoffs in one place your team can use.",
-    image: systemsImage,
-  },
-  {
-    eyebrow: "PRODUCTS",
-    title: "The offer shelf",
-    description: "Design a collection of small digital products that fit your real expertise.",
-    image: productsImage,
-  },
-];
+const logo = "/favicon.svg";
 
 const services = [
   {
-    code: "S/01",
-    title: "Creator direction",
-    note: "One focused engagement to clarify positioning, priorities, and the next quarter of work.",
-    detail: "Strategy sprint",
+    id: "01",
+    icon: CircleDollarSign,
+    title: "Platform earnings",
+    subtitle: "创收准备与问题梳理",
+    description: "为内容创作者与线上商家整理变现条件、账户状态、资料清单与下一步处理路径。",
+    accent: "blue",
   },
   {
-    code: "S/02",
-    title: "Publishing system",
-    note: "A practical operating system for planning, producing, repurposing, and learning from content.",
-    detail: "Built around your cadence",
+    id: "02",
+    icon: WalletCards,
+    title: "Payout & receiving",
+    subtitle: "收款路径与提现协助",
+    description: "厘清跨平台收款所需的信息、可用路径和待处理事项，让每一步都有记录。",
+    accent: "orange",
   },
   {
-    code: "S/03",
-    title: "Digital offer lab",
-    note: "From a rough idea to a clear product shape, launch path, and message people understand.",
-    detail: "Product development",
+    id: "03",
+    icon: FileCheck2,
+    title: "Account setup",
+    subtitle: "账户设置与异常排查",
+    description: "从新账户设置到已有问题的排查，提供符合平台规则的检查清单与操作指引。",
+    accent: "green",
+  },
+  {
+    id: "04",
+    icon: MapPinned,
+    title: "Address support",
+    subtitle: "认证地址准备支持",
+    description: "帮助理解平台对认证地址的要求，并准备合规、真实、可核验的资料路径。",
+    accent: "blue",
   },
 ];
 
-const studioLinks = [
-  ["Template library", "Ready-to-adapt planning tools and frameworks.", "#library"],
-  ["Open office", "Small group sessions for practical problem-solving.", "#contact"],
-  ["Creator notes", "Short field notes on thoughtful independent work.", "#notes"],
-  ["The toolkit", "A deliberately small stack for the work behind the work.", "#hub"],
-] as const;
+const platformItems = ["Facebook", "YouTube", "TikTok", "PayPal", "More platforms"];
 
-function scrollToSection(target: string) {
-  if (target.startsWith("/")) {
-    window.location.assign(target);
-    return;
-  }
+const steps = [
+  ["01", "Tell us the real issue", "选择平台与问题类型，说明你现在卡在哪一步。"],
+  ["02", "Get a clean path", "得到清晰的资料清单、注意事项和推荐的下一行动。"],
+  ["03", "Keep the case visible", "将处理进度留在同一条路径里，方便回看与继续推进。"],
+];
+
+const faqs = [
+  ["Can you guarantee platform approval?", "不能。任何平台的审批都由平台自行决定。我们做的是帮助你理解要求、准备真实资料，并减少可避免的设置错误。"],
+  ["Do you provide fake documents or verification bypasses?", "不提供。CreatorHubPlus 只支持合法、真实和可核验的资料准备，不制作虚假身份或地址资料，也不协助绕过平台规则。"],
+  ["Which platforms can a case start with?", "可以从常见的内容与收款平台开始。先提交实际问题；若不在当前服务范围，我们会明确说明，而不是给出含糊承诺。"],
+  ["What should I prepare before asking for help?", "准备平台名称、目前页面状态、报错截图（注意遮住敏感信息）以及已尝试过的步骤即可。"],
+];
+
+function scrollTo(target: string) {
   document.querySelector(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 export default function Home() {
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [nightMode, setNightMode] = useState(false);
+  const [selectedService, setSelectedService] = useState("Platform earnings");
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 14);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const goTo = (target: string) => {
-    setMenuOpen(false);
-    window.setTimeout(() => scrollToSection(target), 90);
+  const chooseService = (service: string) => {
+    setSelectedService(service);
+    scrollTo("#start");
   };
 
   return (
-    <div className={`site-shell${nightMode ? " night-mode" : ""}`} id="top">
-      <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
-        <a className="brand-lockup" href="#top" aria-label="creatorhubplus 首页" onClick={() => goTo("#top")}>
-          <img src={logoImage} alt="CreatorHubPlus 双环标志" className="brand-mark" />
-          <span>creatorhubplus</span>
+    <div className="payout-site" id="top">
+      <header className="payout-header">
+        <a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}>
+          <img src={logo} alt="CreatorHubPlus Payout Bridge 标志" />
+          <span>creatorhub<span>plus</span></span>
         </a>
-
-        <nav className="desktop-nav" aria-label="主导航">
-          {navItems.map(([label, href]) => (
-            <a href={href} key={label} onClick={() => goTo(href)}>{label}</a>
-          ))}
+        <nav className="payout-nav" aria-label="主导航">
+          <a href="#services" onClick={() => scrollTo("#services")}>Services</a>
+          <a href="#how" onClick={() => scrollTo("#how")}>How it works</a>
+          <a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a>
+          <a href="#faq" onClick={() => scrollTo("#faq")}>Help</a>
         </nav>
-
-        <div className="header-actions">
-          <button
-            className="theme-toggle"
-            onClick={() => setNightMode((value) => !value)}
-            aria-label={nightMode ? "切换到浅色模式" : "切换到深色模式"}
-          >
-            {nightMode ? <Sun size={15} /> : <Moon size={15} />}
-          </button>
-          <button className="sign-in" onClick={() => toast("会员空间正在规划中，可先联系我们讨论需求。")}>Sign in</button>
-          <button className="menu-button" aria-label="打开导航" onClick={() => setMenuOpen((value) => !value)}>
-            {menuOpen ? <X size={19} /> : <Menu size={20} />}
-          </button>
+        <div className="payout-actions">
+          <button className="language-switch" onClick={() => toast("မြန်မာဘာသာ版本正在整理中。")}> <Languages size={15} /> မြန်မာ</button>
+          <button className="header-cta" onClick={() => scrollTo("#start")}>Start a case <ArrowUpRight size={15} /></button>
+          <button className="payout-menu" aria-label="打开导航" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={19} /> : <Menu size={20} />}</button>
         </div>
-
-        {menuOpen && (
-          <div className="mobile-menu">
-            {navItems.map(([label, href], index) => (
-              <button key={label} style={{ transitionDelay: `${index * 35}ms` }} onClick={() => goTo(href)}>
-                <span>{String(index + 1).padStart(2, "0")}</span>{label}<ArrowUpRight size={16} />
-              </button>
-            ))}
-          </div>
-        )}
+        {menuOpen && <div className="payout-mobile-menu">
+          {[["Services", "#services"], ["How it works", "#how"], ["Trust & rules", "#trust"], ["Help", "#faq"]].map(([label, target]) => <button key={label} onClick={() => { setMenuOpen(false); scrollTo(target); }}>{label}<ArrowUpRight size={17} /></button>)}
+        </div>}
       </header>
 
       <main>
-        <section className="hero-section" aria-labelledby="hero-heading">
-          <div className="hero-orb hero-orb-one" />
-          <div className="hero-orb hero-orb-two" />
-          <img className="hero-art" src={heroImage} alt="CreatorHubPlus 创作者工作室抽象主视觉" />
-          <div className="hero-copy reveal-up">
-            <p className="eyebrow"><span /> CREATOR OPERATIONS STUDIO</p>
-            <p className="hero-brand">creatorhubplus</p>
-            <h1 id="hero-heading">Build the work<br />behind your work.</h1>
-            <p className="hero-intro">We help independent creators make their next move more deliberate—from content systems to digital offers and the operations in between.</p>
-            <div className="hero-buttons">
-              <button className="primary-cta" onClick={() => goTo("#contact")}>Work with us <ArrowUpRight size={17} /></button>
-              <button className="text-cta" onClick={() => goTo("#workflows")}>See the system <span className="circle-arrow"><ArrowDownRight size={15} /></span></button>
-            </div>
+        <section className="payout-hero">
+          <div className="hero-copy-payout">
+            <p className="payout-eyebrow"><span /> MYANMAR CREATOR & BUSINESS SUPPORT</p>
+            <p className="burmese-kicker">မြန်မာ Creator များအတွက်</p>
+            <h1>Earn online.<br /><em>Get paid.</em><br />Stay set up.</h1>
+            <p className="hero-detail">CreatorHubPlus helps Myanmar creators and online businesses navigate earnings, payouts, account setup, and verified address requirements—one clear case at a time.</p>
+            <div className="hero-ctas"><button className="coral-button" onClick={() => scrollTo("#start")}>Tell us your issue <ArrowUpRight size={17} /></button><button className="quiet-button" onClick={() => scrollTo("#services")}>See services <ArrowDownRight size={17} /></button></div>
+            <p className="hero-rule"><ShieldCheck size={15} /> Clear support for legitimate platform use. No false documents. No shortcuts.</p>
           </div>
-          <div className="hero-index" aria-hidden="true"><span>01</span><i /><span>06</span></div>
-        </section>
-
-        <div className="ticker-wrap" aria-label="CreatorHubPlus 专业能力">
-          <div className="ticker-track">
-            {["Audience growth", "Revenue systems", "Content planning", "Digital products", "Creator operations", "Tool selection", "Audience growth", "Revenue systems", "Content planning", "Digital products", "Creator operations", "Tool selection"].map((item, index) => (
-              <span key={`${item}-${index}`}>{item}<b>✦</b></span>
-            ))}
-          </div>
-        </div>
-
-        <section className="skills-section" id="services" aria-labelledby="skills-heading">
-          <div className="section-heading row-heading reveal-up">
-            <div>
-              <p className="eyebrow">WHAT WE DO</p>
-              <h2 id="skills-heading">Skills used on<br />real work.</h2>
-            </div>
-            <p className="section-aside">A small studio for people building a practice with more intention.</p>
-          </div>
-          <div className="skills-grid">
-            {skills.map(({ number, icon: Icon, title, description }, index) => (
-              <article className="skill-card reveal-up" style={{ animationDelay: `${index * 45}ms` }} key={title}>
-                <div className="skill-card-top"><span>{number}</span><Icon size={19} strokeWidth={1.45} /></div>
-                <h3>{title}</h3>
-                <p>{description}</p>
-              </article>
-            ))}
+          <div className="payout-map" aria-label="平台到收款路径示意">
+            <div className="map-topline"><span>YOUR PLATFORM PATH</span><i /><span>01 / 04</span></div>
+            <div className="platform-badge platform-one"><span>f</span> Facebook</div>
+            <div className="platform-badge platform-two"><span>▶</span> YouTube</div>
+            <div className="platform-badge platform-three"><span>♪</span> TikTok</div>
+            <div className="platform-badge platform-four"><span>P</span> PayPal</div>
+            <div className="route-line route-one" /><div className="route-line route-two" /><div className="route-line route-three" /><div className="route-line route-four" />
+            <div className="route-hub"><img src={logo} alt="" /><strong>Case path</strong><span>check → prepare → move</span></div>
+            <div className="route-status"><BadgeCheck size={16} /><span>Start with the<br /><b>real requirement</b></span></div>
+            <div className="map-foot"><span>Platform</span><b>→</b><span>Checklist</span><b>→</b><span>Next action</span></div>
           </div>
         </section>
 
-        <section className="workflows-section" id="workflows" aria-labelledby="workflows-heading">
-          <div className="section-heading row-heading reveal-up">
-            <div>
-              <p className="eyebrow">WORKING FLOWS</p>
-              <h2 id="workflows-heading">Make the next<br />chapter usable.</h2>
-            </div>
-            <button className="section-link" onClick={() => goTo("#contact")}>Explore a build <ArrowUpRight size={16} /></button>
-          </div>
-          <div className="workflow-grid">
-            {workflows.map(({ eyebrow, title, description, image }, index) => (
-              <article className={`workflow-card workflow-${index + 1} reveal-up`} key={title}>
-                <img src={image} alt="" />
-                <div className="workflow-overlay" />
-                <div className="workflow-content">
-                  <p>{eyebrow}</p>
-                  <h3>{title}</h3>
-                  <span>{description}</span>
-                  <button aria-label={`查看 ${title}`} onClick={() => toast("这一工作流可以在合作咨询中进一步展开。")}><ArrowUpRight size={18} /></button>
-                </div>
-              </article>
-            ))}
+        <section className="platform-strip" aria-label="支持的常见平台">
+          <span>COMMON STARTING POINTS</span>{platformItems.map((item) => <b key={item}>{item}</b>)}<i>Not affiliated with listed platforms.</i>
+        </section>
+
+        <section className="service-section" id="services">
+          <div className="section-top-payout"><div><p className="payout-eyebrow">WHAT WE HELP WITH</p><h2>Four real problems.<br /><em>One clear place to start.</em></h2></div><p>Designed around the questions that delay online income—not around generic “digital services.”</p></div>
+          <div className="service-grid-payout">
+            {services.map(({ id, icon: Icon, title, subtitle, description, accent }) => <article className={`payout-service-card ${accent}`} key={title}>
+              <div className="service-card-head"><span>{id}</span><Icon size={22} strokeWidth={1.6} /></div><i className="service-route" /><p className="service-subtitle">{subtitle}</p><h3>{title}</h3><p className="service-description">{description}</p><button onClick={() => chooseService(title)}>Start with this <ArrowUpRight size={16} /></button>
+            </article>)}
           </div>
         </section>
 
-        <section className="services-section" id="library" aria-labelledby="service-heading">
-          <div className="section-heading reveal-up">
-            <p className="eyebrow">HIRE THE STUDIO</p>
-            <h2 id="service-heading">Services with<br />a clear next step.</h2>
-          </div>
-          <div className="service-list">
-            {services.map((service, index) => (
-              <article className="service-row reveal-up" key={service.code} style={{ animationDelay: `${index * 55}ms` }}>
-                <span className="service-code">{service.code}</span>
-                <div><h3>{service.title}</h3><p>{service.note}</p></div>
-                <div className="service-end"><span>{service.detail}</span><button onClick={() => goTo("#contact")} aria-label={`咨询${service.title}`}><ArrowUpRight size={19} /></button></div>
-              </article>
-            ))}
-          </div>
+        <section className="case-section" id="start">
+          <div className="case-intro"><p className="payout-eyebrow"><span /> START A CASE</p><h2>What are you<br />trying to <em>unlock?</em></h2><p>Choose the closest path. This does not promise an outcome; it gives your situation a clean place to begin.</p></div>
+          <div className="case-chooser"><div className="case-choice-grid">{services.map(({ title, id, icon: Icon }) => <button key={title} className={selectedService === title ? "selected" : ""} onClick={() => setSelectedService(title)}><span>{id}</span><Icon size={18} /><strong>{title}</strong><i><Check size={14} /></i></button>)}</div><div className="case-selection"><p>YOUR STARTING POINT</p><h3>{selectedService}</h3><p>We will first help organize the requirement, the documents or settings involved, and your next legitimate action.</p><button className="navy-button" onClick={() => toast("Case intake form is ready for connection. Next, we can add Telegram, WhatsApp, Messenger or a secure form.")}>Continue with this case <ArrowUpRight size={17} /></button></div></div>
         </section>
 
-        <section className="studio-section" id="hub" aria-labelledby="studio-heading">
-          <div className="section-heading row-heading reveal-up">
-            <div>
-              <p className="eyebrow">ALSO IN THE HUB</p>
-              <h2 id="studio-heading">A few useful<br />places to land.</h2>
-            </div>
-            <span className="section-count">04 / 04</span>
-          </div>
-          <div className="studio-grid">
-            {studioLinks.map(([title, detail, href], index) => (
-              <a href={href} key={title} className="studio-card reveal-up" style={{ animationDelay: `${index * 45}ms` }} onClick={() => goTo(href)}>
-                <div><span className="studio-number">0{index + 1}</span><ArrowUpRight size={18} /></div>
-                <h3>{title}</h3>
-                <p>{detail}</p>
-                <span className="open-label">Open <ChevronRight size={14} /></span>
-              </a>
-            ))}
-          </div>
+        <section className="how-section" id="how">
+          <div className="how-header"><p className="payout-eyebrow">HOW A CASE MOVES</p><h2>Less guessing.<br />More <em>visible progress.</em></h2></div>
+          <div className="how-steps">{steps.map(([num, title, description]) => <article key={num}><span>{num}</span><i /><h3>{title}</h3><p>{description}</p></article>)}</div>
         </section>
 
-        <section className="notes-section" id="notes" aria-labelledby="notes-heading">
-          <div className="notes-panel reveal-up">
-            <div className="notes-glow" />
-            <p className="eyebrow light-eyebrow">FROM THE NOTES</p>
-            <h2 id="notes-heading">A clearer practice<br />is a kinder one.</h2>
-            <p>Short, useful observations on creator work, growth systems, and keeping the work sustainable.</p>
-            <button onClick={() => toast("Creator notes 正在编辑中，稍后将开放订阅。")}>Read the notes <ArrowUpRight size={17} /></button>
-          </div>
+        <section className="trust-section" id="trust">
+          <div className="trust-statement"><p className="payout-eyebrow light"><span /> TRUST IS PART OF THE SERVICE</p><h2>A good path is<br />never a <em>risky shortcut.</em></h2><p>We help customers understand legitimate platform requirements and prepare real information. We do not create false documents, bypass verification, impersonate users, or promise approvals.</p><button onClick={() => scrollTo("#faq")}>Read the support rules <ArrowDownRight size={17} /></button></div>
+          <div className="trust-list"><article><ShieldCheck size={25} /><h3>Legitimate use</h3><p>Every recommendation starts from platform rules and genuine account information.</p></article><article><FileCheck2 size={25} /><h3>Clear preparation</h3><p>Know which documents and settings matter before you spend more time.</p></article><article><MessageCircleMore size={25} /><h3>Plain-language support</h3><p>Understand the next move without technical filler or vague claims.</p></article></div>
         </section>
 
-        <section className="contact-section" id="contact" aria-labelledby="contact-heading">
-          <div className="contact-copy reveal-up">
-            <p className="eyebrow">LET’S TALK</p>
-            <h2 id="contact-heading">Bring the work<br />you want to move.</h2>
-            <p>Tell us where you are, what is getting complicated, and what a useful next chapter could look like.</p>
-            <a href="mailto:hello@creatorhubplus.com" className="contact-button">Start a conversation <ArrowUpRight size={18} /></a>
-          </div>
-          <div className="contact-side reveal-up">
-            <div className="contact-ring"><img src={logoImage} alt="" /></div>
-            <span>Independent creator<br />operations, considered.</span>
-          </div>
-        </section>
+        <section className="faq-section" id="faq"><div className="faq-title"><p className="payout-eyebrow">HELP, WITHOUT THE FILLER</p><h2>Before you<br />start a case.</h2><CircleHelp size={34} /></div><div className="faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} /></summary><p>{answer}</p></details>)}</div></section>
+
+        <section className="contact-panel"><div><p className="payout-eyebrow light">READY WHEN THE ISSUE IS REAL</p><h2>Bring the platform.<br />We’ll map the <em>next move.</em></h2></div><div><p>Start with one situation, not a long form. We will help make the route clearer.</p><button onClick={() => scrollTo("#start")}>Start a support case <ArrowUpRight size={18} /></button></div></section>
       </main>
 
-      <footer className="site-footer">
-        <div className="footer-top">
-          <a className="brand-lockup footer-brand" href="#top" onClick={() => goTo("#top")}>
-            <img src={logoImage} alt="CreatorHubPlus 双环标志" className="brand-mark" />
-            <span>creatorhubplus</span>
-          </a>
-          <p>A creator operations studio for intentional independent work.</p>
-          <a className="footer-mail" href="mailto:hello@creatorhubplus.com">hello@creatorhubplus.com <ArrowUpRight size={15} /></a>
-        </div>
-        <div className="footer-grid">
-          <div><p className="footer-label">QUICK LINKS</p>{navItems.slice(0, 5).map(([label, href]) => <a href={href} key={label} onClick={() => goTo(href)}>{label}</a>)}</div>
-          <div><p className="footer-label">STUDIO</p><a href="#services" onClick={() => goTo("#services")}>Services</a><a href="#workflows" onClick={() => goTo("#workflows")}>Workflows</a><a href="#hub" onClick={() => goTo("#hub")}>Toolkit</a><a href="#notes" onClick={() => goTo("#notes")}>Notes</a></div>
-          <div><p className="footer-label">DETAILS</p><button onClick={() => toast("服务条款将在正式发布前配置。")}>Terms of use</button><button onClick={() => toast("隐私说明将在正式发布前配置。")}>Privacy</button><button onClick={() => toast("合作范围可通过邮件进一步确认。")}>Working together</button></div>
-          <div className="footer-idea"><Lightbulb size={20} /><p>Good systems make more room for the part only you can do.</p></div>
-        </div>
-        <div className="footer-bottom"><span>© 2026 creatorhubplus. All rights reserved.</span><span>Built for clearer creative work.</span></div>
-      </footer>
+      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><img src={logo} alt="CreatorHubPlus Payout Bridge 标志" /><span>creatorhub<span>plus</span></span></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><button onClick={() => toast("Privacy policy can be added before public launch.")}>Privacy</button></div><div className="footer-note"><Sparkles size={17} /><p>Clear work is more valuable than fast promises.</p></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
     </div>
   );
 }
