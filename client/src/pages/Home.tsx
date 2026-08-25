@@ -73,12 +73,12 @@ const platformItems = [
 
 const paymentMethods = [
   { label: "KBZ Pay", logo: "/manus-storage/kbzpay_b6275ce0.webp", kind: "wallet" },
-  { label: "Wave Pay", logo: "https://www.wavemoney.com.mm/wp-content/uploads/2024/11/wave-logo-small.svg", kind: "wallet" },
+  { label: "Wave Pay", logo: "/manus-storage/wavepay-appicon_9c7e244e.jpg", kind: "wallet" },
   { label: "AYA Pay", logo: "/manus-storage/ayapay_385dc148.png", kind: "wallet" },
   { label: "KBZ Bank", logo: "/manus-storage/kbzbank_ccd3a1fa.png", kind: "bank" },
   { label: "AYA Bank", logo: "/manus-storage/ayabank_d9d29f1d.png", kind: "bank" },
-  { label: "Bangkok Bank", logo: "https://www.bangkokbank.com/-/media/feature/identity/bbl-corporate/site-logos/logo.svg?h=38&iar=0&w=163&sc_lang=en&hash=DBA6886195F94137EC5FA78EDE3C7B1F", kind: "bank" },
-  { label: "KASIKORNBANK", logo: "https://www.kasikornbank.com/SiteCollectionDocuments/about/img/logo/master-brand.png", kind: "bank" },
+  { label: "Bangkok Bank", logo: "/manus-storage/bangkokbank-official_ebc198ff.svg", kind: "bank" },
+  { label: "KASIKORNBANK", logo: "/manus-storage/kasikornbank-official_5108252c.png", kind: "bank" },
 ];
 
 function BrandGlyph({ icon, className }: { icon: SimpleIcon; className?: string }) {
