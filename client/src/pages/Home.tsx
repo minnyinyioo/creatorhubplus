@@ -24,6 +24,7 @@ import {
 import { toast } from "sonner";
 import { siFacebook, siPaypal, siTiktok, siYoutube, type SimpleIcon } from "simple-icons";
 import { useSiteLocale } from "@/lib/useSiteLocale";
+import CaseIntakeDialog, { type CaseServiceKey } from "@/components/CaseIntakeDialog";
 
 const logo = "/favicon.svg";
 
@@ -37,6 +38,7 @@ const services = [
     next: "Confirm the platform’s earning requirements against the current account state.",
     description: "Clarify earning requirements, account status, required information and the next useful action.",
     accent: "blue",
+    caseKey: "platform_earnings",
   },
   {
     id: "02",
@@ -47,6 +49,7 @@ const services = [
     next: "Identify the receiving route, the open step, and the details that must match.",
     description: "Map the information, route and open questions involved in receiving money across platforms.",
     accent: "orange",
+    caseKey: "payout_receiving",
   },
   {
     id: "03",
@@ -57,6 +60,7 @@ const services = [
     next: "Work through the account settings that can block a legitimate next step.",
     description: "Use a focused checklist for new account setup and legitimate account issue investigation.",
     accent: "green",
+    caseKey: "account_setup",
   },
   {
     id: "04",
@@ -67,6 +71,7 @@ const services = [
     next: "Review what a platform can genuinely verify before you submit anything.",
     description: "Understand address requirements and prepare a legitimate, truthful, verifiable path.",
     accent: "blue",
+    caseKey: "address_support",
   },
 ];
 
@@ -109,6 +114,8 @@ export default function Home() {
   useSiteLocale("en", "CreatorHubPlus — Creator earnings and payout support");
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("Platform earnings");
+  const [caseDialogOpen, setCaseDialogOpen] = useState(false);
+  const selectedServiceRecord = services.find((service) => service.title === selectedService) ?? services[0];
 
   const chooseService = (service: string) => {
     setSelectedService(service);
@@ -192,7 +199,7 @@ export default function Home() {
 
         <section className="case-section" id="start">
           <div className="case-intro"><p className="payout-eyebrow"><span /> START A CASE</p><h2>What are you<br />trying to <em>unlock?</em></h2><p>Choose the closest path. This does not promise an outcome; it gives your situation a clean place to begin.</p></div>
-          <div className="case-chooser"><div className="case-choice-grid">{services.map(({ title, id, icon: Icon }) => <button key={title} className={selectedService === title ? "selected" : ""} onClick={() => setSelectedService(title)}><span>{id}</span><Icon size={18} /><strong>{title}</strong><i><Check size={14} /></i></button>)}</div><div className="case-selection"><p>YOUR STARTING POINT</p><h3>{selectedService}</h3><p>We will first help organize the requirement, the documents or settings involved, and your next legitimate action.</p><button className="navy-button" onClick={() => toast("Case intake form is ready for connection. Next, we can add Telegram, WhatsApp, Messenger or a secure form.")}>Continue with this case <ArrowUpRight size={17} /></button></div></div>
+          <div className="case-chooser"><div className="case-choice-grid">{services.map(({ title, id, icon: Icon }) => <button key={title} className={selectedService === title ? "selected" : ""} onClick={() => setSelectedService(title)}><span>{id}</span><Icon size={18} /><strong>{title}</strong><i><Check size={14} /></i></button>)}</div><div className="case-selection"><p>YOUR STARTING POINT</p><h3>{selectedService}</h3><p>We will first help organize the requirement, the documents or settings involved, and your next legitimate action.</p><button className="navy-button" onClick={() => setCaseDialogOpen(true)}>Continue with this case <ArrowUpRight size={17} /></button></div></div>
         </section>
 
         <section className="how-section" id="how">
@@ -209,6 +216,7 @@ export default function Home() {
 
         <section className="contact-panel"><div><p className="payout-eyebrow light">READY WHEN THE ISSUE IS REAL</p><h2>Bring the platform.<br />We’ll map the <em>next move.</em></h2></div><div><p>Start with one situation, not a long form. We will help make the route clearer.</p><button onClick={() => scrollTo("#start")}>Start a support case <ArrowUpRight size={18} /></button></div></section>
       </main>
+      <CaseIntakeDialog open={caseDialogOpen} serviceKey={selectedServiceRecord.caseKey as CaseServiceKey} serviceLabel={selectedServiceRecord.title} onClose={() => setCaseDialogOpen(false)} />
 
       <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><img src={logo} alt="CreatorHubPlus Payout Bridge logo" /><span>creatorhub<span>plus</span></span></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><a href="/privacy">Privacy Policy</a><button onClick={openCookiePreferences}>Manage Cookie Settings</button></div><div className="footer-note"><Sparkles size={17} /><p>Clear work is more valuable than fast promises.</p></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
     </div>

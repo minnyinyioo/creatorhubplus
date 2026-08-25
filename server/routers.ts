@@ -6,12 +6,25 @@ import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_
 import { listMerchantRecipients, getActiveMerchantRecipient, merchantRecipientInputSchema, upsertMerchantRecipient } from "./merchantRecipients";
 import { listPaymentRequestsForReview, reviewPaymentRequest, REVIEW_STATUSES } from "./paymentReview";
 import { listPaymentRequestsForUser, paymentMethodSchema } from "./paymentRequests";
+import { CASE_STATUSES, caseServiceKeySchema, createSupportCase, listSupportCasesForReview, listSupportCasesForUser, reviewSupportCase } from "./supportCases";
 
 const reviewStatusSchema = z.enum(REVIEW_STATUSES);
+const caseStatusSchema = z.enum(CASE_STATUSES);
 const reviewActionSchema = z.object({
   requestCode: z.string().trim().min(1).max(32),
   status: z.enum(["clarification_requested", "verified", "rejected"]),
   reviewNote: z.string().trim().max(2000).optional(),
+});
+const caseInputSchema = z.object({
+  serviceKey: caseServiceKeySchema,
+  platformName: z.string().trim().min(2).max(100),
+  issueSummary: z.string().trim().min(4).max(180),
+  details: z.string().trim().min(20).max(2000),
+});
+const caseReviewActionSchema = z.object({
+  caseCode: z.string().trim().min(1).max(32),
+  status: z.enum(["clarification_requested", "resolved", "closed"]),
+  staffNote: z.string().trim().max(2000).optional(),
 });
 
 export const appRouter = router({
@@ -27,6 +40,12 @@ export const appRouter = router({
   paymentRequest: router({
     listMine: protectedProcedure.query(({ ctx }) => listPaymentRequestsForUser(ctx.user.id)),
     recipient: publicProcedure.input(z.object({ paymentMethod: paymentMethodSchema })).query(({ input }) => getActiveMerchantRecipient(input.paymentMethod)),
+  }),
+  supportCase: router({
+    create: protectedProcedure.input(caseInputSchema).mutation(({ ctx, input }) => createSupportCase(ctx.user.id, input)),
+    listMine: protectedProcedure.query(({ ctx }) => listSupportCasesForUser(ctx.user.id)),
+    listForReview: adminProcedure.input(z.object({ status: caseStatusSchema.optional() }).optional()).query(({ input }) => listSupportCasesForReview(input?.status)),
+    review: adminProcedure.input(caseReviewActionSchema).mutation(({ ctx, input }) => reviewSupportCase(input, ctx.user.id)),
   }),
   paymentReview: router({
     list: adminProcedure.input(z.object({ status: reviewStatusSchema.optional() }).optional()).query(({ input }) => listPaymentRequestsForReview(input?.status)),

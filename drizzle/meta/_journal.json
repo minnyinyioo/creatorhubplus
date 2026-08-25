@@ -15,6 +15,13 @@
       "when": 1787663754866,
       "tag": "0001_flowery_jasper_sitwell",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1787665450609,
+      "tag": "0002_fine_loki",
+      "breakpoints": true
     }
   ]
 }

@@ -4,6 +4,7 @@ import type { TrpcContext } from "./_core/context";
 import { canTransitionReviewStatus, validateReviewAction } from "./paymentReview";
 import { merchantRecipientInputSchema } from "./merchantRecipients";
 import { validateReceiptUpload } from "./paymentRequests";
+import { canTransitionCaseStatus, supportCaseInputSchema, validateCaseReviewAction } from "./supportCases";
 
 const pngHeader = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
@@ -77,5 +78,38 @@ describe("paymentReview authorization", () => {
   it("rejects a signed-in applicant before touching review data", async () => {
     const caller = appRouter.createCaller(createContext("user"));
     await expect(caller.paymentReview.list({})).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+});
+
+describe("support case intake", () => {
+  it("requires meaningful issue details and a supported service path", () => {
+    expect(() => supportCaseInputSchema.parse({
+      serviceKey: "platform_earnings",
+      platformName: "YouTube",
+      issueSummary: "Earnings tab is unavailable",
+      details: "The earnings page shows an eligibility message after the account settings were updated.",
+    })).not.toThrow();
+    expect(() => supportCaseInputSchema.parse({
+      serviceKey: "platform_earnings",
+      platformName: "X",
+      issueSummary: "No",
+      details: "Too short",
+    })).toThrow();
+  });
+
+  it("allows only open work to move into a case outcome", () => {
+    expect(canTransitionCaseStatus("open", "resolved")).toBe(true);
+    expect(canTransitionCaseStatus("clarification_requested", "closed")).toBe(true);
+    expect(canTransitionCaseStatus("resolved", "closed")).toBe(false);
+  });
+
+  it("requires a note when requesting clarification", () => {
+    expect(() => validateCaseReviewAction({ status: "clarification_requested" })).toThrow("clarification");
+    expect(validateCaseReviewAction({ status: "clarification_requested", staffNote: "Please share the exact platform message." })).toBe("Please share the exact platform message.");
+  });
+
+  it("rejects applicant access to the staff case queue", async () => {
+    const caller = appRouter.createCaller(createContext("user"));
+    await expect(caller.supportCase.listForReview()).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 });

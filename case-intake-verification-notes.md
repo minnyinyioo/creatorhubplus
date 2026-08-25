@@ -1,0 +1,2 @@
+
+The case dialog opened from the real “Continue with this case” button and exposed the service label, platform field, issue summary, details textarea, 2,000-character counter, and credential-safety notice. The dialog is keyboard-closeable and the bottom actions include “Not now” and “Create support case”; unauthenticated submission is designed to launch the existing sign-in flow rather than create a record.

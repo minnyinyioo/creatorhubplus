@@ -70,3 +70,30 @@ export const merchantRecipients = mysqlTable("merchant_recipients", {
 
 export type MerchantRecipient = typeof merchantRecipients.$inferSelect;
 export type InsertMerchantRecipient = typeof merchantRecipients.$inferInsert;
+
+/**
+ * Authenticated support cases created from the public intake path. The table stores
+ * only the issue details needed for a support handoff; no passwords, PINs or payment credentials.
+ */
+export const supportCases = mysqlTable("support_cases", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  caseCode: varchar("caseCode", { length: 32 }).notNull().unique(),
+  serviceKey: varchar("serviceKey", { length: 40 }).notNull(),
+  serviceLabel: varchar("serviceLabel", { length: 160 }).notNull(),
+  platformName: varchar("platformName", { length: 100 }).notNull(),
+  issueSummary: varchar("issueSummary", { length: 180 }).notNull(),
+  details: text("details").notNull(),
+  status: mysqlEnum("status", ["open", "clarification_requested", "resolved", "closed"]).notNull().default("open"),
+  staffNote: text("staffNote"),
+  reviewedByUserId: int("reviewedByUserId").references(() => users.id, { onDelete: "set null" }),
+  reviewedAt: timestamp("reviewedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => [
+  index("support_cases_user_created_idx").on(table.userId, table.createdAt),
+  index("support_cases_status_created_idx").on(table.status, table.createdAt),
+]);
+
+export type SupportCase = typeof supportCases.$inferSelect;
+export type InsertSupportCase = typeof supportCases.$inferInsert;
