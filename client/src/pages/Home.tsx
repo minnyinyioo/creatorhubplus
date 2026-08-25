@@ -166,7 +166,7 @@ export default function Home() {
           <div className="payment-rail-window">
             <div className="payment-rail-track">
               {[...paymentMethods, ...paymentMethods].map((method, index) => <div className={`payment-method ${method.kind}`} key={`${method.label}-${index}`}>
-                <img src={method.logo} alt={`${method.label} official logo`} /><span>{method.label}</span>
+                <img src={method.logo} alt={`${method.label} official logo`} />
               </div>)}
             </div>
           </div>
