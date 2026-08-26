@@ -7,7 +7,9 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import BurmeseHome from "./pages/BurmeseHome";
 import Privacy from "./pages/Privacy";
-import BurmesePrivacy from "./pages/BurmesePrivacy";
+import BurmesePrivacy from "@/pages/BurmesePrivacy";
+import Terms from "@/pages/Terms";
+import BurmeseTerms from "@/pages/BurmeseTerms";
 import PaymentRequest from "@/pages/PaymentRequest";
 import StaffRecipients from "@/pages/StaffRecipients";
 import StaffReview from "@/pages/StaffReview";
@@ -27,6 +29,8 @@ function Router() {
       <Route path={"/my"} component={BurmeseHome} />
       <Route path={"/privacy"} component={Privacy} />
       <Route path={"/my/privacy"} component={BurmesePrivacy} />
+      <Route path={"/terms"} component={Terms} />
+      <Route path={"/my/terms"} component={BurmeseTerms} />
       <Route path={"/payment"} component={PaymentRequest} />
       <Route path={"/account"} component={Account} />
       <Route path={"/staff/review"} component={StaffReview} />

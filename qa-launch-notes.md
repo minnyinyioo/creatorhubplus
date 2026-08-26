@@ -1,0 +1,9 @@
+# Launch-readiness QA notes
+
+- The preview account center loaded in an authenticated browser session and displayed the current user context plus two existing payment requests. This session was not used to create a new account or insert test records.
+- The account center exposed Export CSV, order search, status/date filters, and notification controls. A direct browser click attempt for Export CSV timed out at the browser-extension layer, so the download was verified through rendered DOM tests rather than a confirmed local file download.
+- The payment route `/payment?service=account_setup` loaded in service-first order. It showed Account setup, KBZ Pay, and a receipt/submission path, but the selected provider was marked "RECIPIENT NOT YET PUBLISHED" and the amount showed "Quote required". This blocks a safe end-to-end payment-proof submission until an authorized merchant recipient and quote are published.
+- The English `/terms` route loaded with six baseline sections covering service scope, truthful information, payment review, third-party platforms, refunds/contact, and changes/acceptable use.
+- A separate test account could not be created through OAuth because browser takeover was unavailable; no fabricated database test data was inserted.
+
+Responsive verification update: desktop and 375px mobile screenshots covered `/staff/review`, `/privacy`, `/terms`, `/my/privacy`, and `/my/terms`. The staff review queue stayed readable with the responsive single-column layout and compact filter tabs; the legal pages kept readable typography, wrapped headings, and visible footer/cross-links without horizontal overflow. The empty staff queue means the screenshot could not display a live request's quick buttons, but the rendered interaction test exercised the real detail-header buttons and mutation wiring.

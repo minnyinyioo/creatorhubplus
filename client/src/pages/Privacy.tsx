@@ -53,7 +53,7 @@ export default function Privacy() {
         <div className="privacy-sections">{sections.map((section) => <article key={section.label}><span>{section.label}</span><div><h2>{section.title}</h2><p>{section.content}</p></div></article>)}</div>
       </section>
 
-      <footer className="privacy-footer"><p>CreatorHubPlus Privacy Policy</p><Link href="/">Back to CreatorHubPlus <ArrowUpRight size={14} /></Link></footer>
+      <footer className="privacy-footer"><p>CreatorHubPlus Privacy Policy</p><span><Link href="/terms">Terms of Service <ArrowUpRight size={14} /></Link> <Link href="/">Back to CreatorHubPlus <ArrowUpRight size={14} /></Link></span></footer>
     </main>
   );
 }

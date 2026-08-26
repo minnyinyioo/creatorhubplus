@@ -109,3 +109,20 @@ Implementation notes: schema, order number generation, server price validation, 
 - [x] Add a clear code comment documenting the dropdown-to-bulk-read mutation and cache invalidation wiring.
 - [x] Save a checkpoint for the completed account-center enhancement.
 - [x] Update the personal-center empty-state test for the new filter-aware wording.
+
+# Current Session — launch readiness closeout
+
+- [x] Audit login, payment-proof submission, CSV download, legal-page, and staff-review paths.
+- [ ] Create or obtain a controlled test-account path without inserting fabricated production data.
+- [x] Re-run an actual OAuth login with a controlled test account/session, or document that user takeover is unavailable.
+- [ ] Publish a valid merchant recipient and quote, then complete a real payment-proof submission without fabricated data.
+- [ ] Confirm a browser CSV download succeeds end-to-end rather than relying only on DOM tests.
+- [ ] Access a real reviewable payment request and capture desktop/mobile proof of the new quick approve/reject buttons.
+- [x] Walk through login, payment-proof submission, and CSV download; record any blockers.
+- [x] Add Privacy Policy and Terms of Service pages with footer links and baseline content.
+- [x] Add one-click approve and reject actions to the staff payment-review UI.
+- [x] Add distinct prominent quick approve/reject shortcuts in the staff review queue or detail header.
+- [x] Add a rendered staff-review test proving quick approve/reject actions trigger the real mutation.
+- [x] Add tests and run typecheck, production build, and responsive verification.
+- [x] Run responsive/browser verification for updated staff review quick actions and legal/footer links on desktop and mobile.
+- [ ] Save a checkpoint for the launch-readiness closeout.
