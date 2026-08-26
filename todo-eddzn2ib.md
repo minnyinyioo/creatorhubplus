@@ -52,7 +52,7 @@
 - [x] Implement persistent review-status notifications for verification and clarification events.
 - [x] Add tests, migrations, typecheck, production build, and responsive verification for the new flow.
 - [x] Sync the verified version to the specified GitHub main branch.
-- [ ] Save a checkpoint for the completed personal-center and payment-flow update.
+- [x] Save a checkpoint for the completed personal-center and payment-flow update.
 
 # Current Session — CreatorHubPlus business loop
 
@@ -62,7 +62,7 @@
 - [x] Implement persistent review-status notifications for verification and clarification events.
 - [x] Add tests, migrations, typecheck, production build, and responsive verification for the new flow.
 - [x] Sync the verified version to the specified GitHub main branch.
-- [ ] Save a checkpoint for the completed personal-center and payment-flow update.
+- [x] Save a checkpoint for the completed personal-center and payment-flow update.
 
 Implementation notes: schema, order number generation, server price validation, payment service-first routing, and staff review context were inherited from the prior checkpoint. This session adds the user-facing center and notification plumbing without fabricating reviews or testimonials.
 
