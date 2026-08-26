@@ -84,5 +84,5 @@ Implementation notes: schema, order number generation, server price validation, 
 - [x] Add a real-time unread review-notification badge to authenticated navigation.
 - [x] Add Vitest coverage for CSV escaping, filtering/sorting, badge states, and relevant UI behavior.
 - [x] Run typecheck, tests, production build, and desktop/mobile visual verification.
-- [ ] Save a checkpoint for the completed account-center enhancement.
+- [x] Save a checkpoint for the completed account-center enhancement.
 - [x] Update the personal-center empty-state test for the new filter-aware wording.
