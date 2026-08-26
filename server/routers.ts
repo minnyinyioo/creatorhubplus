@@ -6,6 +6,8 @@ import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_
 import { listMerchantRecipients, getActiveMerchantRecipient, merchantRecipientInputSchema, upsertMerchantRecipient } from "./merchantRecipients";
 import { listPaymentRequestsForReview, reviewPaymentRequest, REVIEW_STATUSES } from "./paymentReview";
 import { listPaymentRequestsForUser, paymentMethodSchema } from "./paymentRequests";
+import { listPaymentServiceCatalog, paymentServicePriceUpdateSchema, updatePaymentServicePrice } from "./paymentCatalog";
+import { countUnreadPaymentNotifications, listPaymentNotificationsForUser, markAllPaymentNotificationsRead, markPaymentNotificationRead } from "./paymentNotifications";
 import { CASE_STATUSES, caseServiceKeySchema, createSupportCase, listSupportCasesForReview, listSupportCasesForUser, reviewSupportCase } from "./supportCases";
 import { archiveWorkspaceTask, createWorkspaceTask, deleteWorkspaceTask, listArchivedWorkspaceTasks, listWorkspaceTasks, updateWorkspaceTask, workspaceTaskArchiveSchema, workspaceTaskCreateSchema, workspaceTaskDeleteSchema, workspaceTaskUpdateSchema, workspaceViewKeySchema } from "./workspaceTasks";
 import { createLibraryItem, deleteLibraryItem, libraryItemCreateSchema, libraryItemDeleteSchema, libraryItemUpdateSchema, listLibraryItems, updateLibraryItem } from "./workspaceLibrary";
@@ -43,6 +45,16 @@ export const appRouter = router({
   paymentRequest: router({
     listMine: protectedProcedure.query(({ ctx }) => listPaymentRequestsForUser(ctx.user.id)),
     recipient: publicProcedure.input(z.object({ paymentMethod: paymentMethodSchema })).query(({ input }) => getActiveMerchantRecipient(input.paymentMethod)),
+  }),
+  paymentCatalog: router({
+    list: publicProcedure.query(() => listPaymentServiceCatalog()),
+    updatePrice: adminProcedure.input(paymentServicePriceUpdateSchema).mutation(({ ctx, input }) => updatePaymentServicePrice(ctx.user.id, input)),
+  }),
+  paymentNotification: router({
+    listMine: protectedProcedure.query(({ ctx }) => listPaymentNotificationsForUser(ctx.user.id)),
+    unreadCount: protectedProcedure.query(({ ctx }) => countUnreadPaymentNotifications(ctx.user.id)),
+    markRead: protectedProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ ctx, input }) => markPaymentNotificationRead(ctx.user.id, input.id)),
+    markAllRead: protectedProcedure.mutation(({ ctx }) => markAllPaymentNotificationsRead(ctx.user.id)),
   }),
   supportCase: router({
     create: protectedProcedure.input(caseInputSchema).mutation(({ ctx, input }) => createSupportCase(ctx.user.id, input)),

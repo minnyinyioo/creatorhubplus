@@ -2,6 +2,7 @@ import { and, desc, eq, inArray } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { paymentRequests, users } from "../drizzle/schema";
 import { getDb } from "./db";
+import { createPaymentNotification } from "./paymentNotifications";
 
 export const REVIEW_STATUSES = ["pending_review", "clarification_requested", "verified", "rejected"] as const;
 export type ReviewStatus = (typeof REVIEW_STATUSES)[number];
@@ -32,6 +33,8 @@ export async function listPaymentRequestsForReview(status?: ReviewStatus) {
   return db.select({
     id: paymentRequests.id,
     requestCode: paymentRequests.requestCode,
+    orderNumber: paymentRequests.orderNumber,
+    quotedAmountMmk: paymentRequests.quotedAmountMmk,
     serviceKey: paymentRequests.serviceKey,
     serviceLabel: paymentRequests.serviceLabel,
     paymentMethod: paymentRequests.paymentMethod,
@@ -56,6 +59,17 @@ export async function reviewPaymentRequest(input: { requestCode: string; status:
   if (!db) throw new Error("Payment records are temporarily unavailable.");
 
   const note = validateReviewAction(input);
+  const existing = await db.select({
+    id: paymentRequests.id,
+    userId: paymentRequests.userId,
+    orderNumber: paymentRequests.orderNumber,
+    serviceLabel: paymentRequests.serviceLabel,
+    status: paymentRequests.status,
+  }).from(paymentRequests).where(eq(paymentRequests.requestCode, input.requestCode)).limit(1);
+  const request = existing[0];
+  if (!request || !transitionableStatuses.includes(request.status as (typeof transitionableStatuses)[number])) {
+    throw new TRPCError({ code: "CONFLICT", message: "This request was already reviewed or does not exist." });
+  }
 
   const result = await db.update(paymentRequests).set({
     status: input.status,
@@ -71,5 +85,14 @@ export async function reviewPaymentRequest(input: { requestCode: string; status:
     throw new TRPCError({ code: "CONFLICT", message: "This request was already reviewed or does not exist." });
   }
 
-  return { success: true as const, requestCode: input.requestCode, status: input.status };
+  await createPaymentNotification({
+    userId: request.userId,
+    paymentRequestId: request.id,
+    kind: input.status,
+    orderNumber: request.orderNumber,
+    serviceLabel: request.serviceLabel,
+    reviewNote: note,
+  });
+
+  return { success: true as const, requestCode: input.requestCode, orderNumber: request.orderNumber, status: input.status };
 }

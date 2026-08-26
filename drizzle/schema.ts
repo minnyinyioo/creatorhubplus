@@ -27,12 +27,14 @@ export const paymentRequests = mysqlTable("payment_requests", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
   requestCode: varchar("requestCode", { length: 32 }).notNull().unique(),
+  orderNumber: varchar("orderNumber", { length: 32 }).notNull().unique(),
   paymentMethod: varchar("paymentMethod", { length: 40 }).notNull(),
   serviceKey: varchar("serviceKey", { length: 40 }),
   serviceLabel: varchar("serviceLabel", { length: 160 }),
   payerName: varchar("payerName", { length: 120 }).notNull(),
   accountHint: varchar("accountHint", { length: 8 }),
   amountMmk: int("amountMmk").notNull(),
+  quotedAmountMmk: int("quotedAmountMmk"),
   paymentReference: varchar("paymentReference", { length: 100 }),
   receiptStorageKey: text("receiptStorageKey").notNull(),
   receiptUrl: text("receiptUrl").notNull(),
@@ -51,6 +53,39 @@ export const paymentRequests = mysqlTable("payment_requests", {
 
 export type PaymentRequest = typeof paymentRequests.$inferSelect;
 export type InsertPaymentRequest = typeof paymentRequests.$inferInsert;
+
+/** Staff-managed service pricing. A null price means the service requires a quote. */
+export const paymentServiceCatalog = mysqlTable("payment_service_catalog", {
+  id: int("id").autoincrement().primaryKey(),
+  serviceKey: varchar("serviceKey", { length: 40 }).notNull().unique(),
+  serviceLabel: varchar("serviceLabel", { length: 160 }).notNull(),
+  priceMmk: int("priceMmk"),
+  priceLabel: varchar("priceLabel", { length: 120 }).notNull().default("Quote required"),
+  isActive: int("isActive").notNull().default(1),
+  updatedByUserId: int("updatedByUserId").references(() => users.id, { onDelete: "set null" }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PaymentServiceCatalog = typeof paymentServiceCatalog.$inferSelect;
+export type InsertPaymentServiceCatalog = typeof paymentServiceCatalog.$inferInsert;
+
+/** In-app user notifications generated from payment-review events. */
+export const paymentNotifications = mysqlTable("payment_notifications", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  paymentRequestId: int("paymentRequestId").references(() => paymentRequests.id, { onDelete: "cascade" }),
+  kind: mysqlEnum("kind", ["submitted", "clarification_requested", "verified", "rejected"]).notNull(),
+  title: varchar("title", { length: 160 }).notNull(),
+  message: text("message").notNull(),
+  readAt: timestamp("readAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => [
+  index("payment_notifications_user_read_created_idx").on(table.userId, table.readAt, table.createdAt),
+]);
+
+export type PaymentNotification = typeof paymentNotifications.$inferSelect;
+export type InsertPaymentNotification = typeof paymentNotifications.$inferInsert;
 
 /**
  * Staff-managed verified merchant destinations. Empty or inactive rows are not

@@ -46,3 +46,33 @@
 - [x] Show the staff review note directly in the user's payment-history progress card, especially when clarification is requested.
 - [x] Capture directly inspectable desktop and mobile evidence for the selected-service method, recipient, and amount/details states.
 - [x] Verify the proof/upload step renders correctly on desktop and mobile after advancing the selected-service flow.
+- [x] Audit existing payment, user, review, and notification boundaries before extending the flow.
+- [x] Add real order numbers and server-controlled service price configuration to payment requests.
+- [x] Build an authenticated user center showing payment history, order status, review notes, and next steps.
+- [x] Implement persistent review-status notifications for verification and clarification events.
+- [x] Add tests, migrations, typecheck, production build, and responsive verification for the new flow.
+- [ ] Sync the verified version to the specified GitHub main branch.
+- [ ] Save a checkpoint for the completed personal-center and payment-flow update.
+
+# Current Session — CreatorHubPlus business loop
+
+- [x] Audit existing payment, user, review, and notification boundaries before extending the flow.
+- [x] Add real order numbers and server-controlled service price configuration to payment requests.
+- [x] Build an authenticated user center showing payment history, order status, review notes, and next steps.
+- [x] Implement persistent review-status notifications for verification and clarification events.
+- [x] Add tests, migrations, typecheck, production build, and responsive verification for the new flow.
+- [ ] Sync the verified version to the specified GitHub main branch.
+- [ ] Save a checkpoint for the completed personal-center and payment-flow update.
+
+Implementation notes: schema, order number generation, server price validation, payment service-first routing, and staff review context were inherited from the prior checkpoint. This session adds the user-facing center and notification plumbing without fabricating reviews or testimonials.
+
+# QA follow-up — required before delivery
+
+- [x] Add explicit error states to `/account` for payment history, notification list, and unread-count query failures.
+- [x] Add integration coverage proving review transitions create notifications and user notification list/read procedures enforce ownership.
+- [x] Add client tests for the authenticated personal center loading, empty, error, review-note, and next-step states.
+
+# QA follow-up 2 — required before delivery
+
+- [x] Add a notification ownership test where a different authenticated user cannot read or mark another user’s notification via the tRPC procedures.
+- [x] Add component-level tests for `/account` covering authenticated loading, empty, error, review-note, and next-step UI output.

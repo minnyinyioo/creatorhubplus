@@ -3,6 +3,7 @@ import { z } from "zod";
 import { paymentRequests } from "../drizzle/schema";
 import { getDb } from "./db";
 import { storagePut } from "./storage";
+import { getPaymentServiceConfig } from "./paymentCatalog";
 
 export const paymentMethodSchema = z.enum([
   "kbzpay",
@@ -79,19 +80,27 @@ export async function createPaymentRequest(userId: number, input: PaymentRequest
   if (!db) throw new Error("Payment records are temporarily unavailable.");
 
   validateReceiptUpload(file);
+  const serviceConfig = await getPaymentServiceConfig(input.serviceKey);
+  if (!serviceConfig) throw new Error("That service is not available.");
+  if (serviceConfig.priceMmk !== null && input.amountMmk !== serviceConfig.priceMmk) {
+    throw new Error(`The configured amount for ${serviceConfig.serviceLabel} is ${serviceConfig.priceMmk.toLocaleString()} MMK.`);
+  }
   const requestCode = `PR-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
+  const orderNumber = `ORD-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 6).toUpperCase()}`;
   const receiptName = safeFileName(file.originalname);
   const receipt = await storagePut(`payment-proofs/${userId}/${requestCode}-${receiptName}`, file.buffer, file.mimetype);
 
   await db.insert(paymentRequests).values({
     userId,
     requestCode,
+    orderNumber,
     paymentMethod: input.paymentMethod,
     serviceKey: input.serviceKey,
     serviceLabel: paymentServiceLabels[input.serviceKey],
     payerName: input.payerName,
     accountHint: input.accountHint || null,
     amountMmk: input.amountMmk,
+    quotedAmountMmk: serviceConfig.priceMmk,
     paymentReference: input.paymentReference || null,
     receiptStorageKey: receipt.key,
     receiptUrl: receipt.url,
@@ -99,7 +108,7 @@ export async function createPaymentRequest(userId: number, input: PaymentRequest
     receiptContentType: file.mimetype,
   });
 
-  return { requestCode, status: "pending_review" as const };
+  return { requestCode, orderNumber, status: "pending_review" as const };
 }
 
 export async function listPaymentRequestsForUser(userId: number) {
@@ -108,6 +117,7 @@ export async function listPaymentRequestsForUser(userId: number) {
 
   return db.select({
     requestCode: paymentRequests.requestCode,
+    orderNumber: paymentRequests.orderNumber,
     serviceKey: paymentRequests.serviceKey,
     serviceLabel: paymentRequests.serviceLabel,
     paymentMethod: paymentRequests.paymentMethod,

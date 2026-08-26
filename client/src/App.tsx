@@ -16,6 +16,8 @@ import Workspace from "@/pages/Workspace";
 import Archive from "@/pages/Archive";
 import Library from "@/pages/Library";
 import ProjectSettings from "@/pages/ProjectSettings";
+import Account from "@/pages/Account";
+import StaffPricing from "@/pages/StaffPricing";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -26,6 +28,7 @@ function Router() {
       <Route path={"/privacy"} component={Privacy} />
       <Route path={"/my/privacy"} component={BurmesePrivacy} />
       <Route path={"/payment"} component={PaymentRequest} />
+      <Route path={"/account"} component={Account} />
       <Route path={"/staff/review"} component={StaffReview} />
       <Route path={"/staff/cases"} component={StaffCases} />
       <Route path={"/workspace"} component={Workspace} />
@@ -33,6 +36,7 @@ function Router() {
       <Route path={"/library"} component={Library} />
       <Route path={"/settings"} component={ProjectSettings} />
       <Route path={"/staff/recipients"} component={StaffRecipients} />
+      <Route path={"/staff/pricing"} component={StaffPricing} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

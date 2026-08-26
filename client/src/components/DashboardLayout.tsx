@@ -21,13 +21,14 @@ import {
 } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { Archive, BookOpen, FileCheck2, Landmark, LayoutDashboard, LogOut, PanelLeft, Settings2, ShieldCheck, Target } from "lucide-react";
+import { Archive, BookOpen, FileCheck2, Landmark, LayoutDashboard, LogOut, PanelLeft, Settings2, ShieldCheck, Target, UserRound, BadgeDollarSign } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
 const menuItems = [
+  { icon: UserRound, label: "Personal centre", path: "/account" },
   { icon: Target, label: "Workspace", path: "/workspace" },
   { icon: Archive, label: "Archive", path: "/archive" },
   { icon: BookOpen, label: "Library", path: "/library" },
@@ -35,6 +36,7 @@ const menuItems = [
   { icon: ShieldCheck, label: "Review queue", path: "/staff/review" },
   { icon: FileCheck2, label: "Support cases", path: "/staff/cases" },
   { icon: Landmark, label: "Merchant accounts", path: "/staff/recipients" },
+  { icon: BadgeDollarSign, label: "Payment pricing", path: "/staff/pricing" },
   { icon: LayoutDashboard, label: "Public site", path: "/" },
 ];
 

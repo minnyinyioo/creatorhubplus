@@ -6,7 +6,9 @@ import {
   createPaymentRequest,
   MAX_RECEIPT_BYTES,
   paymentRequestFieldsSchema,
+  paymentServiceLabels,
 } from "./paymentRequests";
+import { createPaymentNotification } from "./paymentNotifications";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -72,6 +74,12 @@ export function registerReceiptUploadRoute(app: Express) {
         mimetype: req.file.mimetype,
         originalname: req.file.originalname,
         size: req.file.size,
+      });
+      await createPaymentNotification({
+        userId: user.id,
+        kind: "submitted",
+        orderNumber: result.orderNumber,
+        serviceLabel: paymentServiceLabels[parsed.data.serviceKey],
       });
       res.status(201).json(result);
     } catch (error) {
