@@ -127,3 +127,17 @@ Implementation notes: schema, order number generation, server price validation, 
 - [x] Add tests and run typecheck, production build, and responsive verification.
 - [x] Run responsive/browser verification for updated staff review quick actions and legal/footer links on desktop and mobile.
 - [x] Save a checkpoint for the launch-readiness closeout.
+
+# Current Session — Myanmar typography refinement
+
+- [x] Audit current Burmese font loading and typography selectors.
+- [x] Select and load a legible, attractive Burmese font with a sensible fallback stack.
+- [x] Add an explicit route-level Burmese locale activation path for public Burmese experiences and authenticated dashboard typography.
+- [x] Apply Burmese typography consistently across authenticated dashboard surfaces (`/account`, Workspace, staff review/pricing) only when the Burmese locale is active, without changing English UI.
+- [x] Strengthen font tests to verify locale activation behavior, not only CSS selector presence.
+- [x] Browser-verify `/account`, `/workspace`, and staff surfaces with Burmese locale active.
+- [x] Add font-focused tests or deterministic selector checks and run typecheck/build.
+- [x] Fix the font test by importing Vitest globals explicitly, then rerun tests, typecheck, and build.
+- [x] Verify Burmese pages at desktop and mobile widths and save a checkpoint.
+- [x] Fix the Workspace maximum-update-depth regression observed with `?lang=my`, then rerun tests and visual verification.
+- [ ] Save a new checkpoint for the verified Myanmar typography update after locale activation, Workspace fix, tests, build, and screenshot verification.

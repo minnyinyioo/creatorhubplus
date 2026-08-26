@@ -227,7 +227,7 @@ function DashboardLayoutContent({
 
   return (
     <>
-      <div className="relative" ref={sidebarRef}>
+      <div className="relative dashboard-layout-shell" ref={sidebarRef}>
         <Sidebar
           collapsible="icon"
           className="border-r-0"

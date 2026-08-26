@@ -1,7 +1,8 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
+import { useEffect } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -21,10 +22,25 @@ import ProjectSettings from "@/pages/ProjectSettings";
 import Account from "@/pages/Account";
 import StaffPricing from "@/pages/StaffPricing";
 
+export function getDocumentLocale(pathname: string, search = "") {
+  const queryLocale = new URLSearchParams(search).get("lang");
+  return pathname === "/my" || pathname.startsWith("/my/") || queryLocale === "my" ? "my" : "en";
+}
+
+function DocumentLocale() {
+  const [location] = useLocation();
+  useEffect(() => {
+    document.documentElement.lang = getDocumentLocale(location, window.location.search);
+  }, [location]);
+  return null;
+}
+
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
-    <Switch>
+    <>
+      <DocumentLocale />
+      <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/my"} component={BurmeseHome} />
       <Route path={"/privacy"} component={Privacy} />
@@ -44,7 +60,8 @@ function Router() {
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
-    </Switch>
+      </Switch>
+    </>
   );
 }
 

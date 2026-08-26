@@ -122,11 +122,15 @@ export default function Workspace() {
   const content = useMemo(() => viewContent[activeView], [activeView]);
   const tasks: DisplayTask[] = taskQuery.data?.length ? taskQuery.data.map((task) => ({ id: task.id, title: task.title, durationMinutes: task.durationMinutes, completed: task.completed, timerSeconds: task.timerSeconds })) : content.items.map((title, index) => ({ id: -(index + 1), title, durationMinutes: [12, 25, 18][index] ?? 25, completed: completedMoves.includes(title) ? 1 : 0, timerSeconds: [12, 25, 18][index] * 60 }));
   const activeTask = tasks[0];
+  const firstServerTask = taskQuery.data?.[0];
+  const resumeKey = firstServerTask ? `${firstServerTask.id}:${firstServerTask.timerSeconds}:${firstServerTask.durationMinutes}` : null;
+  const resumedViewsRef = useRef<Partial<Record<ViewKey, string>>>({});
   const timerSecondsRef = useRef(timerSeconds);
   const persistTimer = useCallback((seconds: number) => {
     if (!isAuthenticated || !activeTask?.id || activeTask.id < 0) return;
     updateTask.mutate(buildTimerUpdateInput(activeTask.id, seconds));
   }, [activeTask?.id, isAuthenticated, updateTask]);
+  const persistTimerRef = useRef(persistTimer);
   const timerLabel = formatFocusTime(timerSeconds);
   const progressLabel = `${String(tasks.filter((task) => task.completed === 1).length).padStart(2, "0")} / ${String(tasks.length).padStart(2, "0")} MOVES COMPLETE`;
 
@@ -156,15 +160,19 @@ export default function Workspace() {
   }, [persistTimer]);
 
   useEffect(() => {
-    return () => persistTimer(timerSecondsRef.current);
-  }, [activeView, persistTimer]);
+    persistTimerRef.current = persistTimer;
+  }, [persistTimer]);
 
   useEffect(() => {
-    if (taskQuery.data?.length && !timerRunning) {
-      const firstTask = taskQuery.data[0];
-      setTimerSeconds(getTimerResumeSeconds(firstTask.timerSeconds, firstTask.durationMinutes));
-    }
-  }, [taskQuery.data, activeView, timerRunning]);
+    return () => persistTimerRef.current(timerSecondsRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (!firstServerTask || !resumeKey || timerRunning || resumedViewsRef.current[activeView] === resumeKey) return;
+    resumedViewsRef.current[activeView] = resumeKey;
+    const nextSeconds = getTimerResumeSeconds(firstServerTask.timerSeconds, firstServerTask.durationMinutes);
+    setTimerSeconds((currentSeconds) => currentSeconds === nextSeconds ? currentSeconds : nextSeconds);
+  }, [activeView, firstServerTask?.durationMinutes, firstServerTask?.id, firstServerTask?.timerSeconds, resumeKey, timerRunning]);
 
   useEffect(() => {
     if (!timerRunning) return;
