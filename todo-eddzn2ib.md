@@ -76,3 +76,13 @@ Implementation notes: schema, order number generation, server price validation, 
 
 - [x] Add a notification ownership test where a different authenticated user cannot read or mark another user’s notification via the tRPC procedures.
 - [x] Add component-level tests for `/account` covering authenticated loading, empty, error, review-note, and next-step UI output.
+
+# Current Session — account exports, filters, and notification badge
+
+- [x] Add a user account-center CSV export for order history.
+- [x] Add status and date filtering plus sorting controls to order history.
+- [x] Add a real-time unread review-notification badge to authenticated navigation.
+- [x] Add Vitest coverage for CSV escaping, filtering/sorting, badge states, and relevant UI behavior.
+- [x] Run typecheck, tests, production build, and desktop/mobile visual verification.
+- [ ] Save a checkpoint for the completed account-center enhancement.
+- [x] Update the personal-center empty-state test for the new filter-aware wording.

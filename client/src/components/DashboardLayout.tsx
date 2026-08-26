@@ -20,6 +20,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
+import { trpc } from "@/lib/trpc";
 import { useIsMobile } from "@/hooks/useMobile";
 import { Archive, BookOpen, FileCheck2, Landmark, LayoutDashboard, LogOut, PanelLeft, Settings2, ShieldCheck, Target, UserRound, BadgeDollarSign } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
@@ -44,6 +45,11 @@ const SIDEBAR_WIDTH_KEY = "sidebar-width";
 const DEFAULT_WIDTH = 280;
 const MIN_WIDTH = 200;
 const MAX_WIDTH = 480;
+
+export function formatUnreadBadgeCount(count: number | null | undefined) {
+  if (!count || count < 1) return null;
+  return count > 99 ? "99+" : String(count);
+}
 
 export default function DashboardLayout({
   children,
@@ -120,6 +126,11 @@ function DashboardLayoutContent({
   const sidebarRef = useRef<HTMLDivElement>(null);
   const activeMenuItem = menuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
+  const unreadNotifications = trpc.paymentNotification.unreadCount.useQuery(undefined, {
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: true,
+    staleTime: 15_000,
+  });
 
   useEffect(() => {
     if (isCollapsed) {
@@ -200,6 +211,7 @@ function DashboardLayoutContent({
                         className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
                       />
                       <span>{item.label}</span>
+                      {item.path === "/account" && formatUnreadBadgeCount(unreadNotifications.data) && <span className="account-nav-badge group-data-[collapsible=icon]:hidden" aria-label={`${unreadNotifications.data} unread review notifications`}>{formatUnreadBadgeCount(unreadNotifications.data)}</span>}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );

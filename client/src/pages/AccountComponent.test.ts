@@ -68,7 +68,7 @@ describe("personal centre component states", () => {
     state.notifications = { data: [], isLoading: false, isError: false };
     state.unread = { data: 0, isLoading: false, isError: false };
     const html = renderAccount();
-    expect(html).toContain("No payment orders match this view yet");
+    expect(html).toContain("No payment orders match these filters yet");
     expect(html).toContain("New payment-review updates will appear here");
   });
 
