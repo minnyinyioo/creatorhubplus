@@ -107,5 +107,5 @@ Implementation notes: schema, order number generation, server price validation, 
 - [x] Add a rendered DashboardLayout notification-menu test that opens the menu and invokes markAllRead mutation.
 - [x] Add a rendered DashboardLayout integration test proving the tRPC bulk-read mutation and cache invalidation wiring.
 - [x] Add a clear code comment documenting the dropdown-to-bulk-read mutation and cache invalidation wiring.
-- [ ] Save a checkpoint for the completed account-center enhancement.
+- [x] Save a checkpoint for the completed account-center enhancement.
 - [x] Update the personal-center empty-state test for the new filter-aware wording.
