@@ -126,4 +126,4 @@ Implementation notes: schema, order number generation, server price validation, 
 - [x] Add a rendered staff-review test proving quick approve/reject actions trigger the real mutation.
 - [x] Add tests and run typecheck, production build, and responsive verification.
 - [x] Run responsive/browser verification for updated staff review quick actions and legal/footer links on desktop and mobile.
-- [ ] Save a checkpoint for the launch-readiness closeout.
+- [x] Save a checkpoint for the launch-readiness closeout.
