@@ -140,4 +140,4 @@ Implementation notes: schema, order number generation, server price validation, 
 - [x] Fix the font test by importing Vitest globals explicitly, then rerun tests, typecheck, and build.
 - [x] Verify Burmese pages at desktop and mobile widths and save a checkpoint.
 - [x] Fix the Workspace maximum-update-depth regression observed with `?lang=my`, then rerun tests and visual verification.
-- [ ] Save a new checkpoint for the verified Myanmar typography update after locale activation, Workspace fix, tests, build, and screenshot verification.
+- [x] Save a new checkpoint for the verified Myanmar typography update after locale activation, Workspace fix, tests, build, and screenshot verification.
