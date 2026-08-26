@@ -4,6 +4,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -22,7 +24,7 @@ import {
 import { startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { useIsMobile } from "@/hooks/useMobile";
-import { Archive, BookOpen, FileCheck2, Landmark, LayoutDashboard, LogOut, PanelLeft, Settings2, ShieldCheck, Target, UserRound, BadgeDollarSign } from "lucide-react";
+import { Archive, BadgeDollarSign, Bell, BookOpen, Check, FileCheck2, Landmark, LayoutDashboard, LoaderCircle, LogOut, PanelLeft, Settings2, ShieldCheck, Target, UserRound } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -49,6 +51,52 @@ const MAX_WIDTH = 480;
 export function formatUnreadBadgeCount(count: number | null | undefined) {
   if (!count || count < 1) return null;
   return count > 99 ? "99+" : String(count);
+}
+
+export function requestMarkAllNotificationsRead(unreadCount: number | null | undefined, isPending: boolean, onMarkAll: () => void) {
+  if (!unreadCount || unreadCount < 1 || isPending) return false;
+  onMarkAll();
+  return true;
+}
+
+type NotificationMenuItem = {
+
+  id: number;
+  title: string;
+  message: string;
+  readAt: Date | string | null;
+  createdAt: Date | string;
+};
+
+export type NotificationMenuProps = {
+  unreadCount?: number;
+  notifications?: readonly NotificationMenuItem[];
+  isLoading: boolean;
+  isError: boolean;
+  isMarkingAll: boolean;
+  onMarkRead: (id: number) => void;
+  onMarkAll: () => void;
+  onNavigate: () => void;
+};
+
+export function NotificationMenu({ unreadCount, notifications, isLoading, isError, isMarkingAll, onMarkRead, onMarkAll, onNavigate }: NotificationMenuProps) {
+  const badge = formatUnreadBadgeCount(unreadCount);
+  const recentNotifications = (notifications ?? []).slice(0, 5);
+  return <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <button type="button" className="account-notification-trigger" aria-label={badge ? `${badge} unread review notifications` : "Review notifications"}>
+        <Bell size={16} />
+        {badge && <span className="account-nav-badge" aria-hidden="true">{badge}</span>}
+      </button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="end" sideOffset={8} className="account-notification-menu">
+      <DropdownMenuLabel className="account-notification-menu-heading"><span>Review updates</span>{badge && <b>{badge} unread</b>}</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      {isLoading ? <div className="account-notification-state">Loading updates…</div> : isError ? <div className="account-notification-state">Updates are unavailable right now.</div> : recentNotifications.length === 0 ? <div className="account-notification-state">No review updates yet.</div> : <div className="account-notification-items">{recentNotifications.map((notification) => <DropdownMenuItem key={notification.id} className={`account-notification-item${notification.readAt ? " is-read" : ""}`} onClick={() => { if (!notification.readAt) onMarkRead(notification.id); onNavigate(); }}><span className="account-notification-icon"><FileCheck2 size={14} /></span><span><strong>{notification.title}</strong><small>{notification.message}</small></span>{!notification.readAt && <i aria-label="Unread" />}</DropdownMenuItem>)}</div>}
+      <DropdownMenuSeparator />
+      <div className="account-notification-actions"><button type="button" className="account-notification-all" disabled={!badge || isMarkingAll} onClick={() => { requestMarkAllNotificationsRead(unreadCount, isMarkingAll, onMarkAll); }}>{isMarkingAll ? <LoaderCircle className="account-spinner" size={14} /> : <Check size={14} />} {isMarkingAll ? "Marking…" : "Mark all as read"}</button><button type="button" className="account-notification-view" onClick={onNavigate}>View all updates</button></div>
+    </DropdownMenuContent>
+  </DropdownMenu>;
 }
 
 export default function DashboardLayout({
@@ -126,11 +174,20 @@ function DashboardLayoutContent({
   const sidebarRef = useRef<HTMLDivElement>(null);
   const activeMenuItem = menuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
+  const notificationList = trpc.paymentNotification.listMine.useQuery(undefined, {
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: true,
+    staleTime: 15_000,
+  });
   const unreadNotifications = trpc.paymentNotification.unreadCount.useQuery(undefined, {
     refetchInterval: 30_000,
     refetchOnWindowFocus: true,
     staleTime: 15_000,
   });
+  const utils = trpc.useUtils();
+  const markRead = trpc.paymentNotification.markRead.useMutation({ onSuccess: () => { void utils.paymentNotification.listMine.invalidate(); void utils.paymentNotification.unreadCount.invalidate(); } });
+  // The dropdown action calls the protected bulk-read mutation; its success handler invalidates both caches so the badge clears immediately.
+  const markAllRead = trpc.paymentNotification.markAllRead.useMutation({ onSuccess: () => { void utils.paymentNotification.listMine.invalidate(); void utils.paymentNotification.unreadCount.invalidate(); } });
 
   useEffect(() => {
     if (isCollapsed) {
@@ -185,13 +242,24 @@ function DashboardLayoutContent({
               >
                 <PanelLeft className="h-4 w-4 text-muted-foreground" />
               </button>
-              {!isCollapsed ? (
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="font-semibold tracking-tight truncate">
-                    Navigation
-                  </span>
-                </div>
-              ) : null}
+                                {!isCollapsed ? (
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="font-semibold tracking-tight truncate">
+                        Navigation
+                      </span>
+                    </div>
+                  ) : null}
+                  <NotificationMenu
+                    unreadCount={unreadNotifications.data}
+                    notifications={notificationList.data}
+                    isLoading={notificationList.isLoading}
+                    isError={notificationList.isError}
+                    isMarkingAll={markAllRead.isPending}
+                    onMarkRead={(id) => markRead.mutate({ id })}
+                    onMarkAll={() => markAllRead.mutate()}
+                    onNavigate={() => setLocation("/account")}
+                  />
+
             </div>
           </SidebarHeader>
 
@@ -263,15 +331,26 @@ function DashboardLayoutContent({
       <SidebarInset>
         {isMobile && (
           <div className="flex border-b h-14 items-center justify-between bg-background/95 px-2 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger className="h-9 w-9 rounded-lg bg-background" />
-              <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
+                <SidebarTrigger className="h-9 w-9 rounded-lg bg-background" />
+                <div className="flex items-center gap-3">
+
                 <div className="flex flex-col gap-1">
                   <span className="tracking-tight text-foreground">
                     {activeMenuItem?.label ?? "Menu"}
                   </span>
                 </div>
               </div>
+              <NotificationMenu
+                unreadCount={unreadNotifications.data}
+                notifications={notificationList.data}
+                isLoading={notificationList.isLoading}
+                isError={notificationList.isError}
+                isMarkingAll={markAllRead.isPending}
+                onMarkRead={(id) => markRead.mutate({ id })}
+                onMarkAll={() => markAllRead.mutate()}
+                onNavigate={() => setLocation("/account")}
+              />
             </div>
           </div>
         )}

@@ -85,4 +85,27 @@ Implementation notes: schema, order number generation, server price validation, 
 - [x] Add Vitest coverage for CSV escaping, filtering/sorting, badge states, and relevant UI behavior.
 - [x] Run typecheck, tests, production build, and desktop/mobile visual verification.
 - [x] Save a checkpoint for the completed account-center enhancement.
+
+# Current Session — export feedback, notification menu, and order search
+
+- [x] Add a loading spinner and success toast after CSV export.
+- [x] Add a notification dropdown with a Mark all as read action that clears the unread badge.
+- [x] Add order-number search to the order history section.
+- [x] Add tests for export feedback, notification bulk-read behavior, and order search.
+- [x] Run typecheck, tests, production build, and responsive verification.
+
+# QA follow-up — feedback and notification menu interaction coverage
+
+- [x] Add a client test that triggers CSV export and asserts loading state plus success/error toast behavior.
+- [x] Add a client test for the notification dropdown Mark all as read action and unread-badge clearing behavior.
+- [x] Document or explicitly test the dropdown-to-bulk-read mutation wiring.
+- [x] Fix the interaction test by importing Vitest's `vi` helper and rerun the QA suite.
+
+# QA follow-up 2 — rendered interaction coverage
+
+- [x] Add a rendered account-center test that clicks Export CSV and observes loading/success/error feedback.
+- [x] Add a rendered DashboardLayout notification-menu test that opens the menu and invokes markAllRead mutation.
+- [x] Add a rendered DashboardLayout integration test proving the tRPC bulk-read mutation and cache invalidation wiring.
+- [x] Add a clear code comment documenting the dropdown-to-bulk-read mutation and cache invalidation wiring.
+- [ ] Save a checkpoint for the completed account-center enhancement.
 - [x] Update the personal-center empty-state test for the new filter-aware wording.
