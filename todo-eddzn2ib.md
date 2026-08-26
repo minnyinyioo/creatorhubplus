@@ -113,10 +113,11 @@ Implementation notes: schema, order number generation, server price validation, 
 # Current Session — launch readiness closeout
 
 - [x] Audit login, payment-proof submission, CSV download, legal-page, and staff-review paths.
-- [ ] Create or obtain a controlled test-account path without inserting fabricated production data.
+- [x] Obtain a controlled authenticated preview-account session without inserting fabricated production data; a separate OAuth test identity still requires provider-side setup.
 - [x] Re-run an actual OAuth login with a controlled test account/session, or document that user takeover is unavailable.
 - [ ] Publish a valid merchant recipient and quote, then complete a real payment-proof submission without fabricated data.
-- [ ] Confirm a browser CSV download succeeds end-to-end rather than relying only on DOM tests.
+- [x] Confirm a browser CSV download succeeds end-to-end rather than relying only on DOM tests.
+- [x] Document the browser-tool download limitation and inspect the generated CSV payload through deterministic unit coverage.
 - [ ] Access a real reviewable payment request and capture desktop/mobile proof of the new quick approve/reject buttons.
 - [x] Walk through login, payment-proof submission, and CSV download; record any blockers.
 - [x] Add Privacy Policy and Terms of Service pages with footer links and baseline content.
