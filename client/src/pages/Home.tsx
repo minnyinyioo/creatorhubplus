@@ -74,13 +74,13 @@ const services = [
 ];
 
 const paymentMethods = [
-  { label: "KBZ Pay", logo: "/manus-storage/kbzpay_b6275ce0.webp", kind: "wallet" },
-  { label: "Wave Pay", logo: "/manus-storage/wavepay-appicon_9c7e244e.jpg", kind: "wallet" },
-  { label: "AYA Pay", logo: "/manus-storage/ayapay_385dc148.png", kind: "wallet" },
-  { label: "KBZ Bank", logo: "/manus-storage/kbzbank_ccd3a1fa.png", kind: "bank" },
-  { label: "AYA Bank", logo: "/manus-storage/ayabank_d9d29f1d.png", kind: "bank" },
-  { label: "Bangkok Bank", logo: "/manus-storage/bangkok-bank-blue-wide_277247ab.png", kind: "bank" },
-  { label: "KASIKORNBANK", logo: "/manus-storage/kasikornbank-official_5108252c.png", kind: "bank" },
+  { label: "KBZ Pay", logo: "/payment-logos/kbzpay.webp", kind: "wallet" },
+  { label: "Wave Pay", logo: "/payment-logos/wavepay-appicon.jpg", kind: "wallet" },
+  { label: "AYA Pay", logo: "/payment-logos/ayapay.png", kind: "wallet" },
+  { label: "KBZ Bank", logo: "/payment-logos/kbzbank.png", kind: "bank" },
+  { label: "AYA Bank", logo: "/payment-logos/ayabank.png", kind: "bank" },
+  { label: "Bangkok Bank", logo: "/payment-logos/bangkokbank-official.svg", kind: "bank" },
+  { label: "KASIKORNBANK", logo: "/payment-logos/kasikornbank-official.png", kind: "bank" },
 ];
 
 const steps = [
