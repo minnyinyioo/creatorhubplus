@@ -4,6 +4,8 @@ import { describe, expect, it } from "vitest";
 
 const publicDir = resolve(process.cwd(), "client/public");
 const homeSource = readFileSync(resolve(process.cwd(), "client/src/pages/Home.tsx"), "utf8");
+const globalStyles = readFileSync(resolve(process.cwd(), "client/src/index.css"), "utf8");
+const bangkokBankSvg = readFileSync(resolve(publicDir, "payment-logos", "bangkokbank-official.svg"), "utf8");
 
 const paymentAssets = [
   "kbzpay.webp",
@@ -31,6 +33,13 @@ describe("payment rail assets", () => {
     expect(homeSource).toContain("/payment-logos/bangkokbank-official.svg");
     expect(homeSource).toContain("/payment-logos/kasikornbank-official.png");
     expect(homeSource).not.toMatch(/\/manus-storage\/(?:kbz|wave|aya|bangkok|kasikorn)/i);
+  });
+
+  it("uses orange type and a blue Bangkok Bank asset", () => {
+    expect(globalStyles).toContain("--type-orange:");
+    expect(globalStyles).toContain("color:var(--type-orange)");
+    expect(bangkokBankSvg).toContain("#0057A8");
+    expect(bangkokBankSvg).not.toContain("#fff");
   });
 });
 
