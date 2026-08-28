@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { formatUnreadBadgeCount, requestMarkAllNotificationsRead } from "@/components/DashboardLayout";
-import { buildOrdersCsv, escapeCsvField, exportOrdersCsvWithFeedback, filterAndSortOrders, getAccountListState, getAccountRequestPresentation, getExportButtonLabel, searchOrders, statusCopy } from "./Account";
+import { buildOrdersCsv, escapeCsvField, exportOrdersCsvWithFeedback, filterAndSortInvoices, filterAndSortOrders, getAccountListState, getAccountRequestPresentation, getExportButtonLabel, searchOrders, statusCopy } from "./Account";
 
 describe("personal centre presentation", () => {
   it("distinguishes loading, error, empty and ready query states", () => {
@@ -32,6 +32,16 @@ describe("personal centre presentation", () => {
     expect(filtered.map((order) => order.orderNumber)).toEqual(["recent-reply"]);
     expect(orders.map((order) => order.orderNumber)).toEqual(["old", "recent-pending", "recent-reply"]);
     expect(filterAndSortOrders(orders, "all", "all", "oldest")[0].orderNumber).toBe("old");
+  });
+
+  it("filters invoices by query and sorts by amount without mutating the source", () => {
+    const invoices = [
+      { invoiceNumber: "INV-OLD", orderNumber: "ORD-OLD", serviceLabel: "Address service", status: "issued", amountMmk: 50000, issuedAt: new Date("2026-08-20") },
+      { invoiceNumber: "INV-NEW", orderNumber: "ORD-NEW", serviceLabel: "Account setup", status: "issued", amountMmk: 150000, issuedAt: new Date("2026-08-25") },
+    ];
+    expect(filterAndSortInvoices(invoices, "account", "issued", "amount_high").map((invoice) => invoice.invoiceNumber)).toEqual(["INV-NEW"]);
+    expect(filterAndSortInvoices(invoices, "", "all", "oldest").map((invoice) => invoice.invoiceNumber)).toEqual(["INV-OLD", "INV-NEW"]);
+    expect(invoices.map((invoice) => invoice.invoiceNumber)).toEqual(["INV-OLD", "INV-NEW"]);
   });
 
   it("finds orders by order number or request code, case-insensitively", () => {

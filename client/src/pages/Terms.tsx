@@ -5,6 +5,7 @@
 import { ArrowLeft, ArrowUpRight, FileCheck2 } from "lucide-react";
 import { Link } from "wouter";
 import { useSiteLocale } from "@/lib/useSiteLocale";
+import { CreatorHubPlusLockup } from "@/components/CreatorHubPlusMark";
 
 const sections = [
   { label: "01", title: "The service", content: "CreatorHubPlus provides informational support for creator earnings, payout routes, account setup, and verified address preparation. We help organize legitimate requirements and next steps; we do not operate or control any third-party platform." },
@@ -18,7 +19,7 @@ const sections = [
 export default function Terms() {
   useSiteLocale("en", "CreatorHubPlus — Terms of Service");
   return <main className="privacy-page">
-    <header className="privacy-header"><Link href="/" className="privacy-brand"><img src="/favicon.svg" alt="CreatorHubPlus logo" /><span>creatorhub<span>plus</span></span></Link><div className="locale-links"><Link href="/my/terms">မြန်မာ</Link><Link href="/" className="privacy-return"><ArrowLeft size={15} /> Return to site</Link></div></header>
+    <header className="privacy-header"><Link href="/" className="privacy-brand"><CreatorHubPlusLockup label="CreatorHubPlus" /></Link><div className="locale-links"><Link href="/" className="privacy-return"><ArrowLeft size={15} /> Return to site</Link></div></header>
     <section className="privacy-hero"><div><p className="privacy-eyebrow"><FileCheck2 size={14} /> TERMS OF SERVICE</p><h1>A clear service.<br /><em>A clear agreement.</em></h1></div><p>These baseline terms explain how CreatorHubPlus support, payment requests, reviews, and responsible use work together.</p></section>
     <section className="privacy-content"><aside className="privacy-aside"><p>LAST UPDATED</p><strong>26 August 2026</strong><span>CreatorHubPlus</span><Link href="/privacy">Read Privacy Policy <ArrowUpRight size={14} /></Link></aside><div className="privacy-sections">{sections.map((section) => <article key={section.label}><span>{section.label}</span><div><h2>{section.title}</h2><p>{section.content}</p></div></article>)}</div></section>
     <footer className="privacy-footer"><p>CreatorHubPlus Terms of Service</p><Link href="/">Back to CreatorHubPlus <ArrowUpRight size={14} /></Link></footer>

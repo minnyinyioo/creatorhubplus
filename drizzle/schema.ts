@@ -87,8 +87,36 @@ export const paymentNotifications = mysqlTable("payment_notifications", {
 export type PaymentNotification = typeof paymentNotifications.$inferSelect;
 export type InsertPaymentNotification = typeof paymentNotifications.$inferInsert;
 
+/** Issued electronic invoices created only after a payment request is verified. */
+export const invoices = mysqlTable("invoices", {
+  id: int("id").autoincrement().primaryKey(),
+  paymentRequestId: int("paymentRequestId").notNull().unique().references(() => paymentRequests.id, { onDelete: "cascade" }),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  invoiceNumber: varchar("invoiceNumber", { length: 40 }).notNull().unique(),
+  orderNumber: varchar("orderNumber", { length: 32 }).notNull(),
+  serviceLabel: varchar("serviceLabel", { length: 160 }).notNull(),
+  customerName: varchar("customerName", { length: 120 }).notNull(),
+  customerEmail: varchar("customerEmail", { length: 320 }),
+  paymentMethod: varchar("paymentMethod", { length: 40 }).notNull(),
+  amountMmk: int("amountMmk").notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default("MMK"),
+  status: mysqlEnum("status", ["issued", "voided"]).notNull().default("issued"),
+  pdfStorageKey: text("pdfStorageKey").notNull(),
+  pdfUrl: text("pdfUrl").notNull(),
+  complianceNote: varchar("complianceNote", { length: 500 }).notNull().default("This electronic invoice confirms a payment request marked as verified by CreatorHubPlus. Keep it for your records."),
+  issuedAt: timestamp("issuedAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => [
+  index("invoices_user_issued_idx").on(table.userId, table.issuedAt),
+  index("invoices_order_idx").on(table.orderNumber),
+]);
+
+export type Invoice = typeof invoices.$inferSelect;
+export type InsertInvoice = typeof invoices.$inferInsert;
+
 /**
- * Staff-managed verified merchant destinations. Empty or inactive rows are not
+ * Staff-managed verified merchant destinations.
+ Empty or inactive rows are not
  * shown to applicants, so onboarding can happen without publishing placeholders.
  */
 export const merchantRecipients = mysqlTable("merchant_recipients", {

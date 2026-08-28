@@ -1,0 +1,1 @@
+ALTER TABLE `invoices` MODIFY COLUMN `complianceNote` varchar(500) NOT NULL DEFAULT 'This electronic invoice confirms a payment request marked as verified by CreatorHubPlus. Keep it for your records.';

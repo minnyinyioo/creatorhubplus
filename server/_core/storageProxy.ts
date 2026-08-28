@@ -1,5 +1,8 @@
 import type { Express } from "express";
+import { storageGetSignedUrl } from "../storage";
 import { ENV } from "./env";
+
+const migratedPrefixes = ["payment-proofs/", "invoices/"];
 
 export function registerStorageProxy(app: Express) {
   app.get("/manus-storage/*", async (req, res) => {
@@ -9,40 +12,37 @@ export function registerStorageProxy(app: Express) {
       return;
     }
 
-    if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
-      res.status(500).send("Storage proxy not configured");
-      return;
-    }
-
     try {
-      const forgeUrl = new URL(
-        "v1/storage/presign/get",
-        ENV.forgeApiUrl.replace(/\/+$/, "") + "/",
-      );
+      if (migratedPrefixes.some(prefix => key.startsWith(prefix))) {
+        const url = await storageGetSignedUrl(key);
+        res.set("Cache-Control", "private, no-store");
+        res.redirect(307, url);
+        return;
+      }
+
+      // Legacy public brand/payment assets remain readable during the cutover.
+      // User receipts and invoices never use this branch.
+      if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
+        res.status(404).send("Legacy asset unavailable");
+        return;
+      }
+      const forgeUrl = new URL("v1/storage/presign/get", ENV.forgeApiUrl.replace(/\/+$/, "") + "/");
       forgeUrl.searchParams.set("path", key);
-
-      const forgeResp = await fetch(forgeUrl, {
-        headers: { Authorization: `Bearer ${ENV.forgeApiKey}` },
-      });
-
+      const forgeResp = await fetch(forgeUrl, { headers: { Authorization: `Bearer ${ENV.forgeApiKey}` } });
       if (!forgeResp.ok) {
-        const body = await forgeResp.text().catch(() => "");
-        console.error(`[StorageProxy] forge error: ${forgeResp.status} ${body}`);
-        res.status(502).send("Storage backend error");
+        res.status(404).send("Asset not found");
         return;
       }
-
-      const { url } = (await forgeResp.json()) as { url: string };
+      const { url } = (await forgeResp.json()) as { url?: string };
       if (!url) {
-        res.status(502).send("Empty signed URL from backend");
+        res.status(404).send("Asset not found");
         return;
       }
-
-      res.set("Cache-Control", "no-store");
+      res.set("Cache-Control", "public, max-age=3600");
       res.redirect(307, url);
-    } catch (err) {
-      console.error("[StorageProxy] failed:", err);
-      res.status(502).send("Storage proxy error");
+    } catch (error) {
+      console.error("[StorageProxy] Storage error:", error);
+      res.status(502).send("Storage backend error");
     }
   });
 }

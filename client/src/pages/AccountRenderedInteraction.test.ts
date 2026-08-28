@@ -8,6 +8,7 @@ const state = vi.hoisted(() => ({
   requests: { data: [{ requestCode: "PR-TEST", orderNumber: "ORD-TEST", serviceKey: "account_setup", serviceLabel: "Account setup", paymentMethod: "kbzpay", amountMmk: 150000, status: "verified", reviewNote: null, createdAt: new Date("2026-08-26T00:00:00Z") }], isLoading: false, isError: false },
   notifications: { data: [{ id: 1, title: "Verified", message: "Your payment is verified.", readAt: null, createdAt: new Date("2026-08-26T00:00:00Z") }], isLoading: false, isError: false },
   unread: { data: 1, isLoading: false, isError: false },
+  invoices: { data: [], isLoading: false, isError: false },
   markAll: vi.fn(),
 }));
 
@@ -17,6 +18,7 @@ vi.mock("wouter", () => ({ Link: ({ children, href, ...props }: { children: Reac
 vi.mock("@/lib/trpc", () => ({
   trpc: {
     paymentRequest: { listMine: { useQuery: () => state.requests } },
+    invoice: { listMine: { useQuery: () => state.invoices }, downloadUrl: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) } },
     paymentNotification: {
       listMine: { useQuery: () => state.notifications },
       unreadCount: { useQuery: () => state.unread },

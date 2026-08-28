@@ -1,4 +1,5 @@
 import { startLogin } from "@/const";
+import { supabase } from "@/lib/supabase";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo } from "react";
@@ -27,8 +28,16 @@ export function useAuth(options?: UseAuthOptions) {
     },
   });
 
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+      void utils.auth.me.invalidate();
+    });
+    return () => listener.subscription.unsubscribe();
+  }, [utils]);
+
   const logout = useCallback(async () => {
     try {
+      await supabase.auth.signOut();
       await logoutMutation.mutateAsync();
     } catch (error: unknown) {
       if (
@@ -39,12 +48,7 @@ export function useAuth(options?: UseAuthOptions) {
       }
       throw error;
     } finally {
-      // Clear the Preview auto-login token mirrored into sessionStorage, so
-      // header-based sessions (Safari ITP / WebView) are logged out too. The
-      // backend cookie is cleared by the logout mutation.
-      try {
-        sessionStorage.removeItem("manus-cookie");
-      } catch {}
+      try { sessionStorage.removeItem("manus-cookie"); } catch {}
       utils.auth.me.setData(undefined, null);
       await utils.auth.me.invalidate();
     }

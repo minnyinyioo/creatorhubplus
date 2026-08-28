@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getDbMock } = vi.hoisted(() => ({ getDbMock: vi.fn() }));
+const { getDbMock, issueInvoiceForVerifiedPaymentMock } = vi.hoisted(() => ({ getDbMock: vi.fn(), issueInvoiceForVerifiedPaymentMock: vi.fn().mockResolvedValue({ invoiceNumber: "INV-TEST" }) }));
 vi.mock("./db", () => ({ getDb: getDbMock }));
+vi.mock("./invoices", () => ({ issueInvoiceForVerifiedPayment: issueInvoiceForVerifiedPaymentMock }));
 
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
@@ -37,5 +38,7 @@ describe("payment review notification integration", () => {
       expect(insertValues).toHaveBeenLastCalledWith(expect.objectContaining({ userId: 8, paymentRequestId: 44, kind: status, title: expect.stringContaining("ORD-TEST-44") }));
     }
     expect(insertValues).toHaveBeenCalledTimes(3);
+    expect(issueInvoiceForVerifiedPaymentMock).toHaveBeenCalledTimes(1);
+    expect(issueInvoiceForVerifiedPaymentMock).toHaveBeenCalledWith(44);
   });
 });

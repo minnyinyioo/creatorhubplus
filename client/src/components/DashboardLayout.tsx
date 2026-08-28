@@ -28,6 +28,7 @@ import { Archive, BadgeDollarSign, Bell, BookOpen, Check, FileCheck2, Landmark, 
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
+import { CreatorHubPlusLockup } from "./CreatorHubPlusMark";
 import { Button } from "./ui/button";
 
 const menuItems = [
@@ -242,13 +243,7 @@ function DashboardLayoutContent({
               >
                 <PanelLeft className="h-4 w-4 text-muted-foreground" />
               </button>
-                                {!isCollapsed ? (
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="font-semibold tracking-tight truncate">
-                        Navigation
-                      </span>
-                    </div>
-                  ) : null}
+                  {!isCollapsed ? <CreatorHubPlusLockup /> : null}
                   <NotificationMenu
                     unreadCount={unreadNotifications.data}
                     notifications={notificationList.data}

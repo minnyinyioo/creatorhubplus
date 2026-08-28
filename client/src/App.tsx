@@ -1,16 +1,14 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import AuthDialog from "@/components/AuthDialog";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch, useLocation } from "wouter";
 import { useEffect } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import BurmeseHome from "./pages/BurmeseHome";
 import Privacy from "./pages/Privacy";
-import BurmesePrivacy from "@/pages/BurmesePrivacy";
 import Terms from "@/pages/Terms";
-import BurmeseTerms from "@/pages/BurmeseTerms";
 import PaymentRequest from "@/pages/PaymentRequest";
 import StaffRecipients from "@/pages/StaffRecipients";
 import StaffReview from "@/pages/StaffReview";
@@ -23,8 +21,9 @@ import Account from "@/pages/Account";
 import StaffPricing from "@/pages/StaffPricing";
 
 export function getDocumentLocale(pathname: string, search = "") {
-  const queryLocale = new URLSearchParams(search).get("lang");
-  return pathname === "/my" || pathname.startsWith("/my/") || queryLocale === "my" ? "my" : "en";
+  void pathname;
+  void search;
+  return "en";
 }
 
 function DocumentLocale() {
@@ -35,6 +34,14 @@ function DocumentLocale() {
   return null;
 }
 
+function LegacyMyanmarRedirect() {
+  const [, setLocation] = useLocation();
+  useEffect(() => {
+    setLocation("/", { replace: true });
+  }, [setLocation]);
+  return null;
+}
+
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -42,11 +49,11 @@ function Router() {
       <DocumentLocale />
       <Switch>
       <Route path={"/"} component={Home} />
-      <Route path={"/my"} component={BurmeseHome} />
       <Route path={"/privacy"} component={Privacy} />
-      <Route path={"/my/privacy"} component={BurmesePrivacy} />
       <Route path={"/terms"} component={Terms} />
-      <Route path={"/my/terms"} component={BurmeseTerms} />
+      <Route path={"/my"} component={LegacyMyanmarRedirect} />
+      <Route path={"/my/privacy"} component={LegacyMyanmarRedirect} />
+      <Route path={"/my/terms"} component={LegacyMyanmarRedirect} />
       <Route path={"/payment"} component={PaymentRequest} />
       <Route path={"/account"} component={Account} />
       <Route path={"/staff/review"} component={StaffReview} />
@@ -79,6 +86,7 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
+          <AuthDialog />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

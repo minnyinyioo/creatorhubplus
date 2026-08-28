@@ -1,0 +1,1 @@
+ALTER TABLE `invoices` ADD `complianceNote` text DEFAULT ('This electronic invoice confirms a payment request marked as verified by CreatorHubPlus. Keep it for your records.') NOT NULL;

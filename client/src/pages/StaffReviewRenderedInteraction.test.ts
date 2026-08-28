@@ -23,14 +23,27 @@ vi.mock("@/components/ui/button", () => ({ Button: ({ children, onClick, disable
 
 vi.stubGlobal("React", React);
 let StaffReviewContent: React.ComponentType;
+let reviewActionLabel: (defaultLabel: string, isPending: boolean) => string;
 
 beforeAll(async () => {
-  ({ StaffReviewContent } = await import("./StaffReview"));
+  ({ StaffReviewContent, reviewActionLabel } = await import("./StaffReview"));
 });
 beforeEach(() => vi.clearAllMocks());
 afterEach(() => cleanup());
 
 describe("staff review quick actions rendered", () => {
+  it("renders the receipt-to-decision case route as part of the review desk", () => {
+    render(React.createElement(StaffReviewContent));
+    expect(document.querySelector(".case-route-rail")).toBeTruthy();
+    expect(screen.getByText("Receipt")).toBeTruthy();
+    expect(screen.getByText("Recipient match")).toBeTruthy();
+    expect(screen.getByText("Review decision")).toBeTruthy();
+  });
+
+  it("uses an explicit saving label while a review mutation is pending", () => {
+    expect(reviewActionLabel("Approve payment", true)).toBe("Saving review…");
+    expect(reviewActionLabel("Approve payment", false)).toBe("Approve payment");
+  });
   it("exposes approve and reject shortcuts and sends the selected request to the real mutation", async () => {
     render(React.createElement(StaffReviewContent));
     await waitFor(() => expect(screen.getByRole("button", { name: "Approve payment REQ-1" })).toBeTruthy());

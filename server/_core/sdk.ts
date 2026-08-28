@@ -6,6 +6,7 @@ import type { Request } from "express";
 import { SignJWT, jwtVerify } from "jose";
 import type { User } from "../../drizzle/schema";
 import * as db from "../db";
+import { getCreatorHubUser, verifySupabaseAccessToken } from "../supabase";
 import { ENV } from "./env";
 import type {
   ExchangeTokenRequest,
@@ -256,19 +257,21 @@ class SDKServer {
   }
 
   async authenticateRequest(req: Request): Promise<AuthenticatedUser> {
-    // 1. Prefer the session cookie (regular OAuth login).
-    const cookies = this.parseCookies(req.headers.cookie);
-    let sessionToken = cookies.get(COOKIE_NAME);
-
-    // 2. Fallback to the Authorization header (Preview auto-login via
-    //    sessionStorage), used when the browser blocks iframe cookies such as
-    //    Safari ITP, private browsing, or iOS/Android WebView.
-    if (!sessionToken) {
-      const authHeader = req.headers.authorization;
-      if (typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
-        sessionToken = authHeader.slice(7);
+    const authHeader = req.headers.authorization;
+    if (typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
+      const accessToken = authHeader.slice(7);
+      try {
+        const authUser = await verifySupabaseAccessToken(accessToken);
+        const user = await getCreatorHubUser(authUser);
+        if (user) return user;
+      } catch (error) {
+        console.warn("[Supabase Auth] Token verification failed", String(error));
       }
     }
+
+    // Temporary compatibility fallback for existing Manus sessions.
+    const cookies = this.parseCookies(req.headers.cookie);
+    let sessionToken = cookies.get(COOKIE_NAME);
 
     const session = await this.verifySession(sessionToken);
 

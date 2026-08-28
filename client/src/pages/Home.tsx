@@ -3,11 +3,10 @@
  * Brand direction: English-first platform support, warm editorial clarity, visible service pathways.
  */
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  BadgeCheck,
   Check,
   ChevronDown,
   CircleDollarSign,
@@ -17,16 +16,15 @@ import {
   Menu,
   MessageCircleMore,
   ShieldCheck,
-  Sparkles,
   WalletCards,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
-import { siFacebook, siPaypal, siTiktok, siYoutube, type SimpleIcon } from "simple-icons";
 import { useSiteLocale } from "@/lib/useSiteLocale";
 import CaseIntakeDialog, { type CaseServiceKey } from "@/components/CaseIntakeDialog";
-
-const logo = "/favicon.svg";
+import { CreatorHubPlusLockup } from "@/components/CreatorHubPlusMark";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { startLogin } from "@/const";
 
 const services = [
   {
@@ -85,10 +83,6 @@ const paymentMethods = [
   { label: "KASIKORNBANK", logo: "/manus-storage/kasikornbank-official_5108252c.png", kind: "bank" },
 ];
 
-function BrandGlyph({ icon, className }: { icon: SimpleIcon; className?: string }) {
-  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d={icon.path} fill="currentColor" /></svg>;
-}
-
 const steps = [
   ["01", "Tell us the real issue", "Choose the platform and issue type, then describe where progress has stopped."],
   ["02", "Get a clean path", "Receive a focused checklist, practical notes and a recommended next action."],
@@ -110,12 +104,27 @@ function openCookiePreferences() {
   (window as Window & { CookieConsent?: { showPreferences?: () => void } }).CookieConsent?.showPreferences?.();
 }
 
+export function runProtectedAction(isAuthenticated: boolean, onAuthorized: () => void, onUnauthenticated: () => void) {
+  if (isAuthenticated) { onAuthorized(); return "authorized" as const; }
+  onUnauthenticated();
+  return "authentication_required" as const;
+}
+
 export default function Home() {
   useSiteLocale("en", "CreatorHubPlus — Creator earnings and payout support");
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("Platform earnings");
   const [caseDialogOpen, setCaseDialogOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const [, setLocation] = useLocation();
   const selectedServiceRecord = services.find((service) => service.title === selectedService) ?? services[0];
+
+  const requireLogin = (next: () => void) => {
+    runProtectedAction(isAuthenticated, next, () => {
+      toast("Sign in is required before starting a case or payment request.");
+      startLogin();
+    });
+  };
 
   const chooseService = (service: string) => {
     setSelectedService(service);
@@ -126,8 +135,7 @@ export default function Home() {
     <div className="payout-site" id="top">
       <header className="payout-header">
         <a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}>
-          <img src={logo} alt="CreatorHubPlus Payout Bridge logo" />
-          <span>creatorhub<span>plus</span></span>
+          <CreatorHubPlusLockup label="CreatorHubPlus Payout Bridge" />
         </a>
         <nav className="payout-nav" aria-label="Main navigation">
           <a href="#services" onClick={() => scrollTo("#services")}>Services</a>
@@ -138,9 +146,8 @@ export default function Home() {
           <Link href="/workspace" className="workspace-nav-link">Workspace</Link>
         </nav>
         <div className="payout-actions">
-          <Link href="/my" className="language-link">မြန်မာ</Link>
-          <Link href="/payment" className="payment-nav-link">Payment request</Link>
-          <button className="header-cta" onClick={() => scrollTo("#start")}>Start a case <ArrowUpRight size={15} /></button>
+          <button className="payment-nav-link" onClick={() => requireLogin(() => setLocation("/payment"))}>Payment request</button>
+          <button className="header-cta" onClick={() => requireLogin(() => setCaseDialogOpen(true))}>Start a case <ArrowUpRight size={15} /></button>
           <button className="payout-menu" aria-label="Open navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={19} /> : <Menu size={20} />}</button>
         </div>
         {menuOpen && <div className="payout-mobile-menu">
@@ -156,19 +163,8 @@ export default function Home() {
             <p className="payout-eyebrow"><span /> MYANMAR CREATOR & BUSINESS SUPPORT</p>
             <h1>Earn online.<br /><em>Get paid.</em><br />Stay set up.</h1>
             <p className="hero-detail">CreatorHubPlus helps Myanmar creators and online businesses navigate earnings, payouts, account setup, and verified address requirements—one clear case at a time.</p>
-            <div className="hero-ctas"><button className="coral-button" onClick={() => scrollTo("#start")}>Tell us your issue <ArrowUpRight size={17} /></button><button className="quiet-button" onClick={() => scrollTo("#services")}>See services <ArrowDownRight size={17} /></button></div>
+            <div className="hero-ctas"><button className="coral-button" onClick={() => requireLogin(() => setCaseDialogOpen(true))}>Tell us your issue <ArrowUpRight size={17} /></button><button className="quiet-button" onClick={() => scrollTo("#services")}>See services <ArrowDownRight size={17} /></button></div>
             <p className="hero-rule"><ShieldCheck size={15} /> Clear support for legitimate platform use. No false documents. No shortcuts.</p>
-          </div>
-          <div className="payout-map" aria-label="Platform-to-payout route illustration">
-            <div className="map-topline"><span>YOUR PLATFORM PATH</span><i /><span>01 / 04</span></div>
-            <div className="platform-badge platform-one"><span><BrandGlyph icon={siFacebook} /></span> Facebook</div>
-            <div className="platform-badge platform-two"><span><BrandGlyph icon={siYoutube} /></span> YouTube</div>
-            <div className="platform-badge platform-three"><span><BrandGlyph icon={siTiktok} /></span> TikTok</div>
-            <div className="platform-badge platform-four"><span><BrandGlyph icon={siPaypal} /></span> PayPal</div>
-            <div className="route-line route-one" /><div className="route-line route-two" /><div className="route-line route-three" /><div className="route-line route-four" />
-            <div className="route-hub"><img src={logo} alt="" /><strong>Case path</strong><span>check → prepare → move</span></div>
-            <div className="route-status"><BadgeCheck size={16} /><span>Start with the<br /><b>real requirement</b></span></div>
-            <div className="map-foot"><span>Platform</span><b>→</b><span>Checklist</span><b>→</b><span>Next action</span></div>
           </div>
         </section>
 
@@ -196,14 +192,14 @@ export default function Home() {
           <div className="section-top-payout"><div><p className="payout-eyebrow">WHAT WE HELP WITH</p><h2>Four real problems.<br /><em>One clear place to start.</em></h2></div><p>Designed around the questions that delay online income—not around generic “digital services.”</p></div>
           <div className="service-grid-payout">
             {services.map(({ id, icon: Icon, title, subtitle, state, next, description, accent, caseKey }) => <article className={`payout-service-card ${accent}`} key={title}>
-              <div className="service-card-head"><span>{id}</span><p>ROUTE / {state}</p><Icon size={20} strokeWidth={1.65} /></div><i className="service-route" /><p className="service-subtitle">{subtitle}</p><h3>{title}</h3><p className="service-description">{description}</p><p className="service-next"><span>Next check</span>{next}</p><div className="service-file-end"><span>CASE READY</span><div className="service-card-actions"><button onClick={() => chooseService(title)}>Open route <ArrowUpRight size={16} /></button><Link className="service-payment-link" href={`/payment?service=${caseKey}`}>Pay for this service <ArrowUpRight size={15} /></Link></div></div>
+              <div className="service-card-head"><span>{id}</span><p>ROUTE / {state}</p><Icon size={20} strokeWidth={1.65} /></div><i className="service-route" /><p className="service-subtitle">{subtitle}</p><h3>{title}</h3><p className="service-description">{description}</p><p className="service-next"><span>Next check</span>{next}</p><div className="service-file-end"><span>CASE READY</span><div className="service-card-actions"><button onClick={() => chooseService(title)}>Open route <ArrowUpRight size={16} /></button><button className="service-payment-link" onClick={() => requireLogin(() => setLocation(`/payment?service=${caseKey}`))}>Pay for this service <ArrowUpRight size={15} /></button></div></div>
             </article>)}
           </div>
         </section>
 
         <section className="case-section" id="start">
           <div className="case-intro"><p className="payout-eyebrow"><span /> START A CASE</p><h2>What are you<br />trying to <em>unlock?</em></h2><p>Choose the closest path. This does not promise an outcome; it gives your situation a clean place to begin.</p></div>
-          <div className="case-chooser"><div className="case-choice-grid">{services.map(({ title, id, icon: Icon }) => <button key={title} className={selectedService === title ? "selected" : ""} onClick={() => setSelectedService(title)}><span>{id}</span><Icon size={18} /><strong>{title}</strong><i><Check size={14} /></i></button>)}</div><div className="case-selection"><p>YOUR STARTING POINT</p><h3>{selectedService}</h3><p>We will first help organize the requirement, the documents or settings involved, and your next legitimate action.</p><button className="navy-button" onClick={() => setCaseDialogOpen(true)}>Continue with this case <ArrowUpRight size={17} /></button></div></div>
+          <div className="case-chooser"><div className="case-choice-grid">{services.map(({ title, id, icon: Icon }) => <button key={title} className={selectedService === title ? "selected" : ""} onClick={() => setSelectedService(title)}><span>{id}</span><Icon size={18} /><strong>{title}</strong><i><Check size={14} /></i></button>)}</div><div className="case-selection"><p>YOUR STARTING POINT</p><h3>{selectedService}</h3><p>We will first help organize the requirement, the documents or settings involved, and your next legitimate action.</p><button className="navy-button" onClick={() => requireLogin(() => setCaseDialogOpen(true))}>Continue with this case <ArrowUpRight size={17} /></button></div></div>
         </section>
 
         <section className="how-section" id="how">
@@ -218,11 +214,11 @@ export default function Home() {
 
         <section className="faq-section" id="faq"><div className="faq-title"><p className="payout-eyebrow">HELP, WITHOUT THE FILLER</p><h2>Before you<br />start a case.</h2><CircleHelp size={34} /></div><div className="faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} /></summary><p>{answer}</p></details>)}</div></section>
 
-        <section className="contact-panel"><div><p className="payout-eyebrow light">READY WHEN THE ISSUE IS REAL</p><h2>Bring the platform.<br />We’ll map the <em>next move.</em></h2></div><div><p>Start with one situation, not a long form. We will help make the route clearer.</p><button onClick={() => scrollTo("#start")}>Start a support case <ArrowUpRight size={18} /></button></div></section>
+        <section className="contact-panel"><div><p className="payout-eyebrow light">READY WHEN THE ISSUE IS REAL</p><h2>Bring the platform.<br />We’ll map the <em>next move.</em></h2></div><div><p>Start with one situation, not a long form. We will help make the route clearer.</p><button onClick={() => requireLogin(() => setCaseDialogOpen(true))}>Start a support case <ArrowUpRight size={18} /></button></div></section>
       </main>
       <CaseIntakeDialog open={caseDialogOpen} serviceKey={selectedServiceRecord.caseKey as CaseServiceKey} serviceLabel={selectedServiceRecord.title} onClose={() => setCaseDialogOpen(false)} />
 
-      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><img src={logo} alt="CreatorHubPlus Payout Bridge logo" /><span>creatorhub<span>plus</span></span></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><button onClick={openCookiePreferences}>Manage Cookie Settings</button></div><div className="footer-note"><Sparkles size={17} /><p>Clear work is more valuable than fast promises.</p></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
+      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><CreatorHubPlusLockup label="CreatorHubPlus Payout Bridge" tone="inverse" /></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><button onClick={openCookiePreferences}>Manage Cookie Settings</button></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { Link } from "wouter";
 import { startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { CreatorHubPlusLockup } from "@/components/CreatorHubPlusMark";
 import {
   Archive as ArchiveIcon,
   ArrowUpRight,
@@ -69,32 +70,32 @@ export function toggleMoveState(moves: string[], item: string) {
 
 const viewContent: Record<ViewKey, { kicker: string; title: string; focus: string; progress: string; items: string[] }> = {
   Today: {
-    kicker: "SATURDAY / A QUIET START",
-    title: "Only one move\nneeds your full attention.",
-    focus: "Shape the opening for “The small offer”",
-    progress: "02 / 05 MOVES PLACED",
-    items: ["Read the two audience replies", "Cut the lesson outline to three parts", "Name the first downloadable asset"],
+    kicker: "OPEN CASE / TODAY",
+    title: "One case\nneeds a clear next step.",
+    focus: "Confirm the active payout route and its required details",
+    progress: "02 / 05 CHECKPOINTS COMPLETE",
+    items: ["Read the latest case note", "Confirm the required account setting", "Record the next verified action"],
   },
   Orbit: {
-    kicker: "PROJECT ORBIT / IN MOTION",
-    title: "A project is a\nset of returning decisions.",
-    focus: "Move “The small offer” from shape to share",
-    progress: "03 / 06 STAGES IN VIEW",
-    items: ["Confirm the offer boundary", "Draft the preview page", "Choose one channel for first release"],
+    kicker: "CASE LEDGER / ACTIVE ROUTE",
+    title: "Keep the route\nvisible and verified.",
+    focus: "Move the selected case from review to a verified next action",
+    progress: "03 / 06 ROUTE CHECKPOINTS",
+    items: ["Confirm the case boundary", "Review the supporting evidence", "Choose the next compliant step"],
   },
   Rhythm: {
-    kicker: "PUBLISHING RHYTHM / THIS WEEK",
-    title: "Let the work keep\na beat you can live with.",
-    focus: "Prepare the Thursday field note",
-    progress: "03 / 04 PUBLISHING POINTS",
-    items: ["Pull the source note", "Add one useful example", "Set the re-use path"],
+    kicker: "FOLLOW-UP WINDOW / THIS WEEK",
+    title: "Keep every update\nattached to the case.",
+    focus: "Prepare the next follow-up note for the open request",
+    progress: "03 / 04 FOLLOW-UPS READY",
+    items: ["Review the staff note", "Add one clear clarification", "Set the return path"],
   },
   Offers: {
-    kicker: "OFFER SHELF / NEXT RELEASE",
-    title: "Give your expertise\na useful shape.",
-    focus: "Finish the first edition of the Studio Pack",
-    progress: "01 / 03 OFFER PIECES READY",
-    items: ["Name the collection", "Place the first template", "Write the one-sentence promise"],
+    kicker: "SERVICE PATHS / AVAILABLE",
+    title: "Keep each service\nclear before payment.",
+    focus: "Review the selected service path and published payment route",
+    progress: "01 / 03 SERVICE CHECKS READY",
+    items: ["Confirm the service name", "Review the published price", "Write the next-step note"],
   },
 };
 
@@ -259,9 +260,9 @@ export default function Workspace() {
           <Link href="/" className="orbit-mark" aria-label="返回 CreatorHubPlus 首页"><img src="/favicon.svg" alt="" /></Link>
           <button className="rail-collapse" onClick={() => setRailOpen(false)} aria-label="关闭导航"><Menu size={18} /></button>
         </div>
-        <div className="rail-workspace"><span className="mini-avatar">M</span><div><strong>{settingsQuery.data?.studioName ?? "My studio"}</strong><small>Personal space</small></div><ChevronDown size={14} /></div>
+        <div className="rail-workspace"><span className="mini-avatar">M</span><div><strong>{settingsQuery.data?.studioName ?? "My case desk"}</strong><small>Signed-in case workspace</small></div><ChevronDown size={14} /></div>
         <nav className="rail-nav">
-          <p>WORKING VIEW</p>
+          <p>CASE DESK</p>
           {views.map(({ label, icon: Icon }) => (
             <button key={label} className={activeView === label ? "active" : ""} onClick={() => chooseView(label)}>
               <Icon size={16} strokeWidth={1.7} /><span>{label}</span>{activeView === label && <i />}
@@ -271,13 +272,13 @@ export default function Workspace() {
           <Link className="rail-link" href="/archive"><BookOpen size={16} strokeWidth={1.7} /><span>Archive</span></Link>
           <Link className="rail-link" href="/library"><LibraryBig size={16} strokeWidth={1.7} /><span>Library</span></Link>
         </nav>
-        <div className="rail-bottom"><button onClick={() => toast("快捷搜索已准备就绪。")}> <Search size={15} /> Search <kbd>⌘ K</kbd></button><Link href="/">Back to studio <ArrowUpRight size={14} /></Link></div>
+        <div className="rail-bottom"><button onClick={() => toast("快捷搜索已准备就绪。")}> <Search size={15} /> Search <kbd>⌘ K</kbd></button><Link href="/">Back to Payout Bridge <ArrowUpRight size={14} /></Link></div>
       </aside>
 
       <div className="app-stage">
         <header className="app-topbar">
           <button className="app-menu" onClick={() => setRailOpen((value) => !value)} aria-label="打开导航"><Menu size={19} /></button>
-          <div className="app-crumb"><span>CreatorHubPlus</span><i /> <strong>{activeView}</strong></div>
+          <div className="app-crumb"><CreatorHubPlusLockup className="workspace-crumb-logo" label="CreatorHubPlus" /><i /> <strong>{activeView}</strong></div>
           <div className="app-top-actions"><button aria-label="通知" onClick={() => toast("今天没有新的需要回应的项目更新。")}><Bell size={17} /></button><button className="avatar-button" onClick={() => toast("个人设置将在帐户接入后可用。")}>M</button></div>
         </header>
 
@@ -285,22 +286,22 @@ export default function Workspace() {
           <section className="app-intro">
             <p className="app-kicker">{content.kicker}</p>
             <h1>{content.title.split("\n").map((line) => <span key={line}>{line}</span>)}</h1>
-            <div className="app-intro-meta"><span className="live-dot" /> A living workspace, not another dashboard.</div>
+            <div className="app-intro-meta"><span className="live-dot" /> A signed-in case ledger for payout, account and verification work.</div>
           </section>
 
           <section className="focus-field" aria-labelledby="focus-heading">
-            <div className="focus-field-top"><p id="focus-heading">YOUR NEXT MOVE</p><button onClick={() => setFocusMode((value) => !value)}>{focusMode ? "Exit focus" : "Enter focus"}<Target size={15} /></button></div>
+            <div className="focus-field-top"><p id="focus-heading">NEXT CASE ACTION</p><button onClick={() => setFocusMode((value) => !value)}>{focusMode ? "Exit focus" : "Enter focus"}<Target size={15} /></button></div>
             <div className="focus-field-core">
               <div className="focus-index"><span>01</span><i /><span>NOW</span></div>
               <h2>{content.focus}</h2>
-              <div className="focus-tags"><span><FolderKanban size={14} />The small offer</span><span className="focus-timer"><Clock3 size={14} />{timerLabel}</span></div>
-              <div className="focus-field-actions"><button className={`start-focus${timerRunning ? " is-running" : ""}`} onClick={toggleTimer}><Play size={15} fill="currentColor" />{timerRunning ? "Pause focused session" : timerSeconds === 0 ? "Restart focused session" : "Begin a focused session"}</button><button className="more-focus" onClick={() => toast("下一步可以拆成更小的动作。")}>More <MoreHorizontal size={18} /></button></div>
+              <div className="focus-tags"><span><FolderKanban size={14} />Active service route</span><span className="focus-timer"><Clock3 size={14} />{timerLabel}</span></div>
+              <div className="focus-field-actions"><button className={`start-focus${timerRunning ? " is-running" : ""}`} onClick={toggleTimer}><Play size={15} fill="currentColor" />{timerRunning ? "Pause case timer" : timerSeconds === 0 ? "Restart case timer" : "Begin case review"}</button><button className="more-focus" onClick={() => toast("下一步可以拆成更小的案例检查点。")}>More <MoreHorizontal size={18} /></button></div>
             </div>
             <img className="field-atmosphere" src={atmosphereImage} alt="" />
           </section>
 
           <section className="movement-list" aria-labelledby="movement-heading">
-            <div className="movement-list-head"><div><p className="app-kicker">IN THE SAME ORBIT</p><h2 id="movement-heading">Small moves keep<br />the work in motion.</h2></div><span>{progressLabel}</span></div>
+            <div className="movement-list-head"><div><p className="app-kicker">CASE CHECKPOINTS</p><h2 id="movement-heading">Clear records keep<br />the case moving.</h2></div><span>{progressLabel}</span></div>
             <div className="movement-rows">
               {tasks.map((task, index) => {
                 const isComplete = task.completed === 1;
@@ -311,15 +312,15 @@ export default function Workspace() {
               })}
             </div>
             {composerOpen && <form className="task-composer" onSubmit={submitNewTask}><input aria-label="New task title" value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder="Name the next small move" autoFocus /><select aria-label="Task duration" value={newDuration} onChange={(event) => setNewDuration(event.target.value)}><option value="10">10 min</option><option value="25">25 min</option><option value="50">50 min</option></select><button type="submit" disabled={createTask.isPending}>Add task</button></form>}
-            <button className="add-move" onClick={() => isAuthenticated ? setComposerOpen((open) => !open) : startLogin()}><CirclePlus size={17} /> {composerOpen ? "Close task composer" : "Add a small move"}</button>
+            <button className="add-move" onClick={() => isAuthenticated ? setComposerOpen((open) => !open) : startLogin()}><CirclePlus size={17} /> {composerOpen ? "Close checkpoint composer" : "Add a case checkpoint"}</button>
           </section>
         </main>
       </div>
 
       <aside className="app-context" aria-label="工作上下文">
-        <div className="context-section context-name"><p>IN CONTEXT</p><h2>The small<br />offer</h2><span>EARLY SHAPING</span></div>
-        <div className="context-section orbit-diagram"><div className="orbit-line orbit-one" /><div className="orbit-line orbit-two" /><div className="orbit-node now">NOW</div><div className="orbit-node done">01</div><div className="orbit-node next">03</div><span>Project orbit</span></div>
-        <div className="context-section context-note"><div><Sparkles size={15} /><p>FIELD NOTE</p></div><blockquote>“A smaller offer is easier to understand, make, and improve.”</blockquote><button onClick={() => toast("Field notes keep useful decisions attached to the work.")}>Open note <ArrowUpRight size={14} /></button></div>
+        <div className="context-section context-name"><p>CASE CONTEXT</p><h2>Active service<br />route</h2><span>PENDING NEXT ACTION</span></div>
+        <div className="context-section orbit-diagram"><div className="orbit-line orbit-one" /><div className="orbit-line orbit-two" /><div className="orbit-node now">NOW</div><div className="orbit-node done">01</div><div className="orbit-node next">03</div><span>Case route</span></div>
+        <div className="context-section context-note"><div><Sparkles size={15} /><p>CASE NOTE</p></div><blockquote>“A clear verified step is more useful than a fast promise.”</blockquote><button onClick={() => toast("Case notes keep decisions attached to the record.")}>Open note <ArrowUpRight size={14} /></button></div>
         <div className="context-section context-footer"><Link href="/settings"><Command size={15} /> Project settings</Link><button onClick={() => toast("No automation is running for this work yet.")}><WandSparkles size={15} /> Add a simple rule</button></div>
       </aside>
     </div>

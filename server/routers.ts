@@ -8,6 +8,7 @@ import { listPaymentRequestsForReview, reviewPaymentRequest, REVIEW_STATUSES } f
 import { listPaymentRequestsForUser, paymentMethodSchema } from "./paymentRequests";
 import { listPaymentServiceCatalog, paymentServicePriceUpdateSchema, updatePaymentServicePrice } from "./paymentCatalog";
 import { countUnreadPaymentNotifications, listPaymentNotificationsForUser, markAllPaymentNotificationsRead, markPaymentNotificationRead } from "./paymentNotifications";
+import { getInvoiceDownloadUrl, listInvoicesForUser } from "./invoices";
 import { CASE_STATUSES, caseServiceKeySchema, createSupportCase, listSupportCasesForReview, listSupportCasesForUser, reviewSupportCase } from "./supportCases";
 import { archiveWorkspaceTask, createWorkspaceTask, deleteWorkspaceTask, listArchivedWorkspaceTasks, listWorkspaceTasks, updateWorkspaceTask, workspaceTaskArchiveSchema, workspaceTaskCreateSchema, workspaceTaskDeleteSchema, workspaceTaskUpdateSchema, workspaceViewKeySchema } from "./workspaceTasks";
 import { createLibraryItem, deleteLibraryItem, libraryItemCreateSchema, libraryItemDeleteSchema, libraryItemUpdateSchema, listLibraryItems, updateLibraryItem } from "./workspaceLibrary";
@@ -44,11 +45,15 @@ export const appRouter = router({
   }),
   paymentRequest: router({
     listMine: protectedProcedure.query(({ ctx }) => listPaymentRequestsForUser(ctx.user.id)),
-    recipient: publicProcedure.input(z.object({ paymentMethod: paymentMethodSchema })).query(({ input }) => getActiveMerchantRecipient(input.paymentMethod)),
+    recipient: protectedProcedure.input(z.object({ paymentMethod: paymentMethodSchema })).query(({ input }) => getActiveMerchantRecipient(input.paymentMethod)),
   }),
   paymentCatalog: router({
     list: publicProcedure.query(() => listPaymentServiceCatalog()),
     updatePrice: adminProcedure.input(paymentServicePriceUpdateSchema).mutation(({ ctx, input }) => updatePaymentServicePrice(ctx.user.id, input)),
+  }),
+  invoice: router({
+    listMine: protectedProcedure.query(({ ctx }) => listInvoicesForUser(ctx.user.id)),
+    downloadUrl: protectedProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ ctx, input }) => getInvoiceDownloadUrl(ctx.user.id, input.id)),
   }),
   paymentNotification: router({
     listMine: protectedProcedure.query(({ ctx }) => listPaymentNotificationsForUser(ctx.user.id)),

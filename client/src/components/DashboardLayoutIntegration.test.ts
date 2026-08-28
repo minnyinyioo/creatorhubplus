@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const state = vi.hoisted(() => ({
@@ -52,7 +52,19 @@ beforeAll(async () => {
 });
 
 describe("DashboardLayout notification wiring", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
+
+  it("renders the shared C+ Link Logo in the protected workspace shell", () => {
+    const view = render(React.createElement(DashboardLayout, null, React.createElement("div", null, "Account content")));
+
+    const wordmark = view.container.querySelector(".creatorhubplus-logo__words");
+    expect(view.container.querySelector(".creatorhubplus-logo")).toBeTruthy();
+    expect(view.container.querySelector(".creatorhubplus-cmark")).toBeTruthy();
+    expect(wordmark?.getAttribute("data-wordmark")).toBe("creatorhubplus");
+  });
 
   it("calls the protected bulk-read mutation and invalidates both notification caches", async () => {
     render(React.createElement(DashboardLayout, null, React.createElement("div", null, "Account content")));

@@ -6,11 +6,13 @@ const state = vi.hoisted(() => ({
   requests: { data: undefined as unknown, isLoading: false, isError: false },
   notifications: { data: undefined as unknown, isLoading: false, isError: false },
   unread: { data: undefined as unknown, isLoading: false, isError: false },
+  invoices: { data: undefined as unknown, isLoading: false, isError: false },
 }));
 
 vi.mock("@/lib/trpc", () => ({
   trpc: {
     paymentRequest: { listMine: { useQuery: () => state.requests } },
+    invoice: { listMine: { useQuery: () => state.invoices }, downloadUrl: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) } },
     paymentNotification: {
       listMine: { useQuery: () => state.notifications },
       unreadCount: { useQuery: () => state.unread },
@@ -36,6 +38,7 @@ function resetState() {
   state.requests = { data: undefined, isLoading: false, isError: false };
   state.notifications = { data: undefined, isLoading: false, isError: false };
   state.unread = { data: undefined, isLoading: false, isError: false };
+  state.invoices = { data: undefined, isLoading: false, isError: false };
 }
 
 function renderAccount() {
@@ -70,6 +73,16 @@ describe("personal centre component states", () => {
     const html = renderAccount();
     expect(html).toContain("No payment orders match these filters yet");
     expect(html).toContain("New payment-review updates will appear here");
+  });
+
+  it("renders the payment case-ledger route as a structural part of the page", () => {
+    const html = renderAccount();
+    expect(html).toContain("case-ledger-page");
+    expect(html).toContain("case-route-rail");
+    expect(html).toContain("01");
+    expect(html).toContain("Payment record");
+    expect(html).toContain("Review update");
+    expect(html).toContain("Next action");
   });
 
   it("renders order status, staff note and next step for a real review update", () => {

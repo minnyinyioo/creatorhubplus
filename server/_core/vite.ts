@@ -9,6 +9,9 @@ import viteConfig from "../../vite.config";
 export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
     middlewareMode: true,
+    // Use the browser-facing origin for HMR. The preview proxy maps HTTPS
+    // WebSockets to this shared server, so exposing the internal port would
+    // make the browser try wss://<preview-host>:3000 and close before opening.
     hmr: { server },
     allowedHosts: true as const,
   };

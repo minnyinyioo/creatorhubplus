@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { paymentRequests, users } from "../drizzle/schema";
 import { getDb } from "./db";
 import { createPaymentNotification } from "./paymentNotifications";
+import { issueInvoiceForVerifiedPayment } from "./invoices";
 
 export const REVIEW_STATUSES = ["pending_review", "clarification_requested", "verified", "rejected"] as const;
 export type ReviewStatus = (typeof REVIEW_STATUSES)[number];
@@ -83,6 +84,20 @@ export async function reviewPaymentRequest(input: { requestCode: string; status:
 
   if (result[0].affectedRows === 0) {
     throw new TRPCError({ code: "CONFLICT", message: "This request was already reviewed or does not exist." });
+  }
+
+  if (input.status === "verified") {
+    try {
+      await issueInvoiceForVerifiedPayment(request.id);
+    } catch (error) {
+      await db.update(paymentRequests).set({
+        status: request.status,
+        reviewNote: null,
+        reviewedByUserId: null,
+        reviewedAt: null,
+      }).where(eq(paymentRequests.requestCode, input.requestCode));
+      throw error;
+    }
   }
 
   await createPaymentNotification({
