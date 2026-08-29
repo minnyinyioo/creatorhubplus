@@ -6,8 +6,13 @@ import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
 import { startLogin } from "./const";
+import { initAuthReturnHandling } from "@/lib/authReturn";
 import { supabase } from "@/lib/supabase";
 import "./index.css";
+
+// Handle the Supabase magic-link return visit (PKCE code, implicit hash or
+// error redirect) exactly once, at startup, before any protected query fires.
+void initAuthReturnHandling();
 
 const queryClient = new QueryClient();
 

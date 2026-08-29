@@ -151,6 +151,7 @@ export default function Home() {
           <button className="payout-menu" aria-label="Open navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={19} /> : <Menu size={20} />}</button>
         </div>
         {menuOpen && <div className="payout-mobile-menu">
+          <button onClick={() => { setMenuOpen(false); requireLogin(() => setLocation("/payment")); }}>Payment request<ArrowUpRight size={17} /></button>
           {[["Services", "#services"], ["How it works", "#how"], ["Trust & rules", "#trust"], ["Help", "#faq"]].map(([label, target]) => <button key={label} onClick={() => { setMenuOpen(false); scrollTo(target); }}>{label}<ArrowUpRight size={17} /></button>)}
           <Link href="/account" onClick={() => setMenuOpen(false)}>Personal centre<ArrowUpRight size={17} /></Link>
           <Link href="/workspace" onClick={() => setMenuOpen(false)}>Workspace<ArrowUpRight size={17} /></Link>
@@ -166,6 +167,23 @@ export default function Home() {
             <div className="hero-ctas"><button className="coral-button" onClick={() => requireLogin(() => setCaseDialogOpen(true))}>Tell us your issue <ArrowUpRight size={17} /></button><button className="quiet-button" onClick={() => scrollTo("#services")}>See services <ArrowDownRight size={17} /></button></div>
             <p className="hero-rule"><ShieldCheck size={15} /> Clear support for legitimate platform use. No false documents. No shortcuts.</p>
           </div>
+          <aside className="payout-route-panel" aria-label="How a case moves from check to prepare">
+            <div className="route-panel-topline"><span>PAYOUT BRIDGE</span><i /><span>CASE PATH</span></div>
+            <svg className="route-panel-orbit" viewBox="0 0 120 120" aria-hidden="true">
+              <path d="M95 34a42 42 0 1 0 8 24" fill="none" stroke="#075f5a" strokeWidth="1.6" strokeLinecap="round" />
+              <path d="M103 56 115 43" fill="none" stroke="#d36f55" strokeWidth="1.6" strokeLinecap="round" />
+              <circle cx="115" cy="43" r="2.4" fill="#d36f55" />
+            </svg>
+            <div className="route-nodes">
+              {services.map(({ id, state, title }) => <div className="route-node" key={id}><b>{id}</b><div><span>{state}</span><strong>{title}</strong></div></div>)}
+            </div>
+            <div className="route-panel-foot"><span>One case. One clear next step.</span><i /></div>
+          </aside>
+        </section>
+
+        <section className="capability-strip" aria-label="Service capabilities">
+          <p className="capability-strip-label">WHAT WE HANDLE</p>
+          <ul>{services.map(({ id, title }) => <li key={id}><b>{id}</b>{title}</li>)}</ul>
         </section>
 
         <section className="payment-section" aria-label="Payment route overview">
@@ -218,7 +236,7 @@ export default function Home() {
       </main>
       <CaseIntakeDialog open={caseDialogOpen} serviceKey={selectedServiceRecord.caseKey as CaseServiceKey} serviceLabel={selectedServiceRecord.title} onClose={() => setCaseDialogOpen(false)} />
 
-      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><CreatorHubPlusLockup label="CreatorHubPlus Payout Bridge" tone="inverse" /></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><button onClick={openCookiePreferences}>Manage Cookie Settings</button></div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
+      <footer className="payout-footer"><div className="footer-logo-line"><a href="#top" className="payout-brand" onClick={() => scrollTo("#top")}><CreatorHubPlusLockup label="CreatorHubPlus Payout Bridge" tone="inverse" /></a><p>Creator earnings, payouts and setup support for Myanmar.</p></div><div className="footer-columns"><div><b>START HERE</b><a href="#services" onClick={() => scrollTo("#services")}>Services</a><a href="#start" onClick={() => scrollTo("#start")}>Start a case</a><a href="#how" onClick={() => scrollTo("#how")}>How it works</a></div><div><b>SUPPORT RULES</b><a href="#trust" onClick={() => scrollTo("#trust")}>Trust & rules</a><a href="#faq" onClick={() => scrollTo("#faq")}>Questions</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><button onClick={openCookiePreferences}>Manage Cookie Settings</button></div><div><b>SERVICE ROUTES</b>{services.map(({ title }) => <a href="#services" key={title} onClick={() => scrollTo("#services")}>{title}</a>)}</div></div><div className="footer-base"><span>© 2026 CreatorHubPlus</span><span>Not affiliated with third-party platforms.</span></div></footer>
     </div>
   );
 }

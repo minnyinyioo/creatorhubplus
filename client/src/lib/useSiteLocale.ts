@@ -6,7 +6,9 @@ declare global {
   interface Window { CookieConsent?: CookieConsentApi }
 }
 
-export function useSiteLocale(language: "en", title: string) {
+// "my" remains accepted so the legacy (unrouted) Burmese pages keep
+// type-checking; active routes are English-only per the locale contract.
+export function useSiteLocale(language: "en" | "my", title: string) {
   useEffect(() => {
     document.documentElement.classList.add("locale-changing");
     document.documentElement.lang = language;

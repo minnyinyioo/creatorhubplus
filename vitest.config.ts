@@ -15,5 +15,14 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["server/**/*.test.ts", "server/**/*.spec.ts", "client/**/*.test.ts", "client/**/*.spec.ts"],
+    // client/src/lib/supabase.ts constructs the browser client at import time,
+    // which throws without a URL. Placeholder public values let client suites
+    // run on machines without deployment env vars. They are intentionally NOT
+    // real credentials: server/supabase.credentials.test.ts is a live smoke
+    // test and still requires the deployment environment's real values.
+    env: {
+      VITE_SUPABASE_URL: "https://placeholder.supabase.co",
+      VITE_SUPABASE_PUBLISHABLE_KEY: "public-placeholder-anon-key",
+    },
   },
 });

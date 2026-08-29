@@ -1,5 +1,5 @@
 /* CreatorHubPlus — Payout Bridge: Myanmar-first service clarity, saturated signals, warm paper, reliable paths. */
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500;12..96,75..100,600;12..96,75..100,700;12..96,75..100,800&family=JetBrains+Mono:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Manrope:wght@400;500;600;700;800&family=Pixelify+Sans:wght@400..700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500;12..96,75..100,600;12..96,75..100,700;12..96,75..100,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Manrope:wght@400;500;600;700;800&family=Pixelify+Sans:wght@400..700&family=Space+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -336,3 +336,220 @@ body{background-image:radial-gradient(rgba(76,57,32,.08) .6px,transparent .7px),
 
 /* Catch utility-class white type in shared components and fallback routes. */
 .text-white,.text-\[\#fff\],.text-\[\#ffffff\]{color:var(--type-orange)!important}
+
+/* =====================================================================
+   ORBIT REDESIGN LAYER (2026-08) — final authority for the public site.
+   Direction: brand-system.md — Orbit Teal #075F5A, Deep Ink #122421,
+   Cloud #F4FAF7, Field Gray #D6DDD8, Signal Clay #D36F55 as the single
+   accent. Headings: Instrument Sans. Body/UI: DM Sans. All earlier theme
+   layers stay in the file as history; their tokens are re-pointed below
+   so every inherited rule resolves onto the Orbit system.
+   ===================================================================== */
+:root{
+  /* New semantic tokens */
+  --chp-teal:#075f5a;--chp-teal-deep:#04423e;--chp-ink:#122421;--chp-cloud:#f4faf7;--chp-cloud-raised:#fbfdfc;--chp-cloud-deep:#e9f3ee;--chp-field:#d6ddd8;--chp-mist:#e3efeb;--chp-clay:#d36f55;--chp-clay-text:#a4512f;--chp-muted:#4e635d;--chp-shadow:rgba(18,36,33,.10);
+  --chp-font-body:"DM Sans","Manrope",-apple-system,"Segoe UI",sans-serif;
+  --chp-font-display:"Instrument Sans","DM Sans","Manrope",sans-serif;
+  --chp-font-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+  /* Re-point every earlier theme layer onto the Orbit system */
+  --navy:#075f5a;--navy-deep:#04423e;--blue:#075f5a;--blue-soft:#e3efeb;
+  --orange:#d36f55;--orange-soft:#f7e2d9;--type-orange:#122421;--type-orange-bright:#075f5a;
+  --paper:#f4faf7;--paper-2:#e9f3ee;--ink:#122421;--muted:#4e635d;--line:#d6ddd8;
+  --book-paper:#f4faf7;--book-paper-light:#fbfdfc;--book-paper-deep:#e9f3ee;--book-ink:#122421;--book-muted:#4e635d;--book-line:#d6ddd8;--book-teal:#075f5a;--book-shadow:rgba(18,36,33,.10);
+  --brand-paper:#f4faf7;--brand-paper-deep:#e9f3ee;--brand-mist:#e3efeb;--brand-mist-deep:#d5e5df;--brand-teal:#075f5a;--brand-deep:#04423e;--brand-ink:#122421;--brand-clay:#d36f55;--brand-line:#cfdad3;
+  --mono:#075f5a;--mono-deep:#04423e;--mono-soft:#e3efea;--mono-line:#c9d8d1;
+  --unified-bg:#f4faf7;--unified-surface:#fbfdfc;--unified-line:#d6ddd8;--unified-ink:#122421;--unified-muted:#4e635d;
+  --w3-ink:#122421;--w3-panel:#0d211c;--w3-paper:#f4faf7;--w3-muted:#4e635d;--w3-line:#d6ddd8;--w3-glass:rgba(255,255,255,.74);
+  --glass-base:#f4faf7;--glass-deep:#075f5a;--glass-dark:#04423e;--glass-surface:rgba(255,255,255,.78);--glass-surface-strong:rgba(255,255,255,.9);--glass-mist:rgba(227,239,235,.72);--glass-line:rgba(7,95,90,.16);--glass-highlight:rgba(255,255,255,.92);
+  --matrix-neon:#075f5a;--matrix-neon-soft:#5f8f88;--matrix-ink:#041210;--matrix-panel:rgba(4,22,18,.9);--matrix-panel-strong:rgba(3,16,13,.94);--matrix-line:rgba(7,95,90,.3);--matrix-muted:#8fb5ae;--matrix-glow:rgba(7,95,90,.2);
+  --terminal-text:#122421;--terminal-text-soft:#24413a;--terminal-control:#075f5a;--terminal-control-hover:#0a756e;
+  --terminal-font:var(--chp-font-mono);--terminal-display:var(--chp-font-display);--pixel-font:var(--chp-font-body);
+  --surface-radius:4px;
+}
+/* Tailwind v4 theme tokens: make the shadcn/radix dashboard utilities resolve
+   onto the Orbit system (bg-primary, text-muted-foreground, bg-sidebar, …). */
+@theme{
+  --font-sans:"DM Sans","Manrope",sans-serif;
+  --color-primary:#075f5a;--color-primary-foreground:#f4faf7;
+  --color-secondary:#e3efeb;--color-secondary-foreground:#122421;
+  --color-background:#f4faf7;--color-foreground:#122421;
+  --color-muted:#e3efeb;--color-muted-foreground:#4e635d;
+  --color-accent:#e3efeb;--color-accent-foreground:#122421;
+  --color-destructive:#b3442e;
+  --color-border:#d6ddd8;--color-input:#d6ddd8;--color-ring:#075f5a;
+  --color-card:#fbfdfc;--color-card-foreground:#122421;
+  --color-popover:#fbfdfc;--color-popover-foreground:#122421;
+  --color-sidebar:#fbfdfc;--color-sidebar-foreground:#122421;--color-sidebar-accent:#e3efeb;--color-sidebar-accent-foreground:#075f5a;--color-sidebar-border:#d6ddd8;--color-sidebar-ring:#075f5a;--color-sidebar-primary:#075f5a;--color-sidebar-primary-foreground:#f4faf7;
+}
+
+/* ---- Typography takeover: DM Sans body/UI, Instrument Sans display ---- */
+html,body,#root,.payout-site,.payment-page,.privacy-page,.companion-page,.case-ledger-page,.working-surface,.payment-shell,.privacy-content,.account-page,.staff-page,.workspace-page,.archive-page,.library-page,.settings-page{font-family:var(--chp-font-body)!important}
+body,button,input,textarea,select,[data-slot="input"],[data-slot="textarea"],[role="combobox"],#cc-main{font-family:var(--chp-font-body)!important;font-synthesis:none;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.payout-site h1,.payout-site h2,.payout-site h3,.payout-site h4,.payment-page h1,.payment-page h2,.payment-page h3,.privacy-page h1,.privacy-page h2,.privacy-page h3,.case-ledger-page h1,.case-ledger-page h2,.case-ledger-page h3,.dashboard-layout-shell h1,.dashboard-layout-shell h2,.dashboard-layout-shell h3,.faq-list summary,.hero-copy-payout h1,.section-top-payout h2,.case-intro h2,.how-header h2,.trust-statement h2,.faq-title h2,.contact-panel h2{font-family:var(--chp-font-display)!important;letter-spacing:-.025em;font-weight:700}
+.payout-site p,.payout-site span,.payout-site label,.payout-site li,.payment-page p,.payment-page span,.payment-page label,.privacy-page p,.privacy-page span,.privacy-page label,.case-ledger-page p,.case-ledger-page span,.case-ledger-page label,.dashboard-layout-shell p,.dashboard-layout-shell span,.dashboard-layout-shell label{font-family:var(--chp-font-body)!important}
+.payment-page .payment-hero h1,.payment-page .payment-hero h1 em,.privacy-page .privacy-hero h1,.privacy-page .privacy-hero h1 em,.payment-section-banner h2,.payment-section-banner h2 em,.trust-section h2,.trust-section h2 em,.contact-panel h2,.contact-panel h2 em{font-family:var(--chp-font-display)!important}
+.creatorhubplus-logo__words,.creatorhubplus-logo__words *,.payout-brand>span,.privacy-brand{font-family:var(--chp-font-display)!important;letter-spacing:-.02em}
+.payout-brand{font-family:var(--chp-font-display)!important;font-size:16.5px;font-weight:700;letter-spacing:-.03em}
+.payout-nav a,.payment-nav-link{font-family:var(--chp-font-body)!important;font-size:13px!important;letter-spacing:0!important}
+#cc-main .cm,#cc-main .pm,#cc-main .cm__content,#cc-main .pm__body,#cc-main .pm__footer,#cc-main .cm h2,#cc-main .cm p,#cc-main .pm h2,#cc-main .pm p,#cc-main .pm__section-title,#cc-main button{font-family:var(--chp-font-body)!important}
+.service-card-head span,.how-steps article>span,.footer-columns b,.route-panel-topline,.route-node b{font-family:var(--chp-font-mono)!important}
+::selection{background:rgba(7,95,90,.18)}
+.text-white,.text-\[\#fff\],.text-\[\#ffffff\]{color:#f4faf7!important}
+.payout-eyebrow,.privacy-eyebrow{font-size:10px!important;font-weight:700!important;letter-spacing:.15em!important;color:var(--chp-teal)!important}
+.payout-eyebrow.light{color:#9fd4cb!important}
+#services,#how,#trust,#faq,#start{scroll-margin-top:76px}
+
+/* ---- Controls: one teal primary; Signal Clay only for exceptions ---- */
+.header-cta,.coral-button,.navy-button,.payment-primary,.companion-primary,.case-dialog-submit,.trust-statement button,.contact-panel button,.auth-dialog-submit,.case-choice-grid button.selected,.payment-service-grid button.selected,.rail-nav button.active{background:var(--chp-teal)!important;border-color:var(--chp-teal)!important;color:var(--chp-cloud)!important;box-shadow:0 4px 12px rgba(7,95,90,.16)!important}
+.header-cta:hover,.coral-button:hover,.navy-button:hover,.payment-primary:hover,.companion-primary:hover,.case-dialog-submit:hover,.trust-statement button:hover,.contact-panel button:hover,.auth-dialog-submit:hover{background:var(--chp-teal-deep)!important;border-color:var(--chp-teal-deep)!important;color:var(--chp-cloud)!important;box-shadow:0 8px 18px rgba(7,95,90,.22)!important}
+.header-cta,.coral-button,.navy-button,.payment-primary,.companion-primary,.case-dialog-submit,.auth-dialog-submit{font-weight:600;letter-spacing:.01em}
+.header-cta{padding:9px 14px;font-size:12.5px}
+.case-choice-grid button.selected>span,.case-choice-grid button.selected strong,.payment-service-grid button.selected strong{color:var(--chp-cloud)!important}
+.case-choice-grid button.selected>span{color:#bfe6de!important}
+.platform-badge>span{background:var(--chp-teal)!important;color:var(--chp-cloud)!important}
+#cc-main .cm__btn,#cc-main .pm__btn{background:var(--chp-teal)!important;border-color:var(--chp-teal)!important;color:var(--chp-cloud)!important}
+#cc-main .cm__btn--secondary,#cc-main .pm__btn--secondary{background:transparent!important;border-color:var(--chp-teal)!important;color:var(--chp-teal)!important}
+#cc-main .cc-powered-by__brand svg path{stroke:var(--chp-teal)!important}
+.auth-dialog input:focus,.auth-dialog input:focus-visible{border-color:var(--chp-teal)!important;box-shadow:0 0 0 2px rgba(7,95,90,.15)!important}
+.auth-dialog-error{color:var(--chp-clay-text)!important}
+.auth-dialog-submit:disabled{opacity:.62;cursor:not-allowed}
+.auth-dialog-hint{display:flex;align-items:flex-start;gap:8px;margin:12px 0 0;padding:10px 12px;border:1px solid var(--chp-field);border-left:3px solid var(--chp-teal);background:var(--chp-cloud-deep);color:var(--chp-ink)!important;font-size:12.5px;line-height:1.5;text-align:left}
+.auth-dialog-hint svg{flex-shrink:0;margin-top:1px;color:var(--chp-teal)}
+.auth-dialog-cooldown{margin:8px 0 0;color:var(--chp-muted);font-size:12.5px}
+.quiet-button{color:var(--chp-teal)!important;font-weight:600}
+.quiet-button svg{color:var(--chp-teal)!important;border-color:var(--chp-field)!important}
+.payout-site :focus-visible,.privacy-page :focus-visible,.payment-page :focus-visible,.case-ledger-page :focus-visible,.working-surface :focus-visible{outline:2px solid var(--chp-teal);outline-offset:2px}
+
+/* ---- Public shell: compact logo-led header, no nav wrapping ---- */
+html,body{overflow-x:clip}
+img,svg,video{max-width:100%}
+.payout-header{height:64px}
+.payout-brand img,.payout-brand svg{width:28px;height:28px}
+.payout-nav{flex-wrap:nowrap;min-width:0;gap:clamp(13px,1.55vw,28px)}
+.payout-nav a{white-space:nowrap;color:var(--chp-muted)!important}
+.payout-nav a:hover{color:var(--chp-teal)!important}
+.payout-nav a:after{background:var(--chp-teal)!important}
+.workspace-nav-link{color:var(--chp-teal)!important;font-weight:600}
+.payment-nav-link{border:1px solid var(--chp-field);padding:8px 13px;color:var(--chp-ink)!important;font-weight:500;background:var(--chp-cloud-raised)}
+.payment-nav-link:hover{border-color:var(--chp-teal);color:var(--chp-teal)!important}
+.payout-menu{display:none}
+.payout-mobile-menu{display:none}
+/* Fold the desktop nav into the existing mobile menu before it gets cramped
+   (nav-layout-review.md): single compact line, then collapse. */
+@media (max-width:1180px){
+  .payout-nav{display:none}
+  .payout-menu{display:grid;place-items:center}
+  .payout-mobile-menu{position:absolute;top:64px;left:0;right:0;z-index:40;display:flex;flex-direction:column;padding:7px 17px 18px;border-bottom:1px solid var(--chp-field);background:rgba(251,253,252,.98);box-shadow:0 14px 26px var(--chp-shadow)}
+  .payout-mobile-menu button,.payout-mobile-menu a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid var(--chp-field);color:var(--chp-ink)!important;font-size:14px;text-align:left}
+  .payout-mobile-menu button:last-child,.payout-mobile-menu a:last-child{border-bottom:0}
+}
+@media (max-width:620px){
+  .payment-nav-link{display:none}
+  .payout-actions{gap:8px}
+}
+
+/* ---- Split editorial hero: service promise + restrained case-route panel ---- */
+.payout-hero{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);min-height:0;border-bottom:1px solid var(--chp-field);background:var(--chp-cloud)!important}
+.hero-copy-payout{padding:clamp(70px,8.5vw,118px) clamp(22px,6vw,92px) clamp(56px,6vw,84px) clamp(20px,5vw,88px)}
+.hero-copy-payout h1{font-size:clamp(40px,4.9vw,74px);line-height:1.02}
+.hero-copy-payout h1 em{color:var(--chp-teal)!important}
+.hero-detail{font-size:15.5px;line-height:1.62;max-width:54ch}
+.hero-rule{opacity:1}
+.payout-route-panel{position:relative;display:flex;flex-direction:column;gap:16px;margin:clamp(56px,7vw,104px) clamp(20px,4vw,56px) clamp(56px,6vw,84px) clamp(16px,2.5vw,40px);padding:24px 26px 22px;border:1px solid var(--chp-field);background:var(--chp-cloud-raised);box-shadow:0 14px 34px var(--chp-shadow);align-self:center}
+.route-panel-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--chp-muted);font-size:10px;font-weight:600;letter-spacing:.16em}
+.route-panel-topline i{flex:1;height:1px;background:var(--chp-field);font-style:normal}
+.route-panel-orbit{position:absolute;right:22px;top:48px;width:110px;height:110px;opacity:.92;pointer-events:none}
+.route-nodes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:2px}
+.route-node{display:flex;gap:11px;align-items:flex-start;padding:12px 13px;border:1px solid var(--chp-field);background:var(--chp-cloud)}
+.route-node b{color:var(--chp-teal);font-size:10.5px;font-weight:600;letter-spacing:.08em;padding-top:3px}
+.route-node strong{display:block;font-size:13.5px;font-weight:600;color:var(--chp-ink);letter-spacing:-.01em;line-height:1.25}
+.route-node span{display:block;margin-top:3px;color:var(--chp-muted);font-size:9.5px;font-weight:700;letter-spacing:.13em}
+.route-panel-foot{display:flex;align-items:center;gap:12px;color:var(--chp-muted);font-size:11px;font-weight:600;letter-spacing:.1em;border-top:1px solid var(--chp-field);padding-top:14px}
+.route-panel-foot i{flex:1;height:1px;background:linear-gradient(90deg,var(--chp-teal),transparent);font-style:normal}
+@media (max-width:1099px){.payout-hero{grid-template-columns:1fr}.payout-route-panel{display:none}}
+
+/* ---- Capability strip: compact single-color service-path band ---- */
+.capability-strip{display:flex;align-items:center;gap:clamp(14px,2.4vw,34px);padding:15px clamp(20px,5vw,88px);border-bottom:1px solid var(--chp-field);background:var(--chp-cloud-deep)}
+.capability-strip-label{flex-shrink:0;margin:0;color:var(--chp-teal);font-family:var(--chp-font-mono);font-size:9.5px;font-weight:600;letter-spacing:.17em}
+.capability-strip ul{display:flex;flex-wrap:wrap;gap:8px clamp(14px,2.4vw,34px);margin:0;padding:0;list-style:none;min-width:0}
+.capability-strip li{display:flex;align-items:center;gap:8px;color:var(--chp-ink);font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.capability-strip li b{color:var(--chp-teal);font-family:var(--chp-font-mono);font-size:10px;font-weight:600}
+@media (max-width:740px){.capability-strip{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 20px}}
+
+/* ---- Fixed sectional rhythm: intro → services → case path → trust → FAQ → contact ---- */
+.service-section,.case-section,.how-section,.faq-section{padding:clamp(62px,7.5vw,108px) clamp(20px,5.4vw,88px)}
+.section-top-payout h2,.case-intro h2,.how-header h2,.faq-title h2{font-size:clamp(33px,4.3vw,58px);line-height:1.04}
+.section-top-payout h2 em,.case-intro h2 em,.how-header h2 em{color:var(--chp-teal)!important}
+.trust-statement h2 em,.contact-panel h2 em{color:var(--chp-teal)!important}
+.payment-section-banner h2 em{color:#bfe6de!important}
+.trust-statement h2 em,.trust-section h2 em{color:#8fd0c5!important}
+.how-steps article{border-top:2px solid var(--chp-teal)}
+.how-steps article>span{color:var(--chp-teal)!important}
+.how-steps article>i{background:var(--chp-teal)!important}
+.how-steps h3{letter-spacing:-.015em}
+.faq-list summary{font-size:17px;font-weight:600;letter-spacing:-.01em;color:var(--chp-ink)!important;font-family:var(--chp-font-display)!important}
+.faq-title>svg{color:var(--chp-clay)!important}
+.payment-section-banner{background:var(--chp-teal)!important;color:var(--chp-cloud)!important;border-color:var(--chp-teal)!important}
+.payment-section-banner .payout-eyebrow,.payment-banner-note span{color:#9fd4cb!important}
+.payment-section-banner h2{color:var(--chp-cloud)!important}
+.payment-banner-note p{color:#cfe7e0!important}
+.contact-panel{background:var(--chp-ink)!important;color:#e7f2ec!important;border-color:var(--chp-ink)!important}
+.contact-panel .payout-eyebrow{color:#9fc6bd!important}
+.contact-panel h2{color:var(--chp-cloud)!important}
+.contact-panel h2 em{color:#8fd0c5!important}
+.contact-panel>div:last-child p{color:#c3d8d0!important}
+.contact-panel button{background:var(--chp-teal)!important;border-color:var(--chp-teal)!important;color:var(--chp-cloud)!important}
+
+/* ---- Structured, dense footer ---- */
+.footer-columns{grid-template-columns:.75fr .95fr 1.2fr;gap:clamp(22px,3vw,44px)}
+.footer-columns a,.footer-columns button{font-size:13.5px}
+.footer-columns b{letter-spacing:.14em;font-size:10px}
+
+/* ---- Authenticated shell: teal sidebar, unified page heads ---- */
+.dashboard-layout-shell [data-slot="sidebar"]{background:var(--chp-cloud-raised)!important;border-right:1px solid var(--chp-field)!important}
+.dashboard-layout-shell [data-slot="sidebar-inset"]{background:var(--chp-cloud)!important}
+.dashboard-layout-shell [data-sidebar="menu-button"][data-active="true"]{background:var(--chp-mist)!important;color:var(--chp-teal)!important;font-weight:600}
+.dashboard-layout-shell [data-sidebar="menu-button"]:hover:not([data-active="true"]){background:var(--chp-cloud-deep)!important}
+.dashboard-layout-shell [data-sidebar="menu-button"] [data-slot="sidebar-menu-badge"],.account-nav-badge{background:var(--chp-teal)!important;color:var(--chp-cloud)!important}
+.status-pill{background:var(--chp-mist)!important;color:var(--chp-teal)!important;border:1px solid var(--chp-field)}
+.status-pill.pending{background:var(--chp-cloud-deep)!important;color:var(--chp-muted)!important}
+.status-pill.clarification{background:#f9e7de!important;color:var(--chp-clay-text)!important;border-color:#eed3c5!important}
+.status-pill.rejected{background:#f6ded5!important;color:#8f3f24!important;border-color:#eccdbc!important}
+.staff-approve{background:var(--chp-teal)!important;color:var(--chp-cloud)!important;border-color:var(--chp-teal)!important}
+.staff-reject{background:transparent!important;color:var(--chp-clay-text)!important;border-color:var(--chp-clay)!important}
+.staff-reject:hover{background:#f9e7de!important}
+
+/* ---- Small screens: no horizontal overflow at ≤390px ---- */
+@media (max-width:430px){
+  .hero-copy-payout{padding:60px 18px 52px}
+  .hero-copy-payout h1{font-size:clamp(34px,9.4vw,42px)}
+  .section-top-payout h2,.case-intro h2,.how-header h2,.faq-title h2,.trust-statement h2,.contact-panel h2,.payment-section-banner h2{font-size:clamp(27px,7.2vw,34px)}
+  .service-grid-payout,.case-choice-grid,.how-steps,.trust-list,.faq-section,.footer-columns,.payment-section-banner,.payment-shell,.payment-form-grid,.privacy-content,.staff-review-grid,.case-review-grid,.account-grid,.account-summary,.staff-summary-grid,.case-summary-grid{grid-template-columns:1fr!important}
+  .case-choice-grid button{grid-template-columns:20px 18px 1fr;min-height:60px}
+  .faq-section{gap:26px}
+  .case-section{gap:36px}
+  .payment-methods-rail{padding:16px 16px 12px}
+  .payment-rail-track{gap:0}
+  .account-controls,.recipient-toolbar,.staff-toolbar{flex-wrap:wrap}
+  .companion-page,.case-ledger-page,.account-orders,.account-invoices{padding-left:16px!important;padding-right:16px!important}
+  .payout-footer{padding-left:16px!important;padding-right:16px!important}
+  .footer-logo-line{flex-direction:column;align-items:flex-start;gap:14px}
+  .auth-dialog{margin:0 12px;max-height:calc(100dvh - 24px);overflow:auto}
+}
+@media (max-width:390px){
+  .header-cta{padding:8px 9px;font-size:9.5px;gap:6px}
+  .payout-brand{font-size:15px}
+  .payout-brand img,.payout-brand svg{width:25px;height:25px}
+  .capability-strip li{font-size:10.5px;letter-spacing:.06em}
+}
+
+/* ---- 404 fallback page on the Orbit system ---- */
+.notfound-page{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--chp-cloud);color:var(--chp-ink);font-family:var(--chp-font-body)}
+.notfound-card{width:100%;max-width:460px;padding:44px 38px;border:1px solid var(--chp-field);background:var(--chp-cloud-raised);box-shadow:0 18px 44px var(--chp-shadow);text-align:center}
+.notfound-icon{color:var(--chp-clay);margin:0 auto 14px}
+.notfound-code{margin:0;color:var(--chp-teal);font-family:var(--chp-font-mono);font-size:13px;font-weight:600;letter-spacing:.2em}
+.notfound-card h1{margin:8px 0 10px;font-family:var(--chp-font-display);font-size:30px;font-weight:700;letter-spacing:-.02em}
+.notfound-detail{margin:0 0 24px;color:var(--chp-muted);font-size:14.5px;line-height:1.6}
+.notfound-actions{display:flex;justify-content:center}
+.notfound-actions .coral-button{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;font-size:13.5px}
+.notfound-meta{margin:22px 0 0;color:var(--chp-muted);font-size:11px;letter-spacing:.06em}
