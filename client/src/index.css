@@ -553,3 +553,18 @@ img,svg,video{max-width:100%}
 .notfound-actions{display:flex;justify-content:center}
 .notfound-actions .coral-button{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;font-size:13.5px}
 .notfound-meta{margin:22px 0 0;color:var(--chp-muted);font-size:11px;letter-spacing:.06em}
+
+/* Password sign-in additions (AuthDialog tabs + password fields) */
+.auth-dialog-tabs{display:flex;gap:6px;margin:2px 0 14px;padding:3px;background:var(--chp-cloud-deep,#eef5f2);border:1px solid var(--chp-field,#d6ddd8);border-radius:10px}
+.auth-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:8px 10px;border:0;border-radius:8px;background:transparent;color:var(--chp-muted,#5c6f6b);font-size:13px;font-weight:600;cursor:pointer;transition:background .18s ease,color .18s ease}
+.auth-tab:hover{color:var(--chp-teal,#075f5a)}
+.auth-tab.active{background:#fff;color:var(--chp-teal,#075f5a);box-shadow:0 1px 4px rgba(7,95,90,.14)}
+.auth-tab svg{flex-shrink:0}
+.auth-dialog .auth-password-wrap{display:flex;align-items:center;gap:8px;border:1px solid var(--chp-field,#d6ddd8);border-radius:8px;padding:0 11px;background:#fff;margin-bottom:4px}
+.auth-dialog .auth-password-wrap:focus-within{border-color:var(--chp-teal,#075f5a);box-shadow:0 0 0 2px rgba(7,95,90,.15)}
+.auth-dialog .auth-password-wrap svg{flex-shrink:0;color:var(--chp-muted,#5c6f6b)}
+.auth-dialog .auth-password-wrap input{border:0;box-shadow:none;background:transparent;padding-left:0}
+.auth-dialog .auth-password-wrap input:focus,.auth-dialog .auth-password-wrap input:focus-visible{border:0;box-shadow:none}
+.auth-dialog-link-button{display:inline-flex;align-items:center;gap:5px;margin:2px 0 10px;padding:0;border:0;background:none;color:var(--chp-teal,#075f5a);font-size:12.5px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.auth-dialog-link-button:hover{color:var(--chp-teal-deep,#053f3b)}
+.auth-dialog-link-button:disabled{opacity:.55;cursor:not-allowed}
